@@ -97,12 +97,29 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+.classItem {
+    border: 1px solid #000;
+}
 
+.selected-true {
+    background-color: rgba(144, 255, 112, 0.32);
+}
 
+#wrapper {
+    overflow: hidden;
+}
 
+div.pane {
+ float: left;
+}
 
+#left {
+    width: 300px;
+}
 
-
+#right {
+    margin-left: 50px;
+}
 
 
 

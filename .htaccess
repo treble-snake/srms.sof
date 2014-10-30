@@ -222,7 +222,7 @@ AddDefaultCharset utf-8
 
 # The same content should never be available under two different URLs especially
 # not with and without "www." at the beginning. This can cause SEO problems
-# (duplicate content), therefore, you should choose one of the alternatives and
+# (duplicate content), therefore, you should setClass one of the alternatives and
 # redirect the other one.
 
 # By default option 1 (no "www.") is activated:

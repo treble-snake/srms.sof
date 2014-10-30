@@ -2,11 +2,13 @@
     "stats": {
         "hp": {
             "name": "ХП",
-            "desc": "Здоровье бойца"
+            "desc": "Здоровье бойца",
+            "measure": "ед"
         },
         "damage": {
             "name": "Урон",
-            "desc": "Урон бойца"
+            "desc": "Урон бойца",
+            "measure": "ед"
         },
         "speed": {
             "name": "Выс/с",
@@ -22,15 +24,18 @@
         },
         "reload": {
             "name": "Перез.",
-            "desc": "Время перезарядки"
+            "desc": "Время перезарядки",
+            "measure": "сек"
         },
         "shock": {
             "name": "Шок",
-            "desc": "Время шока (нельзя стерлять) после ранения"
+            "desc": "Время шока (нельзя стерлять) после ранения",
+            "measure": "сек"
         },
         "god": {
             "name": "Неуязв.",
-            "desc": "Время неуязвимости после ранения"
+            "desc": "Время неуязвимости после ранения",
+            "measure": "сек"
         },
         "bandage": {
             "name": "Бинты",
@@ -111,7 +116,7 @@
             "desc": "Обычный лошпед с пушкой",
             "lvl": 0,
             "stats": {
-                "base":{
+                "base": {
                     "hp": 16,
                     "damage": 7,
                     "speed": 300,
@@ -121,22 +126,22 @@
                     "shock": 0.6,
                     "god": 0.6
                 },
-                "special":{
+                "special": {
                 }
             },
             "sub": {
-                "medic":{
+                "medic": {
                     "parent": "base",
                     "name": "Медик",
                     "desc": "Он может лечить. А может и не лечить.",
                     "lvl": 1,
                     "stats": {
-                        "base":{
+                        "base": {
                             "hp": 15,
                             "damage": 5,
                             "speed": 200
                         },
-                        "special":{
+                        "special": {
                             "bandage": {
                                 "hp": 5,
                                 "time": 2,
@@ -145,34 +150,61 @@
                         }
                     },
                     "sub": {
-                        "paramedic":{
+                        "paramedic-1": {
                             "parent": "medic",
                             "name": "Фельдшер",
                             "desc": "Спец по мелким ранам. Ногу не пришьет.",
                             "lvl": 2,
                             "stats": {
-                                "base" : {
+                                "base": {
                                     "hp": 10
                                 },
-                                "special":{
+                                "special": {
                                     "bandage": {
                                         "hp": 5,
                                         "time": 2,
                                         "qty": 10
                                     }
                                 }
+                            },
+                            "sub": {
+                                "paramedic-2": {
+                                    "parent": "paramedic-1",
+                                    "name": "Фельдшер сениор",
+                                    "desc": "Спец по мелким ранам. Ногу не пришьет.",
+                                    "lvl": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 20
+                                        }
+                                    },
+                                    "sub": {
+                                        "paramedic-3": {
+                                            "parent": "paramedic-2",
+                                            "name": "Фельдшер лид",
+                                            "desc": "Спец по мелким ранам. Ногу не пришьет.",
+                                            "lvl": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 30
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
                             }
                         },
-                        "surgeon":{
+                        "surgeon": {
                             "parent": "medic",
                             "name": "Хирург",
                             "desc": "Вынет пулю и заштопает, не моргнув глазом.",
                             "lvl": 2,
                             "stats": {
-                                "base" : {
+                                "base": {
                                     "hp": 11
                                 },
-                                "special":{
+                                "special": {
                                     "bandage": {
                                         "hp": 5,
                                         "time": 2,
@@ -185,7 +217,25 @@
                 }
             }
         }
+    },
+
+    "perks": {
+        "steelSkin": {
+            "level": 1,
+            "name": "Стальная кожа",
+            "desc": "Стил рэтс - стил болс",
+            "effects": {
+                "add": {
+                    "hp": 1
+                },
+                "mul": {},
+                "text": {}
+            },
+            "for": {
+                "level": 4,
+                "classOnly": [],
+                "classExcept": []
+            }
+        }
     }
-
-
 }
