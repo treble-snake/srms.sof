@@ -1,4 +1,16 @@
-angular.module('MyModule', [])
+var sofApp = angular.module('MyModule', []);
+
+sofApp
+    .directive('statsPane', function () {
+    return {
+        templateUrl: 'app/partials/stats.pane.html',
+        restrict: 'A',
+        scope: {
+            currentStats: '=',
+            stats: '=allStats'
+        }
+    }
+})
     .controller('ClassTree', function ($scope, $http) {
 
         $scope.hello = "Loading..";
@@ -29,7 +41,7 @@ angular.module('MyModule', [])
 
         $scope.addPerk = function (id) {
             var perk = $scope.getPerk(id);
-            if(perk === undefined)
+            if (perk === undefined)
                 return;
 
             $scope.applyPerk(perk);
@@ -39,21 +51,21 @@ angular.module('MyModule', [])
         /////////////////////
 
         $scope.applyPerk = function (perk) {
-            for(id in perk.effects) {
+            for (id in perk.effects) {
                 $scope.applyPerkEffect(id, perk.effects[id], perk.selected)
             }
         };
 
         $scope.applyPerkEffect = function (id, stats, revert) {
-            for(statId in stats) {
+            for (statId in stats) {
                 $scope.effectsMap[id](statId, stats[statId], revert);
             }
         };
 
         $scope.effectsMap = {
-            add: function(stat, value, revert) {
-                if($scope.currentStats[stat] !== undefined)
-                    $scope.currentStats[stat] += revert ? -1*value : value;
+            add: function (stat, value, revert) {
+                if ($scope.currentStats[stat] !== undefined)
+                    $scope.currentStats[stat] += revert ? -1 * value : value;
             }
         };
 

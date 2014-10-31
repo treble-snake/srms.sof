@@ -35,13 +35,13 @@
 
     <div>
         <div class="pane" id="left">
-            <h4>Current class: {{currentClass.name}} [{{currentClass.id}}]</h4>
+            <h4>Current class: <span ng-show="currentClass">{{currentClass.name}} [{{currentClass.id}}]</span></h4>
 
             <div id="stats">
-                <!--<div ng-repeat="(stat, value) in calculateStats(currentClass.id)">-->
-                <div ng-repeat="(stat, value) in currentStats">
-                    <span title="{{data.stats[stat].desc}}">{{data.stats[stat].name}}: {{value}} {{data.stats[stat].measure}}</span>
-                </div>
+                <!--<div ng-repeat="(stat, value) in currentStats">-->
+                    <!--<span title="{{data.stats[stat].desc}}">{{data.stats[stat].name}}: {{value}} {{data.stats[stat].measure}}</span>-->
+                <!--</div>-->
+                <div ng-show="currentStats" stats-pane current-stats="currentStats" all-stats="data.stats"></div>
             </div>
         </div>
     </div>
