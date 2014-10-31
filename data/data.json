@@ -41,15 +41,15 @@
             "name": "Бинты",
             "desc": "Перевязочный комплект. Восстанавливает небольшое количество здоровья.",
             "sub": {
-                "hp": {
+                "bandageHp": {
                     "name": "ХП",
                     "desc": "Кол-во восстанавливаемого здоровья"
                 },
-                "time": {
+                "bandageTime": {
                     "name": "Время",
                     "desc": "Время применения"
                 },
-                "qty": {
+                "bandageQty": {
                     "name": "Кол-во",
                     "desc": "Количество штук"
                 }
@@ -58,19 +58,24 @@
         "morphine": {
             "desc": "Морфин. Восстанавливает большое количество здоровья.",
             "sub": {
-                "hp": {
+                "morphineHp": {
                     "name": "ХП",
                     "desc": "Кол-во восстанавливаемого здоровья"
                 },
-                "time": {
+                "morphineTime": {
                     "name": "Время",
                     "desc": "Время применения"
                 },
-                "qty": {
+                "morphineQty": {
                     "name": "Кол-во",
                     "desc": "Количество штук"
                 }
             }
+        },
+        "adrenaline": {
+            "name": "Адреналин",
+            "desc": "Буст ХП х2",
+            "measure": "ампул"
         },
         "defib": {
             "name": "Дефибриллятор",
@@ -114,7 +119,7 @@
         "base": {
             "name": "Наемник",
             "desc": "Обычный лошпед с пушкой",
-            "lvl": 0,
+            "level": 0,
             "stats": {
                 "base": {
                     "hp": 16,
@@ -134,7 +139,7 @@
                     "parent": "base",
                     "name": "Медик",
                     "desc": "Он может лечить. А может и не лечить.",
-                    "lvl": 1,
+                    "level": 1,
                     "stats": {
                         "base": {
                             "hp": 15,
@@ -143,9 +148,9 @@
                         },
                         "special": {
                             "bandage": {
-                                "hp": 5,
-                                "time": 2,
-                                "qty": 10
+                                "bandageHp": 5,
+                                "bandageTime": 2,
+                                "bandageQty": 10
                             }
                         }
                     },
@@ -154,16 +159,16 @@
                             "parent": "medic",
                             "name": "Фельдшер",
                             "desc": "Спец по мелким ранам. Ногу не пришьет.",
-                            "lvl": 2,
+                            "level": 2,
                             "stats": {
                                 "base": {
                                     "hp": 10
                                 },
                                 "special": {
                                     "bandage": {
-                                        "hp": 5,
-                                        "time": 2,
-                                        "qty": 10
+                                        "bandageHp": 5,
+                                        "bandageTime": 2,
+                                        "bandageQty": 20
                                     }
                                 }
                             },
@@ -172,7 +177,7 @@
                                     "parent": "paramedic-1",
                                     "name": "Фельдшер сениор",
                                     "desc": "Спец по мелким ранам. Ногу не пришьет.",
-                                    "lvl": 3,
+                                    "level": 3,
                                     "stats": {
                                         "base": {
                                             "hp": 20
@@ -183,10 +188,13 @@
                                             "parent": "paramedic-2",
                                             "name": "Фельдшер лид",
                                             "desc": "Спец по мелким ранам. Ногу не пришьет.",
-                                            "lvl": 4,
+                                            "level": 4,
                                             "stats": {
                                                 "base": {
                                                     "hp": 30
+                                                },
+                                                "special": {
+                                                    "defib": null
                                                 }
                                             }
                                         }
@@ -195,20 +203,18 @@
                                 }
                             }
                         },
-                        "surgeon": {
+                        "surgeon-1": {
                             "parent": "medic",
                             "name": "Хирург",
                             "desc": "Вынет пулю и заштопает, не моргнув глазом.",
-                            "lvl": 2,
+                            "level": 2,
                             "stats": {
                                 "base": {
                                     "hp": 11
                                 },
                                 "special": {
                                     "bandage": {
-                                        "hp": 5,
-                                        "time": 2,
-                                        "qty": 3
+                                        "bandageQty": 3
                                     }
                                 }
                             }
@@ -226,13 +232,18 @@
             "desc": "Стил рэтс - стил болс",
             "effects": {
                 "add": {
-                    "hp": 1
+                    "hp": 1,
+                    "bandageQty": -1
                 },
-                "mul": {},
-                "text": {}
+                "mul": {
+                    "ammo": 1.5
+                },
+                "provide": [
+                    "grenade"
+                ]
             },
             "for": {
-                "level": 4,
+                "level": 3,
                 "classOnly": [],
                 "classExcept": []
             }

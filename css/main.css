@@ -97,12 +97,16 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-.classItem {
+.class-item {
     border: 1px solid #000;
 }
 
 .selected-true {
     background-color: rgba(144, 255, 112, 0.32);
+}
+
+.enabled-false {
+    background-color: #ffe4d8;
 }
 
 #wrapper {
@@ -114,7 +118,7 @@ div.pane {
 }
 
 #left {
-    width: 300px;
+    width: 500px;
 }
 
 #right {

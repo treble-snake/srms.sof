@@ -1,0 +1,15 @@
+<div class="stat-item" ng-repeat="(stat, value) in currentStats">
+
+    <div class="sub-stats" ng-show="stats[stat].sub">
+        <b title="{{stats[stat].desc}}">{{stats[stat].name}}:</b>
+        <blockquote>
+            <div stats-pane current-stats="value" all-stats="stats[stat].sub"></div>
+        </blockquote>
+    </div>
+
+    <div ng-hide="stats[stat].sub">
+        <span title="{{stats[stat].desc}}">{{stats[stat].name}}
+            <span ng-show="value">: {{value}} {{stats[stat].measure}}</span>
+        </span>
+    </div>
+</div>
