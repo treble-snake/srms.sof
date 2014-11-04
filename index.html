@@ -24,7 +24,7 @@
     <script src="js/main.js"></script>
 
 </head>
-<body ng-app="MyModule">
+<body ng-app="SrmsSof">
 
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a
@@ -34,40 +34,43 @@
 <div id="wrapper" ng-controller="ClassTree">
     <h3>SoF Calculator: {{hello}}</h3>
 
-    <div>
-        <div class="pane" id="left">
-            <h4>Current class: <span ng-show="currentClass">{{currentClass.name}} [{{currentClass.id}}]</span></h4>
+    <div class="pane" id="stats-pane">
+        <h4>Current class: <span ng-show="currentClass">{{currentClass.name}} [{{currentClass.id}}]</span></h4>
 
-            <div id="stats">
-                <div ng-show="currentStats" stats-pane current-stats="currentStats" all-stats="data.stats"></div>
-            </div>
+        <div id="stats">
+            <div ng-show="currentStats" stats-pane current-stats="currentStats" all-stats="data.stats"></div>
         </div>
     </div>
 
-    <div class="pane" id="right">
+    <div class="pane" id="perks-pane">
         <h4>Perks</h4>
 
         <div id="perks">
             <button
-                    class="class-item enabled-{{perkAvailable(perk)}} selected-{{perk.selected !== undefined && perk.selected}}"
-                    ng-disabled="!perkAvailable(perk)"
+                    class="class-item available-{{isPerkAvailable(perk)}} selected-{{perk.selected !== undefined && perk.selected}}"
+                    ng-disabled="!isPerkAvailable(perk)"
                     ng-repeat="(id, perk) in data.perks" ng-click="addPerk(id)">{{perk.name}}
             </button>
         </div>
-        <h4>Classes</h4>
-        <ul id="classes">
-            <li ng-repeat="(classId, classData) in data.classes" ng-include="'classTreeItem'"/>
-        </ul>
+    </div>
+    <div class="pane" id="classes-pane">
+        <div id="class-tree">
+            <h4>Classes</h4>
+
+            <div class="tree-wrapper">
+                <div class="class tree-item root-tree-item" ng-repeat="(classId, classData) in data.classes"
+                     ng-include="'classTreeItem'"/>
+            </div>
+        </div>
     </div>
 </div>
 
 <script type="text/ng-template" id="classTreeItem">
-    <button class="class-item selected-{{isClassSelected(classId)}}"
-            ng-click="setClass(classId, classData)">{{classData.name}}
-    </button>
-    <ul>
-        <li ng-repeat="(classId, classData) in classData.sub" ng-include="'classTreeItem'"></li>
-    </ul>
+    <div class="class-info tree-item-content available-{{isClassAvailable(classId)}} selected-{{isClassSelected(classId)}}"
+         ng-disabled="!isClassAvailable(classId)"
+         ng-click="setClass(classId, classData)">{{classData.name}}
+    </div>
+    <div class="class tree-item" ng-repeat="(classId, classData) in  classData.sub" ng-include="'classTreeItem'"/>
 </script>
 
 </body>

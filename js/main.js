@@ -1,4 +1,4 @@
-var sofApp = angular.module('MyModule', []);
+var sofApp = angular.module('SrmsSof', []);
 
 sofApp
     .directive('statsPane', function (RecursionHelper) {
@@ -22,6 +22,7 @@ sofApp
         $scope.hello = "Loading..";
         $scope.currentClass;
         $scope.currentStats;
+        $scope.selectedPerks = []
 
         // load data
         $http.get("data/data.json")
@@ -36,18 +37,27 @@ sofApp
             });
 
         $scope.setClass = function (classId, classData) {
+            if (!$scope.isClassAvailable(classId))
+                return;
             var data = classData;
             data.id = classId;
             $scope.currentClass = data;
             $scope.currentStats = calculateStats(classId);
+            applyPerks();
         };
 
         $scope.isClassSelected = function (classId) {
-            return $scope.currentClass !== undefined &&
-                (classId === $scope.currentClass.id || isAncestor(classId, $scope.currentClass));
+            return classId === $scope.currentClass.id;
         };
 
-        $scope.perkAvailable = function (perk) {
+        $scope.isClassAvailable = function (classId) {
+            return _.isEqual(classId, 'base') ||
+                $scope.isClassSelected(classId) ||
+                getClass(classId).parent == $scope.currentClass.id ||
+                isAncestor(classId, $scope.currentClass);
+        };
+
+        $scope.isPerkAvailable = function (perk) {
             var current = $scope.currentClass;
             var need = perk.for;
             if (current.level < need.level)
@@ -66,15 +76,29 @@ sofApp
 
         $scope.addPerk = function (id) {
             var perk = getPerk(id);
-            if (perk === undefined || $scope.currentStats === undefined)
+            if (_.isUndefined(perk) || !$scope.isPerkAvailable(perk))
                 return;
 
             applyPerk(perk);
+            $scope.selectedPerks.push(id);
             perk.selected = !perk.selected;
         };
 
 
         /* Private section */
+
+        function applyPerks() {
+            _.each($scope.selectedPerks, function(id){
+                var perk = getPerk(id);
+                perk.selected = false;
+                if(!$scope.isPerkAvailable(perk)) {
+                    $scope.selectedPerks = _.without($scope.selectedPerks, id);
+                    return;
+                }
+                applyPerk(perk);
+                perk.selected = true;
+            })
+        };
 
         function applyPerk(perk) {
             _.each(perk.effects, function (stats, id) {
@@ -84,7 +108,6 @@ sofApp
                 })
             })
         }
-
         var effectsMap = {
                 add: function (statWrapper, value, revert) {
                     if (!_.isUndefined(statWrapper))
@@ -103,14 +126,16 @@ sofApp
                 }
             }
             ;
-
         function isAncestor(ancestorId, child) {
-            if (_.isUndefined(ancestorId) || _.isUndefined(child))
+           if (_.isUndefined(ancestorId) || _.isUndefined(child))
                 return false;
             if (child.parent === ancestorId)
                 return true;
+
             return isAncestor(ancestorId, getClass(child.parent));
         }
+
+
 
         function calculateStats(id, result) {
             if (_.isUndefined(result))
@@ -196,7 +221,6 @@ sofApp
     }
 )
 ;
-
 sofApp.factory('RecursionHelper', ['$compile', function ($compile) {
     return {
         /**
