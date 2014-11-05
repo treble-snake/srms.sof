@@ -1,4 +1,4 @@
-var sofApp = angular.module('SrmsSof', []);
+var sofApp = angular.module('SrmsSof', ['ui.bootstrap']);
 
 sofApp
     .directive('statsPane', function (RecursionHelper) {
@@ -89,6 +89,19 @@ sofApp
                 $scope.selectedPerks = _.without($scope.selectedPerks, id);
         };
 
+        // TODO use templates
+        $scope.getClassDescription = function (clazz) {
+            var result = $('<section class="tree-tooltip"></section>');
+            result.append('<h1>' + clazz.name + '</h1>');
+            result.append('<h2>Характеристики</h2>');
+
+            _.each(clazz.stats.base, function (value, id) {
+                result.append("<div>"+id+": "+value+"</div>")
+            });
+
+            console.log(result);
+            return result.wrap("<div/>").parent().html();
+        };
 
         /* Private section */
 

@@ -155,7 +155,9 @@ div.pane {
 /* Connectors on the top of tree items */
 .tree-item::before,
 .tree-item::after,
-.tree-item .tree-item-content:after {
+.tree-item .tree-item-content:after,
+/* Hack for :first-of-type rule */
+.tree-item > .tree-item ~ .tree-item:before {
     content: '';
     position: absolute;
     top: 0;
@@ -163,6 +165,14 @@ div.pane {
     width: 50%;
     box-sizing: border-box;
     height: 20px;
+}
+
+/* Remove left connector from first child and right connector from last child */
+/* Mind the hack above. */
+.tree-item > .tree-item:before,
+.tree-item:last-child::after
+{
+    border-top: 0;
 }
 
 /* Top line left */
@@ -189,13 +199,6 @@ div.pane {
     display: none;
 }
 
-/* Remove left connector from first child and right connector from last child */
-.tree-item-content + .tree-item::before,
-.tree-item:last-child::after
-{
-    border-top: 0;
-}
-
 /* Hide connectors for root element */
 .root-tree-item::after,
 .root-tree-item::before {
@@ -215,6 +218,23 @@ div.pane {
 }
 
 
+/** ================= Tooltips ====================*/
+
+.tree-tooltip {
+    text-align: left;
+}
+
+.tree-tooltip h1 {
+    font-size: 1.3em;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.tree-tooltip h2 {
+    font-size: 1.15em;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
 
 
 /* ==========================================================================

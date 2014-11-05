@@ -144,7 +144,11 @@
                     "level": 1,
                     "stats": {
                         "base": {
-                            "hp": 21
+                            "hp": 18,
+                            "damage": 4,
+                            "speed": 500,
+                            "rounds": 30,
+                            "ammo": 5
                         },
                         "special": {}
                     },
