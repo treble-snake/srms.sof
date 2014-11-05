@@ -632,13 +632,13 @@
     },
 
     "perks": {
-        "somePerk": {
+        "halkPerk": {
             "level": 1,
             "name": "Халк!",
             "selected": false,
             "effects": {
                 "mul": {
-                    "hp": 10
+                    "damage": 10
                 }
             },
             "for": {
@@ -662,9 +662,27 @@
                 ]
             },
             "for": {
-                "level": 3,
+                "level": 2,
                 "classOnly": [],
                 "classExcept": []
+            },
+            "sub": {
+                "titanSkin": {
+                    "parent": "steelSkin",
+                    "level": 2,
+                    "name": "Титановая кожа",
+                    "desc": "Ну вазще",
+                    "effects": {
+                        "add": {
+                            "hp": 3,
+                            "god": 0.2,
+                            "shock": 0.2
+                        }
+                    },
+                    "for": {
+                        "level": 3
+                    }
+                }
             }
         }
     }

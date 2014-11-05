@@ -98,7 +98,12 @@ textarea {
    ========================================================================== */
 #wrapper {
     overflow: hidden;
-    padding-bottom: 50px;
+    padding: 0 20px 50px;
+}
+
+#stats-pane,
+#perks-pane {
+    width: 250px;
 }
 
 div.pane {
@@ -115,10 +120,13 @@ div.pane {
     cursor: default;
 }
 
-.class-info {
+.class-info,
+.perk-info
+{
     cursor: pointer;
 }
 
+/* Tree item, containing another tree items */
 .tree-item {
     float: left;
     text-align: center;
@@ -127,6 +135,7 @@ div.pane {
     padding: 0 2px;
 }
 
+/* Block with tree item content (e.g. icon) */
 .tree-item .tree-item-content {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -143,75 +152,66 @@ div.pane {
 
 }
 
+/* Connectors on the top of tree items */
 .tree-item::before,
-.tree-item::after {
+.tree-item::after,
+.tree-item .tree-item-content:after {
     content: '';
     position: absolute;
     top: 0;
-    right: 50%;
     border-top: 1px solid #ccc;
     width: 50%;
+    box-sizing: border-box;
     height: 20px;
 }
 
-.tree-item::after {
-    width: 50%;
-    height: 20px;
-    content: '';
-    top: 0;
-    position: absolute;
+/* Top line left */
+.tree-item::before {
+    left: 0;
+}
+
+/* Top line right + vertical line */
+.tree-item::after,
+/* Bottom connector */
+.tree-item .tree-item-content:after {
     left: 50%;
     border-left: 1px solid #ccc;
 }
 
-.root-tree-item > .tree-item-content,
-.root-tree-item {
-    margin-top: 0;
+/* Connectors on the bottom of tree items */
+.tree-item .tree-item-content:after {
+    top: 100%;
+    border-top: 0;
 }
 
+/* Hide bottom connectors for classes without subclasses */
+.tree-item-content:only-child::after {
+    display: none;
+}
 
+/* Remove left connector from first child and right connector from last child */
+.tree-item-content + .tree-item::before,
+.tree-item:last-child::after
+{
+    border-top: 0;
+}
+
+/* Hide connectors for root element */
 .root-tree-item::after,
 .root-tree-item::before {
     display: none;
 }
 
-.tree-item .tree-item-content:after {
-    content: '';
-    top: 100%;
-    height: 20px;
-    position: absolute;
-    left: 50%;
-    margin: 0 0 0 -1px;
-    border-right: 1px solid #ccc;
+/* Remove margins for root tree items */
+.root-tree-item,
+.root-tree-item > .tree-item-content {
+    margin-top: 0;
 }
 
-.tree-item-content:only-child::after {
-    display: none;
-}
-
-/*Remove left connector from first child and
-right connector from last child*/
-.tree-item-content + .tree-item::before,
-.tree-item:last-child::after {
-    border: 0 none;
-}
-
-/*We need to remove left-right connectors from elements without
-any siblings*/
-.tree-item:only-child::after, .tree-item:only-child::before {
-    display: none;
-}
-
-/*Adding back the vertical connector to the last nodes*/
-.tree-item:last-child::before {
-    border-right: 1px solid #ccc;
-}
-
+/* Some effects */
 .tree-item-content:not(.available-false):hover,
 .tree-item-content:not(.available-false):hover~.tree-item > .tree-item-content {
     background: #c8e4f8;
-    color: #000;
-    border: 1px solid #94a0b4;
 }
 
 

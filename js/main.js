@@ -71,6 +71,9 @@ sofApp
                 && _.contains(need.classExcept, current.id))
                 return false;
 
+            if(!_.isUndefined(perk.parent) && !_.contains($scope.selectedPerks, perk.parent))
+                return false;
+
             return true;
         };
 
@@ -82,6 +85,8 @@ sofApp
             applyPerk(perk);
             $scope.selectedPerks.push(id);
             perk.selected = !perk.selected;
+            if(!perk.selected)
+                $scope.selectedPerks = _.without($scope.selectedPerks, id);
         };
 
 
