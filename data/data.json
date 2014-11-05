@@ -3,12 +3,14 @@
         "hp": {
             "name": "ХП",
             "desc": "Здоровье бойца",
-            "measure": "ед"
+            "measure": "ед",
+            "order": 100
         },
         "damage": {
             "name": "Урон",
             "desc": "Урон бойца",
-            "measure": "ед"
+            "measure": "ед",
+            "order": 110
         },
         "speed": {
             "name": "Выс/с",
@@ -41,15 +43,15 @@
             "name": "Бинты",
             "desc": "Перевязочный комплект. Восстанавливает небольшое количество здоровья.",
             "sub": {
-                "hp": {
+                "bandageHp": {
                     "name": "ХП",
                     "desc": "Кол-во восстанавливаемого здоровья"
                 },
-                "time": {
+                "bandageTime": {
                     "name": "Время",
                     "desc": "Время применения"
                 },
-                "qty": {
+                "bandageQty": {
                     "name": "Кол-во",
                     "desc": "Количество штук"
                 }
@@ -58,19 +60,24 @@
         "morphine": {
             "desc": "Морфин. Восстанавливает большое количество здоровья.",
             "sub": {
-                "hp": {
+                "morphineHp": {
                     "name": "ХП",
                     "desc": "Кол-во восстанавливаемого здоровья"
                 },
-                "time": {
+                "morphineTime": {
                     "name": "Время",
                     "desc": "Время применения"
                 },
-                "qty": {
+                "morphineQty": {
                     "name": "Кол-во",
                     "desc": "Количество штук"
                 }
             }
+        },
+        "adrenaline": {
+            "name": "Адреналин",
+            "desc": "Буст ХП х2",
+            "measure": "ампул"
         },
         "defib": {
             "name": "Дефибриллятор",
@@ -114,7 +121,7 @@
         "base": {
             "name": "Наемник",
             "desc": "Обычный лошпед с пушкой",
-            "lvl": 0,
+            "level": 0,
             "stats": {
                 "base": {
                     "hp": 16,
@@ -130,11 +137,387 @@
                 }
             },
             "sub": {
+                "stormtrooper": {
+                    "parent": "base",
+                    "name": "Штурмовик",
+                    "desc": "Он штурмует! ололо! Засыпкин, берегись!",
+                    "level": 1,
+                    "stats": {
+                        "base": {
+                            "hp": 21
+                        },
+                        "special": {}
+                    },
+                    "sub": {
+                        "destroyer-1": {
+                            "parent": "stormtrooper",
+                            "name": "Дестроер-новичок",
+                            "desc": "Убивает всё живое.",
+                            "level": 2,
+                            "stats": {
+                                "base": {
+                                    "hp": 22
+                                },
+                                "special": {}
+                            },
+                            "sub": {
+                                "destroyer-2": {
+                                    "parent": "destroyer-1",
+                                    "name": "Опытный дестроер",
+                                    "desc": "Убивает всё живое.",
+                                    "level": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 23
+                                        },
+                                        "special": {}
+                                    },
+                                    "sub": {
+                                        "destroyer-3": {
+                                            "parent": "destroyer-2",
+                                            "name": "Дестроер-ветеран",
+                                            "desc": "Убивает всё живое.",
+                                            "level": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 24
+                                                },
+                                                "special": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "juggernaut-1": {
+                            "parent": "stormtrooper",
+                            "name": "Джаггернаут-новичок",
+                            "desc": "Не умирает. Совсем.",
+                            "level": 2,
+                            "stats": {
+                                "base": {
+                                    "hp": 32
+                                },
+                                "special": {}
+                            },
+                            "sub": {
+                                "juggernaut-2": {
+                                    "parent": "juggernaut-1",
+                                    "name": "Опытный джаггернаут",
+                                    "desc": "Не умирает. Совсем.",
+                                    "level": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 33
+                                        },
+                                        "special": {}
+                                    },
+                                    "sub": {
+                                        "juggernaut-3": {
+                                            "parent": "juggernaut-2",
+                                            "name": "Джаггернаут-ветеран",
+                                            "desc": "Не умирает. Совсем.",
+                                            "level": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 34
+                                                },
+                                                "special": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "sniper": {
+                    "parent": "base",
+                    "name": "Снайпер",
+                    "desc": "Он пырит в прицел.",
+                    "level": 1,
+                    "stats": {
+                        "base": {
+                            "hp": 11
+                        },
+                        "special": {}
+                    },
+                    "sub": {
+                        "marksman-1": {
+                            "parent": "sniper",
+                            "name": "Марксмен-новичок",
+                            "desc": "Легкий снайпер",
+                            "level": 2,
+                            "stats": {
+                                "base": {
+                                    "hp": 12
+                                },
+                                "special": {}
+                            },
+                            "sub": {
+                                "marksman-2": {
+                                    "parent": "marksman-1",
+                                    "name": "Опытный Марксмен",
+                                    "desc": "Легкий снайпер",
+                                    "level": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 13
+                                        },
+                                        "special": {}
+                                    },
+                                    "sub": {
+                                        "marksman-3": {
+                                            "parent": "marksman-2",
+                                            "name": "Марксмен-ветеран",
+                                            "desc": "Легкий снайпер",
+                                            "level": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 14
+                                                },
+                                                "special": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "predator-1": {
+                            "parent": "sniper",
+                            "name": "Хищник-новичок",
+                            "desc": "Тяжелый снайпер.",
+                            "level": 2,
+                            "stats": {
+                                "base": {
+                                    "hp": 32
+                                },
+                                "special": {}
+                            },
+                            "sub": {
+                                "predator-2": {
+                                    "parent": "predator-1",
+                                    "name": "Опытный Хищник",
+                                    "desc": "Тяжелый снайпер.",
+                                    "level": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 33
+                                        },
+                                        "special": {}
+                                    },
+                                    "sub": {
+                                        "predator-3": {
+                                            "parent": "predator-2",
+                                            "name": "Хищник-ветеран",
+                                            "desc": "Тяжелый снайпер.",
+                                            "level": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 34
+                                                },
+                                                "special": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "support": {
+                    "parent": "base",
+                    "name": "Саппорт",
+                    "desc": "Он прижимает врагов к земле, стреляя из пулемета!",
+                    "level": 1,
+                    "stats": {
+                        "base": {
+                            "hp": 21
+                        },
+                        "special": {}
+                    },
+                    "sub": {
+                        "cleaner-1": {
+                            "parent": "support",
+                            "name": "Чистильщик-новичок",
+                            "desc": "Короткие очереди.",
+                            "level": 2,
+                            "stats": {
+                                "base": {
+                                    "hp": 22
+                                },
+                                "special": {}
+                            },
+                            "sub": {
+                                "cleaner-2": {
+                                    "parent": "cleaner-1",
+                                    "name": "Опытный Чистильщик",
+                                    "desc": "Короткие очереди.",
+                                    "level": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 23
+                                        },
+                                        "special": {}
+                                    },
+                                    "sub": {
+                                        "cleaner-3": {
+                                            "parent": "cleaner-2",
+                                            "name": "Чистильщик-ветеран",
+                                            "desc": "Короткие очереди.",
+                                            "level": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 24
+                                                },
+                                                "special": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "dominator-1": {
+                            "parent": "support",
+                            "name": "Доминатор-новичок",
+                            "desc": "Очереди длинною в вечность.",
+                            "level": 2,
+                            "stats": {
+                                "base": {
+                                    "hp": 22
+                                },
+                                "special": {}
+                            },
+                            "sub": {
+                                "dominator-2": {
+                                    "parent": "dominator-1",
+                                    "name": "Опытный Доминатор",
+                                    "desc": "Очереди длинною в вечность.",
+                                    "level": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 23
+                                        },
+                                        "special": {}
+                                    },
+                                    "sub": {
+                                        "dominator-3": {
+                                            "parent": "dominator-2",
+                                            "name": "Доминатор-ветеран",
+                                            "desc": "Очереди длинною в вечность.",
+                                            "level": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 24
+                                                },
+                                                "special": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "engineer": {
+                    "parent": "base",
+                    "name": "Инженер",
+                    "desc": "Делает всякие штуки",
+                    "level": 1,
+                    "stats": {
+                        "base": {
+                            "hp": 11
+                        },
+                        "special": {}
+                    },
+                    "sub": {
+                        "sapper-1": {
+                            "parent": "engineer",
+                            "name": "Сапер-новичок",
+                            "desc": "Минирует-разминирует.",
+                            "level": 2,
+                            "stats": {
+                                "base": {
+                                    "hp": 12
+                                },
+                                "special": {}
+                            },
+                            "sub": {
+                                "sapper-2": {
+                                    "parent": "sapper-1",
+                                    "name": "Опытный Сапер",
+                                    "desc": "Минирует-разминирует.",
+                                    "level": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 13
+                                        },
+                                        "special": {}
+                                    },
+                                    "sub": {
+                                        "sapper-3": {
+                                            "parent": "sapper-2",
+                                            "name": "Сапер-ветеран",
+                                            "desc": "Минирует-разминирует.",
+                                            "level": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 14
+                                                },
+                                                "special": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "supplier-1": {
+                            "parent": "engineer",
+                            "name": "Снабженец-новичок",
+                            "desc": "У него есть боеприпасы.",
+                            "level": 2,
+                            "stats": {
+                                "base": {
+                                    "hp": 32
+                                },
+                                "special": {}
+                            },
+                            "sub": {
+                                "supplier-2": {
+                                    "parent": "supplier-1",
+                                    "name": "Опытный Снабженец",
+                                    "desc": "У него есть боеприпасы.",
+                                    "level": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 33
+                                        },
+                                        "special": {}
+                                    },
+                                    "sub": {
+                                        "supplier-3": {
+                                            "parent": "supplier-2",
+                                            "name": "Снабженец-ветеран",
+                                            "desc": "У него есть боеприпасы.",
+                                            "level": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 34
+                                                },
+                                                "special": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "medic": {
                     "parent": "base",
                     "name": "Медик",
                     "desc": "Он может лечить. А может и не лечить.",
-                    "lvl": 1,
+                    "level": 1,
                     "stats": {
                         "base": {
                             "hp": 15,
@@ -143,36 +526,36 @@
                         },
                         "special": {
                             "bandage": {
-                                "hp": 5,
-                                "time": 2,
-                                "qty": 10
+                                "bandageHp": 5,
+                                "bandageTime": 2,
+                                "bandageQty": 10
                             }
                         }
                     },
                     "sub": {
                         "paramedic-1": {
                             "parent": "medic",
-                            "name": "Фельдшер",
+                            "name": "Фельдшер-новичок",
                             "desc": "Спец по мелким ранам. Ногу не пришьет.",
-                            "lvl": 2,
+                            "level": 2,
                             "stats": {
                                 "base": {
                                     "hp": 10
                                 },
                                 "special": {
                                     "bandage": {
-                                        "hp": 5,
-                                        "time": 2,
-                                        "qty": 10
+                                        "bandageHp": 5,
+                                        "bandageTime": 2,
+                                        "bandageQty": 20
                                     }
                                 }
                             },
                             "sub": {
                                 "paramedic-2": {
                                     "parent": "paramedic-1",
-                                    "name": "Фельдшер сениор",
+                                    "name": "Опытный фельдшер",
                                     "desc": "Спец по мелким ранам. Ногу не пришьет.",
-                                    "lvl": 3,
+                                    "level": 3,
                                     "stats": {
                                         "base": {
                                             "hp": 20
@@ -181,12 +564,15 @@
                                     "sub": {
                                         "paramedic-3": {
                                             "parent": "paramedic-2",
-                                            "name": "Фельдшер лид",
+                                            "name": "Фельдшер-ветеран",
                                             "desc": "Спец по мелким ранам. Ногу не пришьет.",
-                                            "lvl": 4,
+                                            "level": 4,
                                             "stats": {
                                                 "base": {
                                                     "hp": 30
+                                                },
+                                                "special": {
+                                                    "defib": null
                                                 }
                                             }
                                         }
@@ -195,20 +581,46 @@
                                 }
                             }
                         },
-                        "surgeon": {
+                        "surgeon-1": {
                             "parent": "medic",
-                            "name": "Хирург",
+                            "name": "Хирург-новичок",
                             "desc": "Вынет пулю и заштопает, не моргнув глазом.",
-                            "lvl": 2,
+                            "level": 2,
                             "stats": {
                                 "base": {
                                     "hp": 11
                                 },
                                 "special": {
                                     "bandage": {
-                                        "hp": 5,
-                                        "time": 2,
-                                        "qty": 3
+                                        "bandageQty": 3
+                                    }
+                                }
+                            },
+                            "sub": {
+                                "surgeon-2": {
+                                    "parent": "surgeon-1",
+                                    "name": "Опытный хирург",
+                                    "desc": "Вынет пулю и заштопает, не моргнув глазом.",
+                                    "level": 3,
+                                    "stats": {
+                                        "base": {
+                                            "hp": 12
+                                        },
+                                        "special": {}
+                                    },
+                                    "sub": {
+                                        "surgeon-3": {
+                                            "parent": "surgeon-2",
+                                            "name": "Хирург-ветеран",
+                                            "desc": "Вынет пулю и заштопает, не моргнув глазом.",
+                                            "level": 4,
+                                            "stats": {
+                                                "base": {
+                                                    "hp": 13
+                                                },
+                                                "special": {}
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -220,19 +632,37 @@
     },
 
     "perks": {
+        "somePerk": {
+            "level": 1,
+            "name": "Халк!",
+            "selected": false,
+            "effects": {
+                "mul": {
+                    "hp": 10
+                }
+            },
+            "for": {
+                "level": 1
+            }
+        },
         "steelSkin": {
             "level": 1,
             "name": "Стальная кожа",
             "desc": "Стил рэтс - стил болс",
             "effects": {
                 "add": {
-                    "hp": 1
+                    "hp": 1,
+                    "bandageQty": -1
                 },
-                "mul": {},
-                "text": {}
+                "mul": {
+                    "ammo": 1.5
+                },
+                "provide": [
+                    "grenade"
+                ]
             },
             "for": {
-                "level": 4,
+                "level": 3,
                 "classOnly": [],
                 "classExcept": []
             }
