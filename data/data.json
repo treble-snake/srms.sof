@@ -49,7 +49,8 @@
                 },
                 "bandageTime": {
                     "name": "Время",
-                    "desc": "Время применения"
+                    "desc": "Время применения",
+                    "measure": "сек"
                 },
                 "bandageQty": {
                     "name": "Кол-во",
@@ -58,7 +59,8 @@
             }
         },
         "morphine": {
-            "desc": "Морфин. Восстанавливает большое количество здоровья.",
+            "name": "Морфин+",
+            "desc": "Морфин+. Восстанавливает большое количество здоровья.",
             "sub": {
                 "morphineHp": {
                     "name": "ХП",
@@ -66,7 +68,8 @@
                 },
                 "morphineTime": {
                     "name": "Время",
-                    "desc": "Время применения"
+                    "desc": "Время применения",
+                    "measure": "сек"
                 },
                 "morphineQty": {
                     "name": "Кол-во",
@@ -85,11 +88,11 @@
         },
         "mine": {
             "name": "Мина-растяжка.",
-            "desc": "Мина-растяжка."
+            "desc": "Возможность пользоваться минами-растяжками. С леской."
         },
-        "detector": {
-            "name": "Детектор?",
-            "desc": "Детектор чего?"
+        "motionMine": {
+            "name": "Мина с детектором движения",
+            "desc": "Возможность пользоваться минами с детектором движения."
         },
         "grenade": {
             "name": "Гранаты",
@@ -101,11 +104,11 @@
         },
         "radioMine": {
             "name": "Радио-мина",
-            "desc": "Мина с радио-управлением."
+            "desc": "Возможность пользоваться минами с радио-управлением."
         },
         "key": {
-            "name": "Ключ??",
-            "desc": "Ключ???"
+            "name": "Набор отмычек",
+            "desc": "Может открыть запертые проходы, которые нельзя открыть другими способами."
         },
         "bomb": {
             "name": "ИВУ",
@@ -114,6 +117,10 @@
         "launcher": {
             "name": "Гранатомет",
             "desc": "Гранатомет."
+        },
+        "extraAmmo": {
+            "name": "Универсальные магазины",
+            "desc": "Носит с собой универсальные магазины. Для всех. Даром."
         }
     },
 
@@ -156,13 +163,15 @@
                         "destroyer-1": {
                             "parent": "stormtrooper",
                             "name": "Дестроер-новичок",
-                            "desc": "Убивает всё живое.",
+                            "desc": "Убивает почти всё живое.",
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 22
+                                    "damage": 5
                                 },
-                                "special": {}
+                                "special": {
+                                    "grenade": null
+                                }
                             },
                             "sub": {
                                 "destroyer-2": {
@@ -172,7 +181,8 @@
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 23
+                                            "damage": 7,
+                                            "hp": 21
                                         },
                                         "special": {}
                                     },
@@ -180,11 +190,12 @@
                                         "destroyer-3": {
                                             "parent": "destroyer-2",
                                             "name": "Дестроер-ветеран",
-                                            "desc": "Убивает всё живое.",
+                                            "desc": "Убивает всё живое, мертвое оживляет и тоже убивает.",
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 24
+                                                    "damage": 10,
+                                                    "hp": 25
                                                 },
                                                 "special": {}
                                             }
@@ -196,23 +207,29 @@
                         "juggernaut-1": {
                             "parent": "stormtrooper",
                             "name": "Джаггернаут-новичок",
-                            "desc": "Не умирает. Совсем.",
+                            "desc": "Долго умирает.",
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 32
+                                    "hp": 25
                                 },
-                                "special": {}
+                                "special": {
+                                    "grenade": null
+                                }
                             },
                             "sub": {
                                 "juggernaut-2": {
                                     "parent": "juggernaut-1",
                                     "name": "Опытный джаггернаут",
-                                    "desc": "Не умирает. Совсем.",
+                                    "desc": "Очень долго умирает.",
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 33
+                                            "hp": 28,
+                                            "ammo": 6,
+                                            "speed": 550,
+                                            "shock": 0.8,
+                                            "god": 0.8
                                         },
                                         "special": {}
                                     },
@@ -220,11 +237,15 @@
                                         "juggernaut-3": {
                                             "parent": "juggernaut-2",
                                             "name": "Джаггернаут-ветеран",
-                                            "desc": "Не умирает. Совсем.",
+                                            "desc": "Почти не умирает.",
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 34
+                                                    "hp": 31,
+                                                    "ammo": 7,
+                                                    "speed": 600,
+                                                    "shock": 1,
+                                                    "god": 1
                                                 },
                                                 "special": {}
                                             }
@@ -242,7 +263,10 @@
                     "level": 1,
                     "stats": {
                         "base": {
-                            "hp": 11
+                            "damage": 10,
+                            "speed": 150,
+                            "rounds": 10,
+                            "ammo": 5
                         },
                         "special": {}
                     },
@@ -254,7 +278,9 @@
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 12
+                                    "hp": 18,
+                                    "speed": 200,
+                                    "ammo": 7
                                 },
                                 "special": {}
                             },
@@ -262,23 +288,31 @@
                                 "marksman-2": {
                                     "parent": "marksman-1",
                                     "name": "Опытный Марксмен",
-                                    "desc": "Легкий снайпер",
+                                    "desc": "Место для остроумного описания.",
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 13
+                                            "hp": 21,
+                                            "speed": 250,
+                                            "ammo": 7,
+                                            "reload": 7
                                         },
-                                        "special": {}
+                                        "special": {
+                                            "mine": null
+                                        }
                                     },
                                     "sub": {
                                         "marksman-3": {
                                             "parent": "marksman-2",
                                             "name": "Марксмен-ветеран",
-                                            "desc": "Легкий снайпер",
+                                            "desc": "Легкий снайпер, может даже и штурмануть.",
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 14
+                                                    "hp": 25,
+                                                    "damage": 15,
+                                                    "rounds": 20,
+                                                    "ammo": 5
                                                 },
                                                 "special": {}
                                             }
@@ -290,23 +324,29 @@
                         "predator-1": {
                             "parent": "sniper",
                             "name": "Хищник-новичок",
-                            "desc": "Тяжелый снайпер.",
+                            "desc": "Ныкается по кустам и больно оттуда пуляется.",
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 32
+                                    "damage": 15,
+                                    "speed": 60,
+                                    "reload": 7
                                 },
-                                "special": {}
+                                "special": {
+                                    "mine": null
+                                }
                             },
                             "sub": {
                                 "predator-2": {
                                     "parent": "predator-1",
                                     "name": "Опытный Хищник",
-                                    "desc": "Тяжелый снайпер.",
+                                    "desc": "Выслеживает и уничтожает.",
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 33
+                                            "hp": 18,
+                                            "speed": 100,
+                                            "ammo": 7
                                         },
                                         "special": {}
                                     },
@@ -314,13 +354,19 @@
                                         "predator-3": {
                                             "parent": "predator-2",
                                             "name": "Хищник-ветеран",
-                                            "desc": "Тяжелый снайпер.",
+                                            "desc": "Вам пиздец.",
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 34
+                                                    "hp": 21,
+                                                    "damage": 20,
+                                                    "rounds": 5,
+                                                    "ammo": 20,
+                                                    "reload": 10
                                                 },
-                                                "special": {}
+                                                "special": {
+                                                    "motionMine": null
+                                                }
                                             }
                                         }
                                     }
@@ -336,7 +382,12 @@
                     "level": 1,
                     "stats": {
                         "base": {
-                            "hp": 21
+                            "damage": 5,
+                            "speed": 600,
+                            "rounds": 45,
+                            "ammo": 5,
+                            "reload": 6,
+                            "hp": 18
                         },
                         "special": {}
                     },
@@ -344,11 +395,11 @@
                         "cleaner-1": {
                             "parent": "support",
                             "name": "Чистильщик-новичок",
-                            "desc": "Короткие очереди.",
+                            "desc": "Быстренько добивает раненных короткими очередями.",
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 22
+                                    "rounds": 40
                                 },
                                 "special": {}
                             },
@@ -356,23 +407,28 @@
                                 "cleaner-2": {
                                     "parent": "cleaner-1",
                                     "name": "Опытный Чистильщик",
-                                    "desc": "Короткие очереди.",
+                                    "desc": "Швыряется гранатами и добивает выживших.",
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 23
+                                            "damage": 7,
+                                            "rounds": 45,
+                                            "hp": 21
                                         },
-                                        "special": {}
+                                        "special": {
+                                            "grenade": null
+                                        }
                                     },
                                     "sub": {
                                         "cleaner-3": {
                                             "parent": "cleaner-2",
                                             "name": "Чистильщик-ветеран",
-                                            "desc": "Короткие очереди.",
+                                            "desc": "Мистер Пропер.",
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 24
+                                                    "rounds": 50,
+                                                    "hp": 25
                                                 },
                                                 "special": {}
                                             }
@@ -384,11 +440,14 @@
                         "dominator-1": {
                             "parent": "support",
                             "name": "Доминатор-новичок",
-                            "desc": "Очереди длинною в вечность.",
+                            "desc": "Кто был непослушным мальчиком?",
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 22
+                                    "rounds": 60,
+                                    "ammo": 4,
+                                    "reload": 8,
+                                    "hp": 21
                                 },
                                 "special": {}
                             },
@@ -396,13 +455,16 @@
                                 "dominator-2": {
                                     "parent": "dominator-1",
                                     "name": "Опытный Доминатор",
-                                    "desc": "Очереди длинною в вечность.",
+                                    "desc": "Только попробуй поднять голову!",
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 23
+                                            "reload": 10,
+                                            "hp": 25
                                         },
-                                        "special": {}
+                                        "special": {
+                                            "grenade": null
+                                        }
                                     },
                                     "sub": {
                                         "dominator-3": {
@@ -412,7 +474,11 @@
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 24
+                                                    "speed": 650,
+                                                    "rounds": 90,
+                                                    "ammo": 3,
+                                                    "reload": 12,
+                                                    "hp": 28
                                                 },
                                                 "special": {}
                                             }
@@ -430,9 +496,16 @@
                     "level": 1,
                     "stats": {
                         "base": {
-                            "hp": 11
+                            "damage": 4,
+                            "speed": 550,
+                            "rounds": 30,
+                            "ammo": 5
                         },
-                        "special": {}
+                        "special": {
+                            "extraAmmo": 5,
+                            "key": null,
+                            "grenade": null
+                        }
                     },
                     "sub": {
                         "sapper-1": {
@@ -442,33 +515,44 @@
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 12
+                                    "hp": 18
                                 },
-                                "special": {}
+                                "special": {
+                                    "extraAmmo": 3,
+                                    "defuse": null,
+                                    "mime": null
+                                }
                             },
                             "sub": {
                                 "sapper-2": {
                                     "parent": "sapper-1",
                                     "name": "Опытный Сапер",
-                                    "desc": "Минирует-разминирует.",
+                                    "desc": "Взрывать! Взрывать всё!",
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 13
+                                            "hp": 21
                                         },
-                                        "special": {}
+                                        "special": {
+                                            "motionMine": null,
+                                            "launcher": null
+                                        }
                                     },
                                     "sub": {
                                         "sapper-3": {
                                             "parent": "sapper-2",
                                             "name": "Сапер-ветеран",
-                                            "desc": "Минирует-разминирует.",
+                                            "desc": "Может устроить локальный экстерминатус.",
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 14
+                                                    "damage": 5,
+                                                    "hp": 25
                                                 },
-                                                "special": {}
+                                                "special": {
+                                                    "radioMine": null,
+                                                    "bomb": null
+                                                }
                                             }
                                         }
                                     }
@@ -482,33 +566,42 @@
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 32
+                                    "hp": 18
                                 },
-                                "special": {}
+                                "special": {
+                                    "extraAmmo": 7
+                                }
                             },
                             "sub": {
                                 "supplier-2": {
                                     "parent": "supplier-1",
                                     "name": "Опытный Снабженец",
-                                    "desc": "У него есть боеприпасы.",
+                                    "desc": "У него есть много боеприпасов.",
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 33
+                                            "hp": 21
                                         },
-                                        "special": {}
+                                        "special": {
+                                            "extraAmmo": 10,
+                                            "mine": null
+                                        }
                                     },
                                     "sub": {
                                         "supplier-3": {
                                             "parent": "supplier-2",
                                             "name": "Снабженец-ветеран",
-                                            "desc": "У него есть боеприпасы.",
+                                            "desc": "Человек-склад боеприпасов.",
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 34
+                                                    "speed": 600,
+                                                    "hp": 25
                                                 },
-                                                "special": {}
+                                                "special": {
+                                                    "extraAmmo": 15,
+                                                    "motionMine": null
+                                                }
                                             }
                                         }
                                     }
@@ -524,15 +617,16 @@
                     "level": 1,
                     "stats": {
                         "base": {
-                            "hp": 15,
                             "damage": 5,
-                            "speed": 200
+                            "speed": 200,
+                            "ammo": 5,
+                            "hp": 15
                         },
                         "special": {
                             "bandage": {
                                 "bandageHp": 5,
-                                "bandageTime": 2,
-                                "bandageQty": 10
+                                "bandageQty": 10,
+                                "bandageTime": 2
                             }
                         }
                     },
@@ -544,13 +638,15 @@
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 10
+                                    "speed": 250,
+                                    "rounds": 20,
+                                    "hp": 21
                                 },
                                 "special": {
-                                    "bandage": {
-                                        "bandageHp": 5,
-                                        "bandageTime": 2,
-                                        "bandageQty": 20
+                                    "morphine": {
+                                        "morphineHp": 15,
+                                        "morphineQty": 3,
+                                        "morphineTime": 4
                                     }
                                 }
                             },
@@ -562,7 +658,17 @@
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 20
+                                            "damage": 7,
+                                            "hp": 25
+                                        },
+                                        "special": {
+                                            "bandage": {
+                                                "bandageHp": 7
+                                            },
+                                            "morphine": {
+                                                "morphineHp": 20
+                                            },
+                                            "adrenaline": 1
                                         }
                                     },
                                     "sub": {
@@ -573,10 +679,16 @@
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 30
+                                                    "speed": 300,
+                                                    "hp": 28
                                                 },
                                                 "special": {
-                                                    "defib": null
+                                                    "bandage": {
+                                                        "bandageHp": 10
+                                                    },
+                                                    "morphine": {
+                                                        "morphineHp": 25
+                                                    }
                                                 }
                                             }
                                         }
@@ -588,29 +700,46 @@
                         "surgeon-1": {
                             "parent": "medic",
                             "name": "Хирург-новичок",
-                            "desc": "Вынет пулю и заштопает, не моргнув глазом.",
+                            "desc": "Отрежет ногу прямо в окопе.",
                             "level": 2,
                             "stats": {
                                 "base": {
-                                    "hp": 11
+                                    "speed": 250,
+                                    "rounds": 20,
+                                    "hp": 16
                                 },
                                 "special": {
                                     "bandage": {
                                         "bandageQty": 3
-                                    }
+                                    },
+                                    "morphine": {
+                                        "morphineHp": 25,
+                                        "morphineQty": 7,
+                                        "morphineTime": 4
+                                    },
+                                    "defib": 1
                                 }
                             },
                             "sub": {
                                 "surgeon-2": {
                                     "parent": "surgeon-1",
                                     "name": "Опытный хирург",
-                                    "desc": "Вынет пулю и заштопает, не моргнув глазом.",
+                                    "desc": "Вырежет аппендицит под огнем противника.",
                                     "level": 3,
                                     "stats": {
                                         "base": {
-                                            "hp": 12
+                                            "damage": 7,
+                                            "hp": 18
                                         },
-                                        "special": {}
+                                        "special": {
+                                            "bandage": {
+                                                "bandageHp": 7
+                                            },
+                                            "morphine": {
+                                                "morphineHp": 28
+                                            },
+                                            "defib": 2
+                                        }
                                     },
                                     "sub": {
                                         "surgeon-3": {
@@ -620,9 +749,18 @@
                                             "level": 4,
                                             "stats": {
                                                 "base": {
-                                                    "hp": 13
+                                                    "speed": 300,
+                                                    "hp": 21
                                                 },
-                                                "special": {}
+                                                "special": {
+                                                    "bandage": {
+                                                        "bandageHp": 10
+                                                    },
+                                                    "morphine": {
+                                                        "morphineHp": 31
+                                                    },
+                                                    "defib": 3
+                                                }
                                             }
                                         }
                                     }

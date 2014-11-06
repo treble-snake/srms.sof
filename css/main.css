@@ -98,7 +98,7 @@ textarea {
    ========================================================================== */
 #wrapper {
     overflow: hidden;
-    padding: 0 20px 50px;
+    padding: 0 20px 250px;
 }
 
 #stats-pane,
@@ -115,15 +115,15 @@ div.pane {
     background-color: rgba(144, 255, 112, 0.32);
 }
 
-.available-false {
-    background-color: #ffe4d8;
-    cursor: default;
-}
-
 .class-info,
 .perk-info
 {
     cursor: pointer;
+}
+
+.available-false {
+    background-color: #ffe4d8;
+    cursor: default;
 }
 
 /* Tree item, containing another tree items */
@@ -222,6 +222,7 @@ div.pane {
 
 .tree-tooltip {
     text-align: left;
+    min-width: 200px;
 }
 
 .tree-tooltip h1 {
@@ -234,6 +235,11 @@ div.pane {
     font-size: 1.15em;
     margin-top: 0;
     margin-bottom: 5px;
+}
+
+.tooltip-stat .tooltip-stat {
+    margin-left: 10px;
+
 }
 
 

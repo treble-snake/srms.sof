@@ -44,11 +44,13 @@
 <![endif]-->
 
 <div id="wrapper" ng-controller="ClassTree">
-    <h3>SoF Calculator: {{hello}}</h3>
+    <h3>S.R.M.S. SoF Калькулятор имплантов v{{version}}: {{hello}}</h3>
+    <p>&copy; S.R.M.S. Steel Rats Mercenary Squad</p>
+    <p><a href="https://github.com/treble-snake/srms.sof/issues/new" target="_blank">Отзывы, предложения, баг-репорты. Пожалуйста.</a></p>
 
     <div class="pane" id="stats-pane">
-        <h4>Current class: <span
-                ng-show="currentClass">{{currentClass.name}} [{{currentClass.id}}]</span></h4>
+        <h4>Выбранный имплант:
+            <span ng-show="currentClass">{{currentClass.name}} [{{currentClass.id}}]</span></h4>
 
         <div id="stats">
             <div ng-show="currentStats" stats-pane current-stats="currentStats"
@@ -57,7 +59,7 @@
     </div>
 
     <div class="pane" id="perks-pane">
-        <h4>Perks</h4>
+        <h4>Аугментации</h4>
 
         <div id="perks">
             <div class="tree-wrapper">
@@ -69,7 +71,7 @@
 
     <div class="pane" id="classes-pane">
         <div id="class-tree">
-            <h4>Classes</h4>
+            <h4>Базовые импланты</h4>
 
             <div class="tree-wrapper">
                 <div class="class tree-item root-tree-item"
@@ -93,7 +95,8 @@
     <div class="class-info tree-item-content available-{{isClassAvailable(classId)}} selected-{{isClassSelected(classId)}}"
          ng-disabled="!isClassAvailable(classId)"
          ng-click="setClass(classId, classData)"
-         tooltip-html-unsafe="{{getClassDescription(classData)}}">
+         tooltip-html-unsafe="{{getClassDescription(classId, classData)}}"
+         tooltip-placement="left">
         {{classData.name}}
     </div>
     <div class="class tree-item" ng-repeat="(classId, classData) in  classData.sub"

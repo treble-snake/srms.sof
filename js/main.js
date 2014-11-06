@@ -22,7 +22,8 @@ sofApp
         $scope.hello = "Loading..";
         $scope.currentClass;
         $scope.currentStats;
-        $scope.selectedPerks = []
+        $scope.selectedPerks = [];
+        $scope.version = "0.2.1";
 
         // load data
         $http.get("data/data.json")
@@ -90,20 +91,41 @@ sofApp
         };
 
         // TODO use templates
-        $scope.getClassDescription = function (clazz) {
+        $scope.getClassDescription = function (classId, clazz) {
             var result = $('<section class="tree-tooltip"></section>');
             result.append('<h1>' + clazz.name + '</h1>');
+            result.append('<p class="desc">' + clazz.desc + '</p>');
             result.append('<h2>Характеристики</h2>');
 
-            _.each(clazz.stats.base, function (value, id) {
-                result.append("<div>"+id+": "+value+"</div>")
-            });
+            appendTooltipStats(calculateStats(classId), result);
 
-            console.log(result);
             return result.wrap("<div/>").parent().html();
         };
 
         /* Private section */
+
+        function appendTooltipStats(stats, parent) {
+            _.each(stats, function (value, id) {
+                var statInfo = getStat(id);
+                if(!_.isUndefined(statInfo)) {
+                    var statText = statInfo.name;
+
+                    if(!_.isObject(value) && !_.isNull(value)) {
+                        statText +=  ": " + value;
+                        if (!_.isUndefined(statInfo.measure))
+                            statText += " " + statInfo.measure;
+                    }
+
+                    parent.append('<div class="tooltip-stat">' + statText + '</div>');
+
+                    if(_.isObject(value)) {
+                        appendTooltipStats(value, parent.children(".tooltip-stat").last());
+                    }
+                }
+            });
+
+            return parent;
+        }
 
         function applyPerks() {
             _.each($scope.selectedPerks, function(id){
@@ -218,6 +240,10 @@ sofApp
             }
 
             return undefined;
+        }
+
+        function getStat(id) {
+            return getDataJsonElement("stats", id);
         }
 
         function getClass(id) {
