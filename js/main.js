@@ -23,7 +23,7 @@ sofApp
         $scope.currentClass;
         $scope.currentStats;
         $scope.selectedPerks = [];
-        $scope.version = "0.2.1";
+        $scope.version = "0.2.2";
 
         // load data
         $http.get("data/data.json")
