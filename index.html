@@ -1,12 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
+<html class="no-js" ng-app="SrmsSof">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,7 +29,7 @@
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
 </head>
-<body ng-app="SrmsSof">
+<body>
 
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a
@@ -44,7 +37,7 @@
 <![endif]-->
 
 <div id="wrapper" ng-controller="ClassTree">
-    <h3>S.R.M.S. SoF Калькулятор имплантов v{{version}}: {{hello}}</h3>
+    <h3>S.R.M.S. SoF Калькулятор имплантов v{{::version}}: {{hello}}</h3>
     <p>&copy; S.R.M.S. Steel Rats Mercenary Squad</p>
     <p><a href="https://github.com/treble-snake/srms.sof/issues/new" target="_blank">Отзывы, предложения, баг-репорты. Пожалуйста.</a></p>
 

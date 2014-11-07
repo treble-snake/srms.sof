@@ -23,7 +23,7 @@ sofApp
         $scope.currentClass;
         $scope.currentStats;
         $scope.selectedPerks = [];
-        $scope.version = "0.2.3";
+        $scope.version = "0.2.4";
 
         // load data
         $http.get("data/data.json")
@@ -117,6 +117,12 @@ sofApp
                 });
             });
 
+            result.append('<h2>Требования</h2>');
+            _.each(perk.for, function (value, id) {
+                result.append('<div class="tooltip-stat">' +
+                    restrictionsMap[id].getHint(value) + '</div>');
+            });
+
             return result.wrap("<div/>").parent().html();
         };
 
@@ -187,9 +193,7 @@ sofApp
                     if(value >= 2) {
                         return "x" + value;
                     }
-
-                    value -= 1;
-                    value *= 100;
+                    value = Math.round((value - 1) * 100);
                     return (value < 0 ? value : "+" + value) + "%";
                 }
             },
@@ -204,6 +208,40 @@ sofApp
                     return "+ ";
                 }
             }
+        };
+
+        var restrictionsMap = {
+            level: {
+                getHint: function(value) {
+                    return "Требуемый уровень: " + value;
+                }
+            },
+            classOnly: {
+                getHint: function(value) {
+                    return "Только для классов: " + _.map(value, function (classId) {
+                        var clazz = getClass(classId);
+                        if(clazz) return clazz.name;
+                    }).join(", ");
+                }
+            },
+            classExcept: {
+                getHint: function(value) {
+                    var classes = [];
+                    _.each(value, function(classId) {
+                        var clazz = getClass(classId);
+                        if(!_.isUndefined(clazz))
+                            classes.push(clazz.name)
+                    });
+                    return "Не для классов: " + classes.join(", ");
+                }
+            },
+            ultimate: {
+                getHint: function(value) {
+                    return "Вы должны купить все доступные вашему классу перки, чтобы открыть этот.";
+                }
+            }
+
+
         };
 
         function isAncestor(ancestorId, child) {
