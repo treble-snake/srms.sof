@@ -23,7 +23,7 @@ sofApp
         $scope.currentClass;
         $scope.currentStats;
         $scope.selectedPerks = [];
-        $scope.version = "0.2.2";
+        $scope.version = "0.2.3";
 
         // load data
         $http.get("data/data.json")
@@ -91,13 +91,31 @@ sofApp
         };
 
         // TODO use templates
-        $scope.getClassDescription = function (classId, clazz) {
+        $scope.getClassTooltip = function (classId, clazz) {
             var result = $('<section class="tree-tooltip"></section>');
             result.append('<h1>' + clazz.name + '</h1>');
             result.append('<p class="desc">' + clazz.desc + '</p>');
             result.append('<h2>Характеристики</h2>');
-
             appendTooltipStats(calculateStats(classId), result);
+
+            return result.wrap("<div/>").parent().html();
+        };
+
+        // TODO use templates
+        $scope.getPerkTooltip = function (perkId, perk) {
+            var result = $('<section class="tree-tooltip"></section>');
+            result.append('<h1>' + perk.name + '</h1>');
+            result.append('<p class="desc">' + perk.desc + '</p>');
+            result.append('<h2>Характеристики</h2>');
+
+            _.each(perk.effects, function (stats, effectId) {
+                var effect = effectsMap[effectId];
+                _.each(stats, function (statValue, statId) {
+                    var statText =
+                        effect.getName(statValue) + " " + getStat(statId).name
+                    result.append('<div class="tooltip-stat">' + statText + '</div>');
+                });
+            });
 
             return result.wrap("<div/>").parent().html();
         };
@@ -138,34 +156,56 @@ sofApp
                 applyPerk(perk);
                 perk.selected = true;
             })
-        };
+        }
 
         function applyPerk(perk) {
             _.each(perk.effects, function (stats, id) {
-                var applyEffect = effectsMap[id];
+                var effect = effectsMap[id];
                 _.each(stats, function (value, id) {
-                    applyEffect(getCurrentStatWrapper(id), value, perk.selected);
+                    effect.apply(getCurrentStatWrapper(id), value, perk.selected);
                 })
             })
         }
+
         var effectsMap = {
-                add: function (statWrapper, value, revert) {
+            add: {
+                apply: function (statWrapper, value, revert) {
                     if (!_.isUndefined(statWrapper))
                         statWrapper.set(statWrapper.get() + (revert ? -1 * value : value));
                 },
-                mul: function (statWrapper, value, revert) {
+                getName: function (value) {
+                    return value < 0 ? value : "+" + value;
+                }
+            },
+            mul: {
+                apply: function (statWrapper, value, revert) {
                     if (!_.isUndefined(statWrapper))
                         statWrapper.set(
                             Math.round(statWrapper.get() * (revert ? 1 / value : value)));
                 },
-                provide: function (index, statId, revert) {
+                getName: function (value) {
+                    if(value >= 2) {
+                        return "x" + value;
+                    }
+
+                    value -= 1;
+                    value *= 100;
+                    return (value < 0 ? value : "+" + value) + "%";
+                }
+            },
+            provide: {
+                apply: function (statWrapper, value, revert) {
                     if (revert)
-                        delete $scope.currentStats[statId];
+                        delete $scope.currentStats[statWrapper.id()];
                     else
-                        $scope.currentStats[statId] = null;
+                        $scope.currentStats[statWrapper.id()] = value;
+                },
+                getName: function (value) {
+                    return "+ ";
                 }
             }
-            ;
+        };
+
         function isAncestor(ancestorId, child) {
            if (_.isUndefined(ancestorId) || _.isUndefined(child))
                 return false;
@@ -179,7 +219,7 @@ sofApp
 
         function calculateStats(id, result) {
             if (_.isUndefined(result))
-                result = {}
+                result = {};
 
             var clazz = getClass(id);
             if (_.isUndefined(clazz))
@@ -208,7 +248,7 @@ sofApp
             return calculateStats(clazz.parent, result);
         }
 
-        // TODO make it recursive or else
+        // TODO make it recursive or like that
         function getCurrentStatWrapper(id) {
             if (!_.isUndefined($scope.currentStats[id]))
                 return {
@@ -217,6 +257,9 @@ sofApp
                     },
                     set: function (v) {
                         $scope.currentStats[id] = v
+                    },
+                    id: function() {
+                        return id;
                     }
                 };
 
@@ -239,7 +282,15 @@ sofApp
                 }
             }
 
-            return undefined;
+            return {
+                get: function () {
+                },
+                set: function (v) {
+                },
+                id: function () {
+                    return id;
+                }
+            };
         }
 
         function getStat(id) {

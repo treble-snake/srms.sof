@@ -121,6 +121,14 @@
         "extraAmmo": {
             "name": "Универсальные магазины",
             "desc": "Носит с собой универсальные магазины. Для всех. Даром."
+        },
+        "extraWeapon": {
+            "name": "Дополнительное оружие",
+            "desc": "Возможность носить второе оружие"
+        },
+        "ammoBalance": {
+            "name": "Распределение патронов",
+            "desc": "Возможность перераспределять патроны между основным и вторичным оружием"
         }
     },
 
@@ -774,56 +782,344 @@
     },
 
     "perks": {
-        "halkPerk": {
-            "level": 1,
-            "name": "Халк!",
-            "selected": false,
-            "effects": {
-                "mul": {
-                    "damage": 10
-                }
-            },
-            "for": {
-                "level": 1
-            }
-        },
         "steelSkin": {
             "level": 1,
             "name": "Стальная кожа",
-            "desc": "Стил рэтс - стил болс",
+            "desc": "",
             "effects": {
                 "add": {
                     "hp": 1
-                },
-                "mul": {
-                    "ammo": 1.5
-                },
-                "provide": [
-                    "grenade"
-                ]
+                }
             },
             "for": {
-                "level": 2,
-                "classOnly": [],
-                "classExcept": []
+                "level": 4
+            }
+        },
+
+        "bigPockets": {
+            "level": 1,
+            "name": "Еще подсумок",
+            "desc": "",
+            "effects": {
+                "add": {
+                    "ammo": 1
+                }
+            },
+            "for": {
+                "level": 4,
+                "classExcept": ["dominator-1", "dominator-2", "dominator-3"]
+            }
+        },
+
+        "nopain-1": {
+            "level": 1,
+            "name": "Невоспр. к боли",
+            "desc": "",
+            "effects": {
+                "add": {
+                    "shock": 0.1,
+                    "god": 0.1
+                }
+            },
+            "for": {
+                "level": 4
             },
             "sub": {
-                "titanSkin": {
-                    "parent": "steelSkin",
+                "nopain-2": {
                     "level": 2,
-                    "name": "Титановая кожа",
-                    "desc": "Ну вазще",
+                    "name": "Суперневоспр. к боли",
+                    "desc": "",
                     "effects": {
                         "add": {
-                            "hp": 3,
-                            "god": 0.2,
-                            "shock": 0.2
+                            "shock": 0.1,
+                            "god": 0.1
                         }
                     },
                     "for": {
-                        "level": 3
+                        "level": 4
                     }
                 }
+            }
+        },
+
+
+
+        "moreRounds-1": {
+            "level": 1,
+            "name": "Расширенные магазины",
+            "desc": "",
+            "effects": {
+                "add": {
+                    "rounds": 2
+                }
+            },
+            "for": {
+                "level": 2,
+                "classExcept": ["dominator-1", "dominator-2", "dominator-3",
+                    "marksman-1", "marksman-2", "marksman-3",
+                    "predator-1", "predator-2", "predator-3"]
+            },
+            "sub": {
+                "moreRounds-2": {
+                    "level": 2,
+                    "name": "Большие магазины",
+                    "desc": "",
+                    "effects": {
+                        "add": {
+                            "rounds": 3
+                        }
+                    },
+                    "for": {
+                        "level": 3,
+                        "classExcept": ["dominator-2", "dominator-3", "marksman-2", "marksman-3",
+                            "predator-2", "predator-3"]
+                    },
+                    "sub": {
+                        "moreRounds-3": {
+                            "level": 3,
+                            "name": "Здоровенные магазины",
+                            "desc": "",
+                            "effects": {
+                                "add": {
+                                    "rounds": 4
+                                }
+                            },
+                            "for": {
+                                "level": 4,
+                                "classExcept": ["dominator-3", "marksman-3", "predator-3"]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+
+        "sniperMoreRounds-1": {
+            "level": 1,
+            "name": "Расширенные магазины снайпера",
+            "desc": "",
+            "effects": {
+                "add": {
+                    "rounds": 1
+                }
+            },
+            "for": {
+                "level": 3,
+                "classOnly": ["marksman-2", "marksman-3", "predator-2", "predator-3"]
+            },
+            "sub": {
+                "sniperMoreRounds-2": {
+                    "level": 2,
+                    "name": "Большие магазины снайпера",
+                    "desc": "",
+                    "effects": {
+                        "add": {
+                            "rounds": 1
+                        }
+                    },
+                    "for": {
+                        "level": 4,
+                        "classOnly": ["marksman-3", "predator-3"]
+                    },
+                    "sub": {
+                        "sniperMoreRounds-3": {
+                            "level": 3,
+                            "name": "Здоровенные магазины снайпера",
+                            "desc": "",
+                            "effects": {
+                                "add": {
+                                    "rounds": 1
+                                }
+                            },
+                            "for": {
+                                "level": 4,
+                                "classOnly": ["marksman-3", "predator-3"]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        "weaponCare-1": {
+            "level": 1,
+            "name": "Уход за оружием",
+            "desc": "",
+            "effects": {
+                "add": {
+                    "speed": 25
+                }
+            },
+            "for": {
+                "level": 4,
+                "classExcept": ["dominator-1", "dominator-2", "dominator-3"]
+            },
+            "sub": {
+                "weaponCare-2": {
+                    "level": 2,
+                    "name": "Крутой уход за оружием",
+                    "desc": "",
+                    "effects": {
+                        "add": {
+                            "speed": 25
+                        }
+                    },
+                    "for": {
+                        "level": 4,
+                        "classExcept": ["dominator-1", "dominator-2", "dominator-3"]
+                    }
+                }
+            }
+        },
+
+        "extraWeapon": {
+            "level": 1,
+            "name": "Сюрприз из кобуры",
+            "desc": "",
+            "effects": {
+                "provide": {
+                    "extraWeapon": null
+                }
+            },
+            "for": {
+                "level": 4
+            },
+            "sub": {
+                "ammoBalance": {
+                    "level": 2,
+                    "name": "Македонец",
+                    "desc": "",
+                    "effects": {
+                        "provide": {
+                            "ammoBalance": null
+                        }
+                    },
+                    "for": {
+                        "level": 4
+                    },
+                    "classExcept": [
+                        "support",
+                        "cleaner-1", "cleaner-2", "cleaner-3",
+                        "dominator-1", "dominator-2", "dominator-3",
+                        "sniper",
+                        "marksman-1", "marksman-2", "marksman-3",
+                        "predator-1", "predator-2", "predator-3"]
+                }
+            }
+        },
+
+        "bomber": {
+            "level": 1,
+            "name": "Гранатометчик",
+            "desc": "",
+            "effects": {
+                "provide": {
+                    "launcher": null
+                }
+            },
+            "for": {
+                "level": 4,
+                "classOnly": ["supplier-3", "juggernaut-3", "destroyer-3"]
+            }
+        },
+
+        "doctor": {
+            "level": 1,
+            "name": "Доктор наук",
+            "desc": "",
+            "effects": {
+                "add": {
+                    "damage": -2,
+                    "defib": 2,
+                    "morphine": {
+                        "morphineQty": 7
+                    }
+                }
+            },
+            "for": {
+                "level": 4,
+                "classOnly": ["surgeon-3"]
+            }
+        },
+
+        "bigBag-1": {
+            "level": 1,
+            "name": "Большой рюкзак",
+            "desc": "",
+            "effects": {
+                "mul": {
+                    "extraAmmo": 1.33
+                }
+            },
+            "for": {
+                "level": 3,
+                "classOnly": ["supplier-2", "supplier-3", "sapper-2", "sapper-3"]
+            },
+            "sub": {
+                "bigBag-2": {
+                    "level": 2,
+                    "name": "Огромный рюкзак",
+                    "desc": "",
+                    "effects": {
+                        "mul": {
+                            "extraAmmo": 1.33
+                        }
+                    },
+                    "for": {
+                        "level": 4,
+                        "classOnly": ["supplier-3", "sapper-3"]
+                    },
+                    "sub": {
+                        "bigBag-3": {
+                            "level": 3,
+                            "name": "Гиганторский рюкзак",
+                            "desc": "",
+                            "effects": {
+                                "mul": {
+                                    "extraAmmo": 1.33
+                                }
+                            },
+                            "for": {
+                                "level": 4,
+                                "classOnly": ["supplier-3", "sapper-3"]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        "readioMines": {
+            "level": 1,
+            "name": "Радиосвязь",
+            "desc": "",
+            "effects": {
+                "mul": {
+                    "extraAmmo": 0.7
+                },
+                "provide": {
+                    "radioMine": null
+                }
+            },
+            "for": {
+                "level": 4,
+                "classOnly": ["supplier-4"]
+            }
+        },
+
+        "initiative": {
+            "level": 1,
+            "name": "Супер реакция",
+            "desc": "",
+            "effects": {
+                "add": {
+                    "god": 0.1
+                }
+            },
+            "for": {
+                "level": 4,
+                "ultimate": true
             }
         }
     }

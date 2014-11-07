@@ -121,6 +121,14 @@ div.pane {
     cursor: pointer;
 }
 
+.perk-info {
+    text-overflow: clip;
+}
+
+#perks-pane {
+    width: auto;
+}
+
 .available-false {
     background-color: #ffe4d8;
     cursor: default;

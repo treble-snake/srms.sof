@@ -50,22 +50,11 @@
 
     <div class="pane" id="stats-pane">
         <h4>Выбранный имплант:
-            <span ng-show="currentClass">{{currentClass.name}} [{{currentClass.id}}]</span></h4>
+            <span ng-show="currentClass">{{currentClass.name}}</span></h4>
 
         <div id="stats">
             <div ng-show="currentStats" stats-pane current-stats="currentStats"
                  all-stats="data.stats"></div>
-        </div>
-    </div>
-
-    <div class="pane" id="perks-pane">
-        <h4>Аугментации</h4>
-
-        <div id="perks">
-            <div class="tree-wrapper">
-                <div class="perk tree-item root-tree-item" ng-repeat="(id, perk) in data.perks"
-                     ng-include="'perkTreeItem'"></div>
-            </div>
         </div>
     </div>
 
@@ -80,12 +69,26 @@
             </div>
         </div>
     </div>
+
+    <div class="pane" id="perks-pane">
+        <h4>Аугментации</h4>
+
+        <div id="perks">
+            <div class="tree-wrapper">
+                <div class="perk tree-item root-tree-item" ng-repeat="(id, perk) in data.perks"
+                     ng-include="'perkTreeItem'"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/ng-template" id="perkTreeItem">
     <div class="perk-info tree-item-content available-{{isPerkAvailable(perk)}} selected-{{perk.selected !== undefined && perk.selected}}"
          ng-disabled="!isPerkAvailable(perk)"
-         ng-click="addPerk(id)">
+         ng-click="addPerk(id)"
+         tooltip-html-unsafe="{{getPerkTooltip(id, perk)}}"
+         tooltip-placement="left"
+         tooltip-animation="false">
         {{perk.name}}
     </div>
     <div class="perk tree-item" ng-repeat="(id, perk) in  perk.sub" ng-include="'perkTreeItem'"></div>
@@ -95,8 +98,9 @@
     <div class="class-info tree-item-content available-{{isClassAvailable(classId)}} selected-{{isClassSelected(classId)}}"
          ng-disabled="!isClassAvailable(classId)"
          ng-click="setClass(classId, classData)"
-         tooltip-html-unsafe="{{getClassDescription(classId, classData)}}"
-         tooltip-placement="left">
+         tooltip-html-unsafe="{{getClassTooltip(classId, classData)}}"
+         tooltip-placement="left"
+         tooltip-animation="false">
         {{classData.name}}
     </div>
     <div class="class tree-item" ng-repeat="(classId, classData) in  classData.sub"
