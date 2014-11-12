@@ -3,7 +3,7 @@
     <div class="sub-stats" ng-show="stats[stat].sub">
         <b title="{{stats[stat].desc}}">{{stats[stat].name}}:</b>
         <blockquote>
-            <div stats-pane current-stats="value" all-stats="stats[stat].sub"></div>
+            <div stats-pane current-stats="value" all-stats="::stats[stat].sub"></div>
         </blockquote>
     </div>
 

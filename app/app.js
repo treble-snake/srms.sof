@@ -2,121 +2,53 @@ var sofApp = angular.module('srms.sof.calculator',
     ['ui.bootstrap', 'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source']);
 
 sofApp
-    .directive('statsPane', [
-        'RecursionHelper',
-        function (RecursionHelper) {
-            return {
-                templateUrl: 'app/partials/stats.pane.html',
-                restrict: 'A',
-                scope: {
-                    currentStats: '=',
-                    stats: '=allStats'
-                },
-                compile: function (element) {
-                    // Use the compile function from the RecursionHelper,
-                    // And return the linking function(s) which it returns
-                    return RecursionHelper.compile(element);
-                }
-            }
-        }])
-
     .controller('CalculatorCtrl', ['$scope', function ($scope) {
         $scope.appStatus = "Загрузка..";
         this.version = "0.2.5";
     }])
 
-    .controller('PerksCtrl', [function () {
+    .controller('ClassesCtrl', [
+        '$scope', '$rootScope', 'CurrentState', 'DataSource',
+        function ($scope, $rootScope, CurrentState, DataSource) {
 
-    }])
-    .controller('ClassesCtrl', [function () {
+            var BASE_CLASS_ID = 'base';
+            var ctrl = this;
 
-    }])
-
-    .controller('ClassTree', [
-        '$scope', '$http', 'JsonUtils', 'CurrentState', 'DataSource',
-        function ($scope, $http, JsonUtils, CurrentState, DataSource) {
+            DataSource.initialize()
+                .then(function (promise) {
+                    $scope.appStatus = "Готов!";
+                    ctrl.setClass(BASE_CLASS_ID, DataSource.getClass(BASE_CLASS_ID));
+                })
+                .catch(function (err) {
+                    $scope.appStatus = "Обломинго =(";
+                });
 
             /* Public section */
+            this.getAllClasses = DataSource.getClasses;
 
-            $scope.currentStats;
-            $scope.selectedPerks = [];
-
-
-            $scope.data = DataSource.data;
-//            $scope.setClass('base', json.classes['base']);
-
-
-
-//            // load data
-//            $http.get("data/data.json")
-//                .success(function (json) {
-//                    $scope.data = json;
-//                    $scope.appStatus = "Готов!";
-//                    $scope.setClass('base', json.classes['base']);
-//                })
-//                .error(function (data, status) {
-//                    $scope.appStatus = "Обломинго =(";
-//                    console.error(data + ": " + status);
-//                });
-
-            $scope.getCurrentClass = function () {
-                return CurrentState.getClass();
-            };
-
-            $scope.setClass = function (classId, classData) {
-                if (!$scope.isClassAvailable(classId))
+            this.setClass = function (classId, classData) {
+                if (!ctrl.isClassAvailable(classId))
                     return;
+
                 CurrentState.setClass(classId, classData);
-                $scope.currentStats = calculateStats(classId);
-                applyPerks();
+                // TODO problem with reference of nested stats (reference)
+                CurrentState.stats.reset(calculateStats(classId));
+                $rootScope.applyPerks();
             };
 
-            $scope.isClassSelected = function (classId) {
-                return classId === CurrentState.getClassId();
+            this.isClassSelected = function (id) {
+                return id === CurrentState.getClassId();
             };
 
-            $scope.isClassAvailable = function (classId) {
-                return _.isEqual(classId, 'base') ||
-                    $scope.isClassSelected(classId) ||
-
-                    getClass(classId).parent == CurrentState.getClassId() ||
-                    isAncestor(classId, CurrentState.getClass());
-            };
-
-            $scope.isPerkAvailable = function (perk) {
-                var current = CurrentState.getClass();
-                var need = perk.for;
-                if (current.level < need.level)
-                    return false;
-
-                if (!_.isEmpty(need.classOnly)
-                    && !_.contains(need.classOnly, current.id))
-                    return false;
-
-                if (!_.isEmpty(need.classExcept)
-                    && _.contains(need.classExcept, current.id))
-                    return false;
-
-                if (!_.isUndefined(perk.parent) && !_.contains($scope.selectedPerks, perk.parent))
-                    return false;
-
-                return true;
-            };
-
-            $scope.addPerk = function (id) {
-                var perk = getPerk(id);
-                if (_.isUndefined(perk) || !$scope.isPerkAvailable(perk))
-                    return;
-
-                applyPerk(perk);
-                $scope.selectedPerks.push(id);
-                perk.selected = !perk.selected;
-                if (!perk.selected)
-                    $scope.selectedPerks = _.without($scope.selectedPerks, id);
+            this.isClassAvailable = function (id) {
+                return _.isEqual(id, BASE_CLASS_ID) ||
+                    ctrl.isClassSelected(id) ||
+                    DataSource.getClass(id).parent == CurrentState.getClassId() ||
+                    isAncestor(id, CurrentState.getClass());
             };
 
             // TODO use templates
-            $scope.getClassTooltip = function (classId, clazz) {
+            this.getClassTooltip = function (classId, clazz) {
                 var result = $('<section class="tree-tooltip"></section>');
                 result.append('<h1>' + clazz.name + '</h1>');
                 result.append('<p class="desc">' + clazz.desc + '</p>');
@@ -126,36 +58,11 @@ sofApp
                 return result.wrap("<div/>").parent().html();
             };
 
-            // TODO use templates
-            $scope.getPerkTooltip = function (perkId, perk) {
-                var result = $('<section class="tree-tooltip"></section>');
-                result.append('<h1>' + perk.name + '</h1>');
-                result.append('<p class="desc">' + perk.desc + '</p>');
-                result.append('<h2>Характеристики</h2>');
-
-                _.each(perk.effects, function (stats, effectId) {
-                    var effect = effectsMap[effectId];
-                    _.each(stats, function (statValue, statId) {
-                        var statText =
-                            effect.getName(statValue) + " " + getStat(statId).name
-                        result.append('<div class="tooltip-stat">' + statText + '</div>');
-                    });
-                });
-
-                result.append('<h2>Требования</h2>');
-                _.each(perk.for, function (value, id) {
-                    result.append('<div class="tooltip-stat">' +
-                        restrictionsMap[id].getHint(value) + '</div>');
-                });
-
-                return result.wrap("<div/>").parent().html();
-            };
-
             /* Private section */
-
+            // TODO recursive? use for perks?
             function appendTooltipStats(stats, parent) {
                 _.each(stats, function (value, id) {
-                    var statInfo = getStat(id);
+                    var statInfo = DataSource.getStat(id);
                     if (!_.isUndefined(statInfo)) {
                         var statText = statInfo.name;
 
@@ -176,114 +83,20 @@ sofApp
                 return parent;
             }
 
-            function applyPerks() {
-                _.each($scope.selectedPerks, function (id) {
-                    var perk = getPerk(id);
-                    perk.selected = false;
-                    if (!$scope.isPerkAvailable(perk)) {
-                        $scope.selectedPerks = _.without($scope.selectedPerks, id);
-                        return;
-                    }
-                    applyPerk(perk);
-                    perk.selected = true;
-                })
-            }
-
-            function applyPerk(perk) {
-                _.each(perk.effects, function (stats, id) {
-                    var effect = effectsMap[id];
-                    _.each(stats, function (value, id) {
-                        effect.apply(getCurrentStatWrapper(id), value, perk.selected);
-                    })
-                })
-            }
-
-            var effectsMap = {
-                add: {
-                    apply: function (statWrapper, value, revert) {
-                        if (!_.isUndefined(statWrapper))
-                            statWrapper.set(statWrapper.get() + (revert ? -1 * value : value));
-                    },
-                    getName: function (value) {
-                        return value < 0 ? value : "+" + value;
-                    }
-                },
-                mul: {
-                    apply: function (statWrapper, value, revert) {
-                        if (!_.isUndefined(statWrapper))
-                            statWrapper.set(
-                                Math.round(statWrapper.get() * (revert ? 1 / value : value)));
-                    },
-                    getName: function (value) {
-                        if (value >= 2) {
-                            return "x" + value;
-                        }
-                        value = Math.round((value - 1) * 100);
-                        return (value < 0 ? value : "+" + value) + "%";
-                    }
-                },
-                provide: {
-                    apply: function (statWrapper, value, revert) {
-                        if (revert)
-                            delete $scope.currentStats[statWrapper.id()];
-                        else
-                            $scope.currentStats[statWrapper.id()] = value;
-                    },
-                    getName: function (value) {
-                        return "+ ";
-                    }
-                }
-            };
-
-            var restrictionsMap = {
-                level: {
-                    getHint: function (value) {
-                        return "Требуемый уровень: " + value;
-                    }
-                },
-                classOnly: {
-                    getHint: function (value) {
-                        return "Только для классов: " + _.map(value, function (classId) {
-                            var clazz = getClass(classId);
-                            if (clazz) return clazz.name;
-                        }).join(", ");
-                    }
-                },
-                classExcept: {
-                    getHint: function (value) {
-                        var classes = [];
-                        _.each(value, function (classId) {
-                            var clazz = getClass(classId);
-                            if (!_.isUndefined(clazz))
-                                classes.push(clazz.name)
-                        });
-                        return "Не для классов: " + classes.join(", ");
-                    }
-                },
-                ultimate: {
-                    getHint: function (value) {
-                        return "Вы должны купить все доступные вашему классу перки, чтобы открыть этот.";
-                    }
-                }
-
-
-            };
-
             function isAncestor(ancestorId, child) {
                 if (_.isUndefined(ancestorId) || _.isUndefined(child))
                     return false;
                 if (child.parent === ancestorId)
                     return true;
 
-                return isAncestor(ancestorId, getClass(child.parent));
+                return isAncestor(ancestorId, DataSource.getClass(child.parent));
             }
-
 
             function calculateStats(id, result) {
                 if (_.isUndefined(result))
                     result = {};
 
-                var clazz = getClass(id);
+                var clazz = DataSource.getClass(id);
                 if (_.isUndefined(clazz))
                     return result;
 
@@ -309,67 +122,200 @@ sofApp
                 }
                 return calculateStats(clazz.parent, result);
             }
+        }])
 
-            // TODO make it recursive or like that
-            function getCurrentStatWrapper(id) {
-                if (!_.isUndefined($scope.currentStats[id]))
-                    return {
-                        get: function () {
-                            return $scope.currentStats[id]
-                        },
-                        set: function (v) {
-                            $scope.currentStats[id] = v
-                        },
-                        id: function () {
-                            return id;
+    .controller('StatsCtrl', [
+        'CurrentState', 'DataSource',
+            function (CurrentState, DataSource) {
+                this.getAllStats = DataSource.getStatsInfo;
+                this.getCurrentStats = CurrentState.stats.get;
+                this.getCurrentClass = CurrentState.getClass();
+            }])
+
+    .controller('PerksCtrl', [
+        '$scope', '$rootScope', 'CurrentState', 'DataSource',
+        function ($scope, $rootScope, CurrentState, DataSource) {
+
+            var ctrl = this;
+
+            /* Public section */
+            this.getAllPerks = DataSource.getPerks;
+
+            this.isPerkAvailable = function (perk) {
+                var current = CurrentState.getClass();
+                var need = perk.for;
+                if (current.level < need.level)
+                    return false;
+
+                if (!_.isEmpty(need.classOnly)
+                    && !_.contains(need.classOnly, current.id))
+                    return false;
+
+                if (!_.isEmpty(need.classExcept)
+                    && _.contains(need.classExcept, current.id))
+                    return false;
+
+                if (!_.isUndefined(perk.parent) && !_.contains(CurrentState.perks.get(), perk.parent))
+                    return false;
+
+                return true;
+            };
+
+            this.addPerk = function (id) {
+                var perk = DataSource.getPerk(id);
+                if (!perk || !ctrl.isPerkAvailable(perk))
+                    return;
+
+                applyPerk(perk);
+                CurrentState.perks.toggle(id);
+                perk.selected = !perk.selected;
+            };
+
+            // TODO use templates
+            this.getPerkTooltip = function (perkId, perk) {
+                var result = $('<section class="tree-tooltip"></section>');
+                result.append('<h1>' + perk.name + '</h1>');
+                result.append('<p class="desc">' + perk.desc + '</p>');
+                result.append('<h2>Характеристики</h2>');
+
+                _.each(perk.effects, function (stats, effectId) {
+                    var effect = effectsMap[effectId];
+                    _.each(stats, function (statValue, statId) {
+                        var statText =
+                            effect.getName(statValue) + " " + DataSource.getStat(statId).name
+                        result.append('<div class="tooltip-stat">' + statText + '</div>');
+                    });
+                });
+
+                result.append('<h2>Требования</h2>');
+                _.each(perk.for, function (value, id) {
+                    result.append('<div class="tooltip-stat">' +
+                        restrictionsMap[id].getHint(value) + '</div>');
+                });
+
+                return result.wrap("<div/>").parent().html();
+            };
+
+            /* Private section */
+
+            // TODO move to a service
+            $rootScope.applyPerks = function() {
+                _.each(CurrentState.perks.get(), function (id) {
+                    var perk = DataSource.getPerk(id);
+                    if (!ctrl.isPerkAvailable(perk)) {
+                        perk.selected = false;
+                        CurrentState.perks.remove(id);
+                        return;
+                    }
+                    applyPerk(perk);
+                    perk.selected = true;
+                })
+            };
+
+            // TODO recursive, bitch!
+            function applyPerk(perk) {
+                _.each(perk.effects, function (stats, id) {
+                    var effect = effectsMap[id];
+                    _.each(stats, function (value, id) {
+                        if (_.isObject(value)) {
+                            _.each(value, function (subValue, subId) {
+                                effect.apply(subId, subValue, perk.selected);
+                            });
                         }
-                    };
+                        else
+                            effect.apply(id, value, perk.selected);
+                    })
+                })
+            }
 
-                for (var i in $scope.currentStats) {
-                    var statData = $scope.currentStats[i];
-                    if (_.isEmpty(statData))
-                        continue;
-
-                    for (var subId in statData) {
-                        if (subId == id) {
-                            return {
-                                get: function () {
-                                    return $scope.currentStats[i][subId]
-                                },
-                                set: function (v) {
-                                    $scope.currentStats[i][subId] = v
-                                }
-                            }
+            var effectsMap = {
+                add: {
+                    apply: function (id, value, revert) {
+                        CurrentState.stats.set(id,
+                                CurrentState.stats.get(id) + (revert ? -1 * value : value)
+                        );
+                    },
+                    getName: function (value) {
+                        return value < 0 ? value : "+" + value;
+                    }
+                },
+                mul: {
+                    apply: function (id, value, revert) {
+                        CurrentState.stats.set(id,
+                            Math.round(CurrentState.stats.get(id) * (revert ? 1 / value : value))
+                        );
+                    },
+                    getName: function (value) {
+                        if (value >= 2) {
+                            return "x" + value;
                         }
+                        value = Math.round((value - 1) * 100);
+                        return (value < 0 ? value : "+" + value) + "%";
+                    }
+                },
+                provide: {
+                    apply: function (statWrapper, value, revert) {
+                        if (revert)
+                            CurrentState.stats.remove(statWrapper.id());
+                        else
+                            CurrentState.stats.set(statWrapper.id(), value);
+                    },
+                    getName: function (value) {
+                        return "+ ";
+                    }
+                }
+            };
+
+            var restrictionsMap = {
+                level: {
+                    getHint: function (value) {
+                        return "Требуемый уровень: " + value;
+                    }
+                },
+                classOnly: {
+                    getHint: function (value) {
+                        return "Только для классов: " + _.map(value, function (classId) {
+                            var clazz = DataSource.getClass(classId);
+                            if (clazz) return clazz.name;
+                        }).join(", ");
+                    }
+                },
+                classExcept: {
+                    getHint: function (value) {
+                        var classes = [];
+                        _.each(value, function (classId) {
+                            var clazz = DataSource.getClass(classId);
+                            if (!_.isUndefined(clazz))
+                                classes.push(clazz.name)
+                        });
+                        return "Не для классов: " + classes.join(", ");
+                    }
+                },
+                ultimate: {
+                    getHint: function (value) {
+                        return "Вы должны купить все доступные вашему классу перки, чтобы открыть этот.";
                     }
                 }
 
-                return {
-                    get: function () {
-                    },
-                    set: function (v) {
-                    },
-                    id: function () {
-                        return id;
-                    }
-                };
-            }
 
-            function getStat(id) {
-                return getDataJsonElement("stats", id);
-            }
-
-            function getClass(id) {
-                return getDataJsonElement("classes", id);
-            }
-
-            function getPerk(id) {
-                return getDataJsonElement("perks", id);
-            }
-
-            function getDataJsonElement(container, id) {
-                return JsonUtils.getJsonElement($scope.data[container], id);
-            }
-
+            };
         }]
-);
+)
+    .directive('statsPane', [
+        'RecursionHelper',
+        function (RecursionHelper) {
+            return {
+                templateUrl: 'app/partials/stats.pane.html',
+                restrict: 'A',
+                scope: {
+                    currentStats: '=',
+                    stats: '=allStats'
+                },
+                compile: function (element) {
+                    // Use the compile function from the RecursionHelper,
+                    // And return the linking function(s) which it returns
+                    return RecursionHelper.compile(element);
+                }
+            }
+        }])
+;
