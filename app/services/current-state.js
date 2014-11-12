@@ -63,17 +63,27 @@ angular.module('srms.sof.current-state', [])
                 set: function (id, value) {
 
                     // TODO optimize && make recursive; maybe use cache
+                    // change stat value
                     if (currentStats[id]) {
                         currentStats[id] = value;
                         return;
                     }
 
+                    // change substat value
+                    var found = false;
                     _.map(currentStats, function (subValue, subId) {
-                        if (_.isObject(subValue) && (id in subValue))
+                        if (_.isObject(subValue) && (id in subValue)) {
                             subValue[id] = value;
+                            found = true;
+                        }
 
                         return subValue;
                     });
+
+                    // add value
+                    if(!found) {
+                        currentStats[id] = value;
+                    }
                 },
                 remove: function (id) {
                     delete currentStats[id];

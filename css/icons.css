@@ -3,6 +3,10 @@
     background-repeat: no-repeat;
 }
 
+.tree-item-content.perk-info {
+    background-size: contain;
+}
+
 #class-base {
     background-image: url(../img/icons/classes/merc.png);
 }
@@ -85,4 +89,32 @@
 #class-dominator-2,
 #class-dominator-3 {
     background-image: url(../img/icons/classes/dominator.png);
+}
+
+#perk-bigBag-1 {
+    background-image: url(../img/icons/perks/big-bag-1.png);
+}
+
+#perk-bigBag-2 {
+    background-image: url(../img/icons/perks/big-bag-2.png);
+}
+
+#perk-bigBag-3 {
+    background-image: url(../img/icons/perks/big-bag-3.png);
+}
+
+#perk-steelSkin {
+    background-image: url(../img/icons/perks/steel-skin.png)
+}
+
+#perk-nopain-1 {
+    background-image: url(../img/icons/perks/no-pain-1.png)
+}
+
+#perk-nopain-2 {
+    background-image: url(../img/icons/perks/no-pain-2.png)
+}
+
+#perk-bigPockets {
+    background-image: url(../img/icons/perks/big-pockets.png)
 }

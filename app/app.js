@@ -4,7 +4,7 @@ var sofApp = angular.module('srms.sof.calculator',
 sofApp
     .controller('CalculatorCtrl', ['$rootScope', function ($rootScope) {
         $rootScope.appStatus = "Загрузка..";
-        this.version = "0.3.0";
+        this.version = "0.3.1";
     }])
     .controller('StatsCtrl', [
         'CurrentState', 'DataSource',

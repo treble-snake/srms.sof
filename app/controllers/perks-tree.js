@@ -121,11 +121,11 @@ angular.module('srms.sof.calculator')
                     }
                 },
                 provide: {
-                    apply: function (statWrapper, value, revert) {
+                    apply: function (id, value, revert) {
                         if (revert)
-                            CurrentState.stats.remove(statWrapper.id());
+                            CurrentState.stats.remove(id);
                         else
-                            CurrentState.stats.set(statWrapper.id(), value);
+                            CurrentState.stats.set(id, value);
                     },
                     getName: function (value) {
                         return "+ ";

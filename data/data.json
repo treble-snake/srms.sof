@@ -826,6 +826,7 @@
             },
             "sub": {
                 "nopain-2": {
+                    "parent": "nopain-1",
                     "level": 2,
                     "name": "Суперневоспр. к боли",
                     "desc": "",
@@ -841,8 +842,6 @@
                 }
             }
         },
-
-
 
         "moreRounds-1": {
             "level": 1,
@@ -861,6 +860,7 @@
             },
             "sub": {
                 "moreRounds-2": {
+                    "parent": "moreRounds-1",
                     "level": 2,
                     "name": "Большие магазины",
                     "desc": "",
@@ -876,6 +876,7 @@
                     },
                     "sub": {
                         "moreRounds-3": {
+                            "parent": "moreRounds-2",
                             "level": 3,
                             "name": "Здоровенные магазины",
                             "desc": "",
@@ -910,6 +911,7 @@
             },
             "sub": {
                 "sniperMoreRounds-2": {
+                    "parent": "sniperMoreRounds-1",
                     "level": 2,
                     "name": "Большие магазины снайпера",
                     "desc": "",
@@ -924,6 +926,7 @@
                     },
                     "sub": {
                         "sniperMoreRounds-3": {
+                            "parent": "sniperMoreRounds-2",
                             "level": 3,
                             "name": "Здоровенные магазины снайпера",
                             "desc": "",
@@ -957,6 +960,7 @@
             },
             "sub": {
                 "weaponCare-2": {
+                    "parent": "weaponCare-1",
                     "level": 2,
                     "name": "Крутой уход за оружием",
                     "desc": "",
@@ -987,6 +991,7 @@
             },
             "sub": {
                 "ammoBalance": {
+                    "parent": "extraWeapon",
                     "level": 2,
                     "name": "Македонец",
                     "desc": "",
@@ -1058,6 +1063,7 @@
             },
             "sub": {
                 "bigBag-2": {
+                    "parent": "bigBag-1",
                     "level": 2,
                     "name": "Огромный рюкзак",
                     "desc": "",
@@ -1072,6 +1078,7 @@
                     },
                     "sub": {
                         "bigBag-3": {
+                            "parent": "bigBag-2",
                             "level": 3,
                             "name": "Гиганторский рюкзак",
                             "desc": "",
