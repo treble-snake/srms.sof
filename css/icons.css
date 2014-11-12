@@ -1,0 +1,88 @@
+.tree-item-content {
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+
+#class-base {
+    background-image: url(../img/icons/classes/merc.png);
+}
+
+#class-medic {
+    background-image: url(../img/icons/classes/medic.png);
+}
+
+#class-paramedic-1,
+#class-paramedic-2,
+#class-paramedic-3 {
+    background-image: url(../img/icons/classes/paramedic.png);
+}
+
+#class-surgeon-1,
+#class-surgeon-2,
+#class-surgeon-3 {
+    background-image: url(../img/icons/classes/surgeon.png);
+}
+
+#class-engineer {
+    background-image: url(../img/icons/classes/engineer.png);
+}
+
+#class-sapper-1,
+#class-sapper-2,
+#class-sapper-3 {
+    background-image: url(../img/icons/classes/sapper.png);
+}
+
+#class-supplier-1,
+#class-supplier-2,
+#class-supplier-3 {
+    background-image: url(../img/icons/classes/supplier.png);
+}
+
+#class-sniper {
+    background-image: url(../img/icons/classes/sniper.png);
+}
+
+#class-predator-1,
+#class-predator-2,
+#class-predator-3 {
+    background-image: url(../img/icons/classes/predator.png);
+}
+
+#class-marksman-1,
+#class-marksman-2,
+#class-marksman-3 {
+    background-image: url(../img/icons/classes/marksman.png);
+}
+
+#class-stormtrooper {
+    background-image: url(../img/icons/classes/stormtrooper.png);
+}
+
+#class-destroyer-1,
+#class-destroyer-2,
+#class-destroyer-3 {
+    background-image: url(../img/icons/classes/destroyer.png);
+}
+
+#class-juggernaut-1,
+#class-juggernaut-2,
+#class-juggernaut-3 {
+    background-image: url(../img/icons/classes/juggernaut.png);
+}
+
+#class-support {
+    background-image: url(../img/icons/classes/support.png);
+}
+
+#class-cleaner-1,
+#class-cleaner-2,
+#class-cleaner-3 {
+    background-image: url(../img/icons/classes/cleaner.png);
+}
+
+#class-dominator-1,
+#class-dominator-2,
+#class-dominator-3 {
+    background-image: url(../img/icons/classes/dominator.png);
+}

@@ -111,27 +111,8 @@ div.pane {
     margin-right: 50px;
 }
 
-.selected-true {
-    background-color: rgba(144, 255, 112, 0.32);
-}
-
-.class-info,
-.perk-info
-{
-    cursor: pointer;
-}
-
-.perk-info {
-    text-overflow: clip;
-}
-
 #perks-pane {
     width: auto;
-}
-
-.available-false {
-    background-color: #ffe4d8;
-    cursor: default;
 }
 
 /* Tree item, containing another tree items */
@@ -144,9 +125,7 @@ div.pane {
 }
 
 /* Block with tree item content (e.g. icon) */
-.tree-item .tree-item-content {
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.tree-item-content {
     width: 40px;
     height: 40px;
     font-size: 10px;
@@ -158,14 +137,46 @@ div.pane {
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
 
+    /* Not available by default */
+    cursor: default;
+    border: 2px solid red;
+    border-radius: 22px;
+    box-sizing: content-box;
+}
+
+.tree-item-content.available {
+    border-color: #fff;
+    cursor: pointer;
+}
+
+.tree-item-content.selected {
+    cursor: pointer;
+    border-color: rgb(0, 172, 23);
+}
+
+/* Some effects */
+.tree-item-content.available:not(.selected):hover,
+.tree-item-content.available:hover ~ .tree-wrapper > .tree-item > .tree-item-content {
+    border-color: #4a67f8;
+}
+
+/* Child tree items wrapper */
+.tree-wrapper
+{
+    position: relative;
+}
+
+.tree-wrapper > .tree-item:only-child
+{
+    margin-top: 0;
 }
 
 /* Connectors on the top of tree items */
 .tree-item::before,
 .tree-item::after,
-.tree-item .tree-item-content:after,
-/* Hack for :first-of-type rule */
-.tree-item > .tree-item ~ .tree-item:before {
+/* And on the bottom */
+.tree-wrapper:after
+{
     content: '';
     position: absolute;
     top: 0;
@@ -176,9 +187,10 @@ div.pane {
 }
 
 /* Remove left connector from first child and right connector from last child */
-/* Mind the hack above. */
-.tree-item > .tree-item:before,
-.tree-item:last-child::after
+.tree-item:first-child:before,
+.tree-item:last-child::after,
+/* And bottom connector doesn't need top border */
+.tree-wrapper:after
 {
     border-top: 0;
 }
@@ -191,20 +203,10 @@ div.pane {
 /* Top line right + vertical line */
 .tree-item::after,
 /* Bottom connector */
-.tree-item .tree-item-content:after {
+.tree-wrapper:after
+{
     left: 50%;
     border-left: 1px solid #ccc;
-}
-
-/* Connectors on the bottom of tree items */
-.tree-item .tree-item-content:after {
-    top: 100%;
-    border-top: 0;
-}
-
-/* Hide bottom connectors for classes without subclasses */
-.tree-item-content:only-child::after {
-    display: none;
 }
 
 /* Hide connectors for root element */
@@ -217,12 +219,6 @@ div.pane {
 .root-tree-item,
 .root-tree-item > .tree-item-content {
     margin-top: 0;
-}
-
-/* Some effects */
-.tree-item-content:not(.available-false):hover,
-.tree-item-content:not(.available-false):hover~.tree-item > .tree-item-content {
-    background: #c8e4f8;
 }
 
 

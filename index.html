@@ -27,6 +27,7 @@
 
     <!-- Custom includes -->
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/icons.css">
     <script src="js/plugins.js"></script>
 
     <!-- Angular App -->
@@ -34,6 +35,8 @@
     <script src="app/services/utils.js"></script>
     <script src="app/services/current-state.js"></script>
     <script src="app/services/data-source.js"></script>
+    <script src="app/controllers/perks-tree.js"></script>
+    <script src="app/controllers/classes-tree.js"></script>
 
 </head>
 <body>
@@ -57,7 +60,8 @@
                 <span ng-show="ctrl.getCurrentClass()">{{ctrl.getCurrentClass().name}}</span></h4>
 
             <div id="stats">
-                <div ng-show="ctrl.getCurrentStats()" stats-pane current-stats="ctrl.getCurrentStats()"
+                <div ng-show="ctrl.getCurrentStats()" stats-pane
+                     current-stats="ctrl.getCurrentStats()"
                      all-stats="::ctrl.getAllStats()"></div>
             </div>
         </div>
@@ -66,11 +70,9 @@
             <div id="class-tree">
                 <h4>Базовые импланты</h4>
 
-                <div class="tree-wrapper">
-                    <div class="class tree-item root-tree-item"
-                         ng-repeat="(classId, classData) in ::ctrl.getAllClasses()"
-                         ng-include="'classTreeItem'"></div>
-                </div>
+                <div class="class tree-item root-tree-item"
+                     ng-repeat="(classId, classData) in ::ctrl.getAllClasses()"
+                     ng-include="'classTreeItem'"></div>
             </div>
         </div>
 
@@ -78,40 +80,44 @@
             <h4>Аугментации</h4>
 
             <div id="perks">
-                <div class="tree-wrapper">
-                    <div class="perk tree-item root-tree-item"
-                         ng-repeat="(id, perk) in ::ctrl.getAllPerks()"
-                         ng-include="'perkTreeItem'"></div>
-                </div>
+                <div class="perk tree-item root-tree-item"
+                     ng-repeat="(id, perk) in ::ctrl.getAllPerks()"
+                     ng-include="'perkTreeItem'"></div>
             </div>
         </div>
     </div>
 </div>
 
 <script type="text/ng-template" id="perkTreeItem">
-    <div class="perk-info tree-item-content available-{{ctrl.isPerkAvailable(perk)}} selected-{{perk.selected !== undefined && perk.selected}}"
-         ng-disabled="!ctrl.isPerkAvailable(perk)"
-         ng-click="ctrl.addPerk(id)"
-         tooltip-html-unsafe="{{::ctrl.getPerkTooltip(id, perk)}}"
-         tooltip-placement="left"
-         tooltip-animation="false">
+    <div class="perk-info tree-item-content" id="perk-{{id}}"
+            ng-class="{available: ctrl.isPerkAvailable(perk), selected: perk.selected}"
+            ng-disabled="!ctrl.isPerkAvailable(perk)"
+            ng-click="ctrl.addPerk(id)"
+            tooltip-html-unsafe="{{::ctrl.getPerkTooltip(id, perk)}}"
+            tooltip-placement="left"
+            tooltip-animation="false">
         {{::perk.name}}
     </div>
-    <div class="perk tree-item" ng-repeat="(id, perk) in ::perk.sub"
-         ng-include="'perkTreeItem'"></div>
+    <div class="tree-wrapper" ng-show="::perk.sub">
+        <div class="perk tree-item" ng-repeat="(id, perk) in ::perk.sub"
+             ng-include="'perkTreeItem'"></div>
+    </div>
 </script>
 
 <script type="text/ng-template" id="classTreeItem">
-    <div class="class-info tree-item-content available-{{ctrl.isClassAvailable(classId)}} selected-{{ctrl.isClassSelected(classId)}}"
-         ng-disabled="!ctrl.isClassAvailable(classId)"
-         ng-click="ctrl.setClass(classId, classData)"
-         tooltip-html-unsafe="{{::ctrl.getClassTooltip(classId, classData)}}"
-         tooltip-placement="left"
-         tooltip-animation="false">
-        {{::classData.name}}
+    <div class="class-info tree-item-content" id="class-{{classId}}"
+            ng-class="{available: ctrl.isClassAvailable(classId), selected: ctrl.isClassSelected(classId)}"
+            ng-disabled="!ctrl.isClassAvailable(classId)"
+            ng-click="ctrl.setClass(classId, classData)"
+            tooltip-html-unsafe="{{::ctrl.getClassTooltip(classId, classData)}}"
+            tooltip-placement="left"
+            tooltip-animation="false">
+        <!--{{::classData.name}}-->
     </div>
-    <div class="class tree-item" ng-repeat="(classId, classData) in ::classData.sub"
-         ng-include="'classTreeItem'"></div>
+    <div class="tree-wrapper" ng-show="::classData.sub">
+        <div class="class tree-item" ng-repeat="(classId, classData) in ::classData.sub"
+             ng-include="'classTreeItem'"></div>
+    </div>
 </script>
 
 </body>
