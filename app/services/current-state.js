@@ -1,11 +1,12 @@
 angular.module('srms.sof.current-state', [])
 
     // Some json utils
-    .factory('CurrentState', function () {
+    .factory('CurrentState', ['sortStatsFilter', function (sortStats) {
 
         var currentClass;
         var currentStats = {};
         var selectedPerks = [];
+        var currentStatsIndex = [];
 
         return {
             // class
@@ -39,6 +40,9 @@ angular.module('srms.sof.current-state', [])
 
             // stats
             stats: {
+//                index: function() {
+//                    return currentStatsIndex;
+//                },
                 get: function (id) {
                     if (id) {
 
@@ -59,6 +63,7 @@ angular.module('srms.sof.current-state', [])
                 },
                 reset: function (stats) {
                     currentStats = stats;
+//                    currentStatsIndex = sortStats(_.keys(stats));
                 },
                 set: function (id, value) {
 
@@ -83,11 +88,15 @@ angular.module('srms.sof.current-state', [])
                     // add value
                     if(!found) {
                         currentStats[id] = value;
+//                        var tmpIndex = currentStatsIndex;
+//                        tmpIndex.push(id);
+//                        currentStatsIndex = sortStats(tmpIndex);
                     }
                 },
                 remove: function (id) {
+//                    currentStatsIndex = _.without(currentStatsIndex, id);
                     delete currentStats[id];
                 }
             }
         }
-    });
+    }]);
