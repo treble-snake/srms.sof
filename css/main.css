@@ -107,12 +107,8 @@ textarea {
 }
 
 div.pane {
- float: left;
+    float: left;
     margin-right: 50px;
-}
-
-#perks-pane {
-    width: auto;
 }
 
 /* Tree item, containing another tree items */
@@ -161,22 +157,34 @@ div.pane {
 }
 
 /* Child tree items wrapper */
-.tree-wrapper
-{
+.tree-wrapper {
     position: relative;
 }
 
-.tree-wrapper > .tree-item:only-child
-{
+.tree-wrapper > .tree-item:only-child {
     margin-top: 0;
 }
 
+/* Perks */
+#perks-pane .tree-item-content {
+    margin-top: 0;
+    margin-left: 20px;
+}
+
+.perk.root-tree-item {
+    float: none;
+}
+
+#perks-pane .tree-wrapper,
+#perks-pane .tree-item-content {
+    float: left;
+}
+
 /* Connectors on the top of tree items */
-.tree-item::before,
-.tree-item::after,
-/* And on the bottom */
-.tree-wrapper:after
-{
+.tree-item:before,
+.tree-item:after,
+    /* And on the bottom */
+.tree-wrapper:after {
     content: '';
     position: absolute;
     top: 0;
@@ -188,31 +196,44 @@ div.pane {
 
 /* Remove left connector from first child and right connector from last child */
 .tree-item:first-child:before,
-.tree-item:last-child::after,
-/* And bottom connector doesn't need top border */
-.tree-wrapper:after
-{
+.tree-item:last-child:after,
+    /* And bottom connector doesn't need top border */
+.tree-wrapper:after {
     border-top: 0;
 }
 
 /* Top line left */
-.tree-item::before {
+.tree-item:before {
     left: 0;
 }
 
 /* Top line right + vertical line */
-.tree-item::after,
-/* Bottom connector */
-.tree-wrapper:after
-{
+.tree-item:after,
+    /* Bottom connector */
+.tree-wrapper:after {
     left: 50%;
     border-left: 1px solid #ccc;
 }
 
 /* Hide connectors for root element */
-.root-tree-item::after,
-.root-tree-item::before {
+.root-tree-item:after,
+.root-tree-item:before {
     display: none;
+}
+
+#perks-pane .tree-wrapper:after,
+#perks-pane .tree-item:after {
+    display: none;
+}
+
+#perks-pane .tree-item-content {
+    margin-top: 5px;
+}
+
+#perks-pane .tree-item:before {
+    top: 5px;
+    width: 20px;
+    border-bottom: 1px solid #ccc;
 }
 
 /* Remove margins for root tree items */
@@ -220,7 +241,6 @@ div.pane {
 .root-tree-item > .tree-item-content {
     margin-top: 0;
 }
-
 
 /** ================= Tooltips ====================*/
 
@@ -245,7 +265,6 @@ div.pane {
     margin-left: 10px;
 
 }
-
 
 /* ==========================================================================
    Helper classes
@@ -359,9 +378,9 @@ div.pane {
 }
 
 @media print,
-       (-o-min-device-pixel-ratio: 5/4),
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 120dpi) {
+(-o-min-device-pixel-ratio: 5/4),
+(-webkit-min-device-pixel-ratio: 1.25),
+(min-resolution: 120dpi) {
     /* Style adjustments for high resolution devices */
 }
 
@@ -394,7 +413,6 @@ div.pane {
     /*
      * Don't show links for images, or javascript/internal links
      */
-
     .ir a:after,
     a[href^="javascript:"]:after,
     a[href^="#"]:after {
