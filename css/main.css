@@ -101,7 +101,10 @@ textarea {
     padding: 0 20px 250px;
 }
 
-#stats-pane,
+#stats-pane {
+    width: 150px;
+}
+
 #perks-pane {
     width: 250px;
 }
@@ -240,6 +243,15 @@ div.pane {
 .root-tree-item,
 .root-tree-item > .tree-item-content {
     margin-top: 0;
+}
+
+/** ============== Stats pane ========= */
+.stat-item .stat-item {
+    margin-left: 20px;
+}
+
+.stat-value.title {
+    font-weight: bold;
 }
 
 /** ================= Tooltips ====================*/

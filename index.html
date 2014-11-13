@@ -56,8 +56,7 @@
             предложения, баг-репорты. Пожалуйста.</a></p>
 
         <div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
-            <h4>Выбранный имплант:
-                <span ng-show="ctrl.getCurrentClass()">{{ctrl.getCurrentClass().name}}</span></h4>
+            <h4><span ng-show="ctrl.getCurrentClass()">{{ctrl.getCurrentClass().name}}</span></h4>
 
             <div id="stats">
                 <div ng-show="ctrl.getCurrentStats()" stats-pane

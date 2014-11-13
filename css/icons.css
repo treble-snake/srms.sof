@@ -168,3 +168,46 @@
 #perk-initiative {
     background-image: url(../img/icons/perks/reaction.png)
 }
+
+.stat-value {
+    margin-top: 5px;
+    padding-left: 25px;
+    background-size: contain;
+    background-position: left center;
+    background-repeat: no-repeat;
+    cursor: help;
+    display: inline-block;
+    background-image: url(../img/icons/stats/question.png);
+}
+
+#stat-hp {
+    background-image: url(../img/icons/stats/hp.png);
+}
+
+#stat-damage {
+    background-image: url(../img/icons/stats/damge.png);
+}
+
+#stat-ammo {
+    background-image: url(../img/icons/stats/ammo.png);
+}
+
+#stat-rounds {
+    background-image: url(../img/icons/stats/rounds.png);
+}
+
+#stat-god {
+    background-image: url(../img/icons/stats/god.png);
+}
+
+#stat-shock {
+    background-image: url(../img/icons/stats/shock.png);
+}
+
+#stat-speed {
+    background-image: url(../img/icons/stats/speed.png);
+}
+
+#stat-reload {
+    background-image: url(../img/icons/stats/reload.png);
+}
