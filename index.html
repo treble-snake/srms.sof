@@ -96,7 +96,6 @@
             tooltip-html-unsafe="{{::ctrl.getPerkTooltip(id, perk)}}"
             tooltip-placement="left"
             tooltip-animation="false">
-        {{::perk.name}}
     </div>
     <div class="tree-wrapper" ng-show="::perk.sub">
         <div class="perk tree-item" ng-repeat="(id, perk) in ::perk.sub"
@@ -112,7 +111,6 @@
             tooltip-html-unsafe="{{::ctrl.getClassTooltip(classId, classData)}}"
             tooltip-placement="left"
             tooltip-animation="false">
-        <!--{{::classData.name}}-->
     </div>
     <div class="tree-wrapper" ng-show="::classData.sub">
         <div class="class tree-item" ng-repeat="(classId, classData) in ::classData.sub"

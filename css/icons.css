@@ -1,5 +1,5 @@
 .tree-item-content {
-    background-position: 0 0;
+    background-position: center center;
     background-repeat: no-repeat;
 }
 
@@ -117,4 +117,54 @@
 
 #perk-bigPockets {
     background-image: url(../img/icons/perks/big-pockets.png)
+}
+
+#perk-bomber {
+    background-image: url(../img/icons/perks/launcher.png)
+}
+
+#perk-doctor {
+    background-image: url(../img/icons/perks/doctor.png)
+}
+
+#perk-extraWeapon {
+    background-image: url(../img/icons/perks/second-gun.png)
+}
+
+#perk-ammoBalance {
+    background-image: url(../img/icons/perks/macedonian.png)
+}
+
+#perk-weaponCare-1 {
+    background-image: url(../img/icons/perks/weapon-care-1.png)
+}
+
+#perk-weaponCare-2 {
+    background-image: url(../img/icons/perks/weapon-care-2.png)
+}
+
+#perk-radioMines {
+    background-image: url(../img/icons/perks/radio-mine.png)
+}
+
+#perk-moreRounds-1,
+#perk-sniperMoreRounds-1
+{
+    background-image: url(../img/icons/perks/extra-rounds-1.png)
+}
+
+#perk-moreRounds-2,
+#perk-sniperMoreRounds-2
+{
+    background-image: url(../img/icons/perks/big-pockets.png)
+}
+
+#perk-moreRounds-3,
+#perk-sniperMoreRounds-3
+{
+    background-image: url(../img/icons/classes/supplier.png)
+}
+
+#perk-initiative {
+    background-image: url(../img/icons/perks/reaction.png)
 }

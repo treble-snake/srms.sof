@@ -1097,7 +1097,7 @@
             }
         },
 
-        "readioMines": {
+        "radioMines": {
             "level": 1,
             "name": "Радиосвязь",
             "desc": "",
