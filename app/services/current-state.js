@@ -1,12 +1,13 @@
 angular.module('srms.sof.current-state', [])
 
     // Some json utils
-    .factory('CurrentState', ['sortStatsFilter', function (sortStats) {
+    .factory('CurrentState', ['sortStatsFilter', 'DataSource', function (sortStats, DataSource) {
 
         var currentClass;
         var currentStats = {};
         var selectedPerks = [];
         var currentStatsIndex = [];
+        var stats2 = [];
 
         return {
             // class
@@ -57,15 +58,38 @@ angular.module('srms.sof.current-state', [])
                             return parentStat[id];
                     }
                     else
-                        return currentStats;
+                    return stats2;
+//                        return currentStats;
 
                     return undefined;
                 },
                 reset: function (stats) {
                     currentStats = stats;
                     currentStatsIndex = sortStats(_.keys(stats));
+
+                    stats2 = _.map(stats, function(value, key){
+                        var statInfo = DataSource.getStat(key);
+                        if(value.sub) {
+                            // TODO recursion
+                            value.sub =  _.map(stats, function(subValue, subKey){
+                                var statInfo = DataSource.getStat(subKey);
+                                return {
+                                    id: subKey,
+                                    value: subValue,
+                                    order: statInfo.order ? statInfo.order : 9999
+                                }
+                            });
+                        }
+                        return {
+                            id: key,
+                            value: value,
+                            order: statInfo.order ? statInfo.order : 9999
+                        }
+                    })
                 },
                 set: function (id, value) {
+
+                    return;
 
                     // TODO optimize && make recursive; maybe use cache
                     // change stat value
@@ -95,6 +119,7 @@ angular.module('srms.sof.current-state', [])
                     }
                 },
                 remove: function (id) {
+                    return;
                     currentStatsIndex = _.without(currentStatsIndex, id);
                     delete currentStats[id];
                 }

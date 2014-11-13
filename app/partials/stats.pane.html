@@ -1,18 +1,18 @@
 <!--<div class="stat-item" ng-repeat="(stat, value) in currentStats">-->
-<div class="stat-item" ng-repeat="stat in statIndexes">
+<div class="stat-item" ng-repeat="stat in statValues">
 
-    <div class="sub-stats" ng-show="stats[stat].sub">
-        <div class="stat-value title" title="{{stats[stat].desc}}">{{stats[stat].name}}:</div>
+    <!--<div class="sub-stats" ng-show="stats[stat.id].sub">-->
+        <!--<div class="stat-value title" title="{{stats[stat.id].desc}}">{{stats[stat.id].name}}:</div>-->
         <!--<div stats-pane current-stats="value" all-stats="::stats[stat].sub"></div>-->
-        <div stats-pane
-             stat-values="statValues[stat]"
-             stat-indexes="::stats[stat].sub | keysOnly"
-             all-stats="::stats[stat].sub"></div>
-    </div>
+        <!--<div stats-pane-->
+             <!--stat-values="statValues[stat]"-->
+             <!--stat-indexes="::stats[stat].sub | keysOnly"-->
+             <!--all-stats="::stats[stat].sub"></div>-->
+    <!--</div>-->
 
-    <div ng-hide="stats[stat].sub" id="stat-{{stat}}" class="stat-value"
-         title="{{stats[stat].name}}: {{stats[stat].desc}}">
-        <span ng-hide="statValues[stat]">{{stats[stat].name}}</span>
-        <span ng-show="statValues[stat]">{{statValues[stat]}} {{stats[stat].measure}}</span>
+    <div ng-hide="stats[stat.id].sub" id="stat-{{stat.id}}" class="stat-value"
+         title="{{stats[stat.id].name}}: {{stats[stat.id].desc}}">
+        <span ng-hide="stat.value">{{stats[stat.id].name}}</span>
+        <span ng-show="stat.value">{{stat.value}} {{stats[stat.id].measure}}</span>
     </div>
 </div>
