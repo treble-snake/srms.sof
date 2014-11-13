@@ -40,9 +40,9 @@ angular.module('srms.sof.current-state', [])
 
             // stats
             stats: {
-//                index: function() {
-//                    return currentStatsIndex;
-//                },
+                index: function() {
+                    return currentStatsIndex;
+                },
                 get: function (id) {
                     if (id) {
 
@@ -63,7 +63,7 @@ angular.module('srms.sof.current-state', [])
                 },
                 reset: function (stats) {
                     currentStats = stats;
-//                    currentStatsIndex = sortStats(_.keys(stats));
+                    currentStatsIndex = sortStats(_.keys(stats));
                 },
                 set: function (id, value) {
 
@@ -88,13 +88,14 @@ angular.module('srms.sof.current-state', [])
                     // add value
                     if(!found) {
                         currentStats[id] = value;
-//                        var tmpIndex = currentStatsIndex;
-//                        tmpIndex.push(id);
-//                        currentStatsIndex = sortStats(tmpIndex);
+                        // TODO ?
+                        var tmpIndex = currentStatsIndex;
+                        tmpIndex.push(id);
+                        currentStatsIndex = sortStats(tmpIndex);
                     }
                 },
                 remove: function (id) {
-//                    currentStatsIndex = _.without(currentStatsIndex, id);
+                    currentStatsIndex = _.without(currentStatsIndex, id);
                     delete currentStats[id];
                 }
             }

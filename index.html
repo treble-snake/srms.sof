@@ -58,9 +58,11 @@
         <div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
             <h4><span ng-show="ctrl.getCurrentClass()">{{ctrl.getCurrentClass().name}}</span></h4>
 
+            <!--current-stats="ctrl.getCurrentStats()"-->
             <div id="stats">
                 <div ng-show="ctrl.getCurrentStats()" stats-pane
-                     current-stats="ctrl.getCurrentStats()"
+                     stat-values="ctrl.getStatValues()"
+                     stat-indexes="ctrl.getStatIndexes()"
                      all-stats="::ctrl.getAllStats()"></div>
             </div>
         </div>
