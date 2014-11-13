@@ -172,12 +172,10 @@
 .stat-value {
     margin-top: 5px;
     padding-left: 25px;
-    background-size: contain;
-    background-position: left center;
-    background-repeat: no-repeat;
     cursor: help;
+    min-height: 20px;
     display: inline-block;
-    background-image: url(../img/icons/stats/question.png);
+    background: url(../img/icons/stats/question.png) no-repeat left 2px;
 }
 
 #stat-hp {
