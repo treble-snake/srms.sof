@@ -1,7 +1,6 @@
 angular.module('srms.sof.calculator')
-    .controller('ClassesCtrl', [
-        '$rootScope', 'CurrentState', 'DataSource', 'sortStatsFilter', 'statsToArrayFilter',
-        function ($rootScope, CurrentState, DataSource, sortStats, statsToArray) {
+    .controller('ClassesCtrl', ['$rootScope', 'CurrentState', 'DataSource', 'TooltipMaker', 'sortStatsFilter', 'statsToArrayFilter',
+        function ($rootScope, CurrentState, DataSource, TooltipMaker, sortStats, statsToArray) {
 
             var BASE_CLASS_ID = 'base';
             var ctrl = this;
@@ -23,7 +22,6 @@ angular.module('srms.sof.calculator')
                     return;
 
                 CurrentState.clazz.set(classId, classData);
-                // TODO problem with reference of nested stats (reference)
                 CurrentState.stats.reset(calculateStats(classId));
                 $rootScope.applyPerks();
             };
@@ -39,41 +37,25 @@ angular.module('srms.sof.calculator')
                     isAncestor(id, CurrentState.clazz.get());
             };
 
-            // TODO use templates
             this.getClassTooltip = function (classId, clazz) {
-                var result = $('<section class="tree-tooltip"></section>');
-                result.append('<h1>' + clazz.name + '</h1>');
-                result.append('<p class="desc">' + clazz.desc + '</p>');
-                result.append('<h2>Характеристики</h2>');
-                appendTooltipStats(
-                    sortStats(statsToArray(calculateStats(classId))), result);
-
-                return result.wrap("<div/>").parent().html();
+                return TooltipMaker.renderTooltip(clazz,
+                    sortStats(statsToArray(calculateStats(classId))), composeTooltipStatName);
             };
 
             /* Private section */
-            // TODO recursive? use for perks?
-            function appendTooltipStats(stats, parent) {
-                _.each(stats, function (stat) {
-                    var statInfo = DataSource.getStat(stat.id);
-                    if (!_.isUndefined(statInfo)) {
-                        var statText = statInfo.name;
 
-                        if (!_.isObject(stat.value) && !_.isNull(stat.value)) {
-                            statText += ": " + stat.value;
-                            if (!_.isUndefined(statInfo.measure))
-                                statText += " " + statInfo.measure;
-                        }
+            function composeTooltipStatName(stat) {
+                var statInfo = DataSource.getStat(stat.id);
+                var result = statInfo.name;
 
-                        parent.append('<div class="tooltip-stat">' + statText + '</div>');
+                if (_.isObject(stat.value) || _.isNull(stat.value))
+                    return result;
 
-                        if (_.isObject(stat.value)) {
-                            appendTooltipStats(stat.value, parent.children(".tooltip-stat").last());
-                        }
-                    }
-                });
+                result += ": " + stat.value;
+                if (statInfo.measure)
+                    result += " " + statInfo.measure;
 
-                return parent;
+                return result;
             }
 
             function isAncestor(ancestorId, child) {

@@ -8,7 +8,7 @@
              popover-trigger="mouseenter">
             {{stats[stat.id].name}}:
         </div>
-        <div stats-pane stat-values="stat.value" stat-info="::stats[stat].sub"></div>
+        <div stats-pane stat-values="stat.value" stat-info="::stats[stat.id].sub"></div>
     </div>
 
     <div ng-if="stats[stat.id].sub === undefined" id="stat-{{stat.id}}" class="stat-value"

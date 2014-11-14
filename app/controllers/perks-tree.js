@@ -1,7 +1,7 @@
 angular.module('srms.sof.calculator')
     .controller('PerksCtrl', [
-        '$scope', '$rootScope', 'CurrentState', 'DataSource',
-        function ($scope, $rootScope, CurrentState, DataSource) {
+        '$scope', '$rootScope', 'CurrentState', 'DataSource', 'TooltipMaker', 'statsToArrayFilter',
+        function ($scope, $rootScope, CurrentState, DataSource, TooltipMaker, statsToArray) {
 
             var ctrl = this;
 
@@ -38,32 +38,49 @@ angular.module('srms.sof.calculator')
                 perk.selected = !perk.selected;
             };
 
-            // TODO use templates
             this.getPerkTooltip = function (perkId, perk) {
-                var result = $('<section class="tree-tooltip"></section>');
-                result.append('<h1>' + perk.name + '</h1>');
-                result.append('<p class="desc">' + perk.desc + '</p>');
-                result.append('<h2>Характеристики</h2>');
-
+                var statsArray = [];
                 _.each(perk.effects, function (stats, effectId) {
-                    var effect = effectsMap[effectId];
-                    _.each(stats, function (statValue, statId) {
-                        var statText =
-                            effect.getName(statValue) + " " + DataSource.getStat(statId).name
-                        result.append('<div class="tooltip-stat">' + statText + '</div>');
+                    statsArray = statsArray.concat(
+                        prepareStatsForTooltip(statsToArray(stats), effectsMap[effectId]));
+                });
+
+                // TODO use templates
+                return TooltipMaker.renderTooltip(perk, statsArray, composeTooltipEffectName,
+                    function (parent) {
+                        parent.append('<h2>Требования</h2>');
+                        _.each(perk.for, function (value, id) {
+                            parent.append('<div class="tooltip-stat">' +
+                                restrictionsMap[id].getHint(value) + '</div>');
+                        });
                     });
-                });
-
-                result.append('<h2>Требования</h2>');
-                _.each(perk.for, function (value, id) {
-                    result.append('<div class="tooltip-stat">' +
-                        restrictionsMap[id].getHint(value) + '</div>');
-                });
-
-                return result.wrap("<div/>").parent().html();
             };
 
             /* Private section */
+
+            /**
+             * Injects effect object to each stat item
+             */
+            function prepareStatsForTooltip(stats, effect) {
+                _.each(stats, function (stat) {
+                    stat['effect'] = effect;
+                    if (_.isArray(stat.value))
+                        prepareStatsForTooltip(stat.value, effect);
+                });
+                return stats;
+            }
+
+            function composeTooltipEffectName(stat) {
+                if (!stat.effect)
+                    return;
+
+                var statText = DataSource.getStat(stat.id).name;
+                if (!_.isArray(stat.value))
+                    statText = stat.effect.getName(stat.value) + " " + statText;
+
+                return statText;
+            }
+
 
             // TODO move to a service
             $rootScope.applyPerks = function () {
