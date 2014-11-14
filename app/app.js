@@ -66,7 +66,7 @@ sofApp
         }
 
         return function filter(input) {
-            console.log("sort called");
+//            console.log("sort called");
             return input.sort(function(a, b){
                 var diff = getOrder(b) - getOrder(a);
                 return  diff == 0 ? compareNames(a, b) : diff;
