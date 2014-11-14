@@ -99,6 +99,10 @@ textarea {
 #wrapper {
     overflow: hidden;
     padding: 0 20px 250px;
+    width: 1200px;
+    margin: 0 auto;
+    border: 1px solid #000;
+    border-width: 0 15px;
 }
 
 #stats-pane {

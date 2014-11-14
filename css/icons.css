@@ -178,7 +178,9 @@
     background: url(../img/icons/stats/question.png) no-repeat left 2px;
 }
 
-#stat-hp {
+#stat-hp,
+#stat-bandageHp,
+#stat-morphineHp {
     background-image: url(../img/icons/stats/hp.png);
 }
 
@@ -208,4 +210,54 @@
 
 #stat-reload {
     background-image: url(../img/icons/stats/reload.png);
+}
+
+#stat-bandage {
+    background-image: url(../img/icons/stats/bandage.png);
+}
+
+#stat-bandageTime,
+#stat-morphineTime {
+    background-image: url(../img/icons/stats/time.png);
+}
+
+#stat-bandageQty,
+#stat-morphineQty {
+    background-image: url(../img/icons/stats/qty.png);
+}
+
+#stat-morphine {
+    background-image: url(../img/icons/stats/morphine.png);
+}
+
+#stat-grenade {
+    background-image: url(../img/icons/stats/grenade.png);
+}
+
+#stat-defuse {
+    background-image: url(../img/icons/stats/defuse.png);
+}
+
+#stat-bomb {
+    background-image: url(../img/icons/stats/bomb.png);
+}
+
+#stat-launcher {
+    background-image: url(../img/icons/stats/launcher.png);
+}
+
+#stat-extraAmmo {
+    background-image: url(../img/icons/stats/extra-ammo.png);
+}
+
+#stat-radioMine {
+    background-image: url(../img/icons/stats/radio-mine.png);
+}
+
+#stat-extraWeapon {
+    background-image: url(../img/icons/stats/extra-weapon.png);
+}
+
+#stat-ammoBalance {
+    background-image: url(../img/icons/stats/balance.png);
 }

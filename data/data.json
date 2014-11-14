@@ -65,6 +65,7 @@
                 "bandageQty": {
                     "name": "Кол-во",
                     "desc": "Количество штук",
+                    "measure": "шт",
                     "order": 800
                 }
             }
@@ -88,6 +89,7 @@
                 "morphineQty": {
                     "name": "Кол-во",
                     "desc": "Количество штук",
+                    "measure": "шт",
                     "order": 800
                 }
             }
@@ -101,6 +103,7 @@
         "defib": {
             "name": "Дефибриллятор",
             "desc": "Оживляет убитого бойца.",
+            "measure": "шт",
             "order": 3000
         },
         "mine": {
@@ -1139,7 +1142,7 @@
             },
             "for": {
                 "level": 4,
-                "classOnly": ["supplier-4"]
+                "classOnly": ["supplier-3"]
             }
         },
 

@@ -1,7 +1,7 @@
 <div class="stat-item" ng-repeat="stat in statValues | sortStats">
 
     <div class="sub-stats" ng-if="stats[stat.id].sub !== undefined">
-        <div class="stat-value title" title="{{stats[stat.id].desc}}">{{stats[stat.id].name}}:</div>
+        <div id="stat-{{stat.id}}" class="stat-value title" title="{{stats[stat.id].desc}}">{{stats[stat.id].name}}:</div>
         <div stats-pane stat-values="stat.value" stat-info="::stats[stat].sub"></div>
     </div>
 
