@@ -9,7 +9,7 @@ angular.module('srms.sof.calculator')
             this.getAllPerks = DataSource.getPerks;
 
             this.isPerkAvailable = function (perk) {
-                var current = CurrentState.getClass();
+                var current = CurrentState.clazz.get();
                 var need = perk.for;
                 if (current.level < need.level)
                     return false;

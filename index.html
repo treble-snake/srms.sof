@@ -56,14 +56,12 @@
             предложения, баг-репорты. Пожалуйста.</a></p>
 
         <div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
-            <h4><span ng-show="ctrl.getCurrentClass()">{{ctrl.getCurrentClass().name}}</span></h4>
+            <h4><span>{{ctrl.getCurrentClass().name}}</span></h4>
 
-            <!--current-stats="ctrl.getCurrentStats()"-->
-            <!--stat-indexes="ctrl.getStatIndexes()"-->
-            <div id="stats">
-                <div ng-show="ctrl.getStatValues()" stats-pane
+            <div id="stats" ng-if="!_.isEmpty(ctrl.getStatValues())">
+                <div  stats-pane
                      stat-values="ctrl.getStatValues()"
-                     all-stats="::ctrl.getAllStats()"></div>
+                     stat-info="::ctrl.getStatsInfo()"></div>
             </div>
         </div>
 

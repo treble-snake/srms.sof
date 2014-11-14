@@ -4,19 +4,14 @@ var sofApp = angular.module('srms.sof.calculator',
 sofApp
     .controller('CalculatorCtrl', ['$rootScope', function ($rootScope) {
         $rootScope.appStatus = "Загрузка..";
-        this.version = "0.3.1";
+        this.version = "0.3.4";
     }])
     .controller('StatsCtrl', [
         '$scope', 'CurrentState', 'DataSource',
         function ($scope, CurrentState, DataSource) {
-            this.getAllStats = DataSource.getStatsInfo;
-            this.getCurrentStats = CurrentState.stats.get;
-            this.getCurrentClass = CurrentState.getClass;
-
+            this.getStatsInfo = DataSource.getStatsInfo;
             this.getStatValues = CurrentState.stats.get;
-            this.getStatIndexes = CurrentState.stats.index;
-
-//            this.getStatValue = CurrentState.get;
+            this.getCurrentClass = CurrentState.clazz.get;
         }])
     .directive('statsPane', [
         'RecursionHelper',
@@ -25,73 +20,57 @@ sofApp
                 templateUrl: 'app/partials/stats.pane.html',
                 restrict: 'A',
                 scope: {
-//                    currentStats: '=',
                     statValues: "=",
-                    statIndexes: "=",
-                    stats: '=allStats'
+                    stats: '=statInfo'
                 },
                 compile: function (element) {
                     // Use the compile function from the RecursionHelper,
                     // And return the linking function(s) which it returns
                     return RecursionHelper.compile(element);
-                },
-                controller: function() {
-                    this.getKeys = function(item){
-                        return _.keys(item);
-                    }
-                },
-                controllerAs: 'ctrl'
+                }
             }
         }])
-    .filter('keysOnly', function () {
-        return function filter(input) {
-            console.log(input)
-            return _.keys(input);
+    .filter('statsToArray', ['DataSource', function (DataSource) {
+        return function(input) {
+            return _.map(input, function (value, key) {
+                // TODO recursion, bitch!
+                if (_.isObject(value)) {
+                    value = _.map(value, function (subValue, subKey) {
+                        return {
+                            id: subKey,
+                            value: subValue,
+                            order: DataSource.getStat(subKey).order
+                        }
+                    });
+                }
+                return {
+                    id: key,
+                    value: value,
+                    order: DataSource.getStat(key).order
+                }
+            })
         }
-    })
+    }])
     .filter('sortStats', ['DataSource', function (DataSource) {
-        /**
-         * @param input array of indexes
-         * @returns {Array}
-         */
-        function doTheShit(input) {
+        var DEFAULT_ORDER = 0;
 
-            var sorted = _.sortBy(input, function (key) {
-                return Math.random() * 1000;
-            });
-
-            console.log("Input:");
-            console.log(input);
-            console.log("Sorted:");
-            console.log(sorted);
-
-            return sorted;
-
-
-
-//            var sorted = {},
-//                key, a = [];
-//
-//            for (key in input) {
-//                if (input.hasOwnProperty(key)) {
-//                    a.push(key);
-//                }
-//            }
-//
-//            a = _.sortBy(a, function (key) {
-//                return Math.random() * 1000;
-//            });
-//
-//            for (key = 0; key < a.length; key++) {
-//                sorted[a[key]] = input[a[key]];
-//            }
-//
-
-//
-//            return sorted;
-
+        function getOrder(item) {
+                return item.order || DEFAULT_ORDER;
         }
 
-        return doTheShit;
+        function compareNames(a, b) {
+            if(a.id < b.id) return -1;
+            if(a.id > b.id) return 1;
+            console.warn("equal stat names");
+            return 0;
+        }
+
+        return function filter(input) {
+            console.log("sort called");
+            return input.sort(function(a, b){
+                var diff = getOrder(b) - getOrder(a);
+                return  diff == 0 ? compareNames(a, b) : diff;
+            });
+        };
     }])
 ;

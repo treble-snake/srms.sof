@@ -1,127 +1,132 @@
 angular.module('srms.sof.current-state', [])
 
     // Some json utils
-    .factory('CurrentState', ['sortStatsFilter', 'DataSource', function (sortStats, DataSource) {
+    .factory('CurrentState', ['statsToArrayFilter', 'DataSource', function (statsToArray, DataSource) {
 
         var currentClass;
-        var currentStats = {};
         var selectedPerks = [];
-        var currentStatsIndex = [];
-        var stats2 = [];
+
+        var statsArray = [];
+        var statsCache = {};
 
         return {
+
             // class
-            getClass: function () {
-                return currentClass;
-            },
-            getClassId: function () {
-                return currentClass.id;
-            },
-            setClass: function (id, clazz) {
-                currentClass = clazz;
-                currentClass.id = id;
+            clazz: {
+                get: function () {
+                    return currentClass;
+                },
+                id: function () {
+                    return currentClass.id;
+                },
+                set: function (id, clazz) {
+                    currentClass = clazz;
+                    currentClass.id = id;
+                }
             },
 
             // perks
             perks: {
-                get: function() {
+                get: function () {
                     return selectedPerks;
                 },
-                toggle: function(id) {
+                toggle: function (id) {
                     _.contains(selectedPerks, id) ?
                         this.remove(id) : this.add(id);
                 },
-                add: function(id) {
+                add: function (id) {
                     selectedPerks.push(id);
                 },
-                remove: function(id) {
+                remove: function (id) {
                     selectedPerks = _.without(selectedPerks, id);
                 }
             },
 
             // stats
             stats: {
-                index: function() {
-                    return currentStatsIndex;
-                },
                 get: function (id) {
                     if (id) {
 
-                        // TODO optimize && make recursive; maybe use cache
-                        if (currentStats[id])
-                            return currentStats[id];
+                        if(statsCache[id])
+                            return statsCache[id].value;
 
-                        var parentStat = _.find(currentStats, function (value) {
-                            return _.isObject(value) && (id in value);
+                        // TODO make reusable
+                        var compareId = function (item) {
+                            return item.id === id;
+                        };
+
+                        // TODO optimize && make recursive; maybe use cache
+                        var result = _.find(statsArray, compareId);
+                        if (result) {
+                            statsCache[id] = result;
+                            return result.value;
+                        }
+
+                        _.find(statsArray, function (item) {
+                            if(_.isObject(item.value)) {
+                                result = _.find(item.value, compareId);
+                                if(result)
+                                    return true;
+                            }
+                            return false;
                         });
-                        if (parentStat)
-                            return parentStat[id];
+
+                        return result.value;
                     }
                     else
-                    return stats2;
-//                        return currentStats;
-
-                    return undefined;
-                },
-                reset: function (stats) {
-                    currentStats = stats;
-                    currentStatsIndex = sortStats(_.keys(stats));
-
-                    stats2 = _.map(stats, function(value, key){
-                        var statInfo = DataSource.getStat(key);
-                        if(value.sub) {
-                            // TODO recursion
-                            value.sub =  _.map(stats, function(subValue, subKey){
-                                var statInfo = DataSource.getStat(subKey);
-                                return {
-                                    id: subKey,
-                                    value: subValue,
-                                    order: statInfo.order ? statInfo.order : 9999
-                                }
-                            });
-                        }
-                        return {
-                            id: key,
-                            value: value,
-                            order: statInfo.order ? statInfo.order : 9999
-                        }
-                    })
+                        return statsArray;
                 },
                 set: function (id, value) {
 
-                    return;
-
-                    // TODO optimize && make recursive; maybe use cache
-                    // change stat value
-                    if (currentStats[id]) {
-                        currentStats[id] = value;
+                    if(statsCache[id]) {
+                        statsCache[id].value = value;
                         return;
                     }
 
-                    // change substat value
-                    var found = false;
-                    _.map(currentStats, function (subValue, subId) {
-                        if (_.isObject(subValue) && (id in subValue)) {
-                            subValue[id] = value;
-                            found = true;
-                        }
+                    // TODO make reusable
+                    var compareId = function (item) {
+                        return item.id === id;
+                    };
 
-                        return subValue;
+                    // TODO optimize && make recursive; maybe use cache
+                    // change stat value
+                    var result = _.find(statsArray, compareId);
+                    if (result) {
+                        result.value = value;
+                        return;
+                    }
+
+                    _.find(statsArray, function (item) {
+                        if(_.isObject(item.value)) {
+                            result = _.find(item.value, compareId);
+                            if(result) {
+                                result.value = value;
+                                return true;
+                            }
+                        }
+                        return false;
                     });
 
                     // add value
-                    if(!found) {
-                        currentStats[id] = value;
-                        // TODO ?
-                        var tmpIndex = currentStatsIndex;
-                        tmpIndex.push(id);
-                        currentStatsIndex = sortStats(tmpIndex);
+                    if(!result) {
+                        statsArray.push({
+                            id: id,
+                            value: value,
+                            order: DataSource.getStat(id).order
+                        })
                     }
                 },
+                reset: function (stats) {
+                    // reset cache
+                    statsCache = {};
+                    // convert object of stats into array of stats with sorting order
+                    statsArray = statsToArray(stats);
+                },
                 remove: function (id) {
-                    return;
-                    currentStatsIndex = _.without(currentStatsIndex, id);
-                    delete currentStats[id];
+                    statsArray = _.reject(statsArray, function (item) {
+                        return item.id === id;
+                    });
+                    delete statsCache[id];
                 }
             }
         }
