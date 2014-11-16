@@ -51,11 +51,11 @@
 <div id="wrapper" ng-controller="AppCtrl as app">
     <nav class="top-menu">
         <div class="menu-container">
-            <div class="menu-item" ng-repeat="page in pages"><a href="#/{{page.url}}">{{page.name}}</a></div>
+            <div class="menu-item" ng-repeat="page in app.pages">
+                <a ng-class="{active: app.isCurrentPage(page.url)}" href="#/{{page.url}}">{{page.name}}</a>
+            </div>
         </div>
     </nav>
-
-    <header></header>
 
     <section id="content" ng-view></section>
 

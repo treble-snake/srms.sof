@@ -15,18 +15,23 @@ angular.module('srms.sof',
                 templateUrl: 'app/views/empty.html'
             })
     })
-    .controller('AppCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
-        $rootScope.appStatus = "Загрузка..";
-        $rootScope.version = "0.4.0";
+    .controller('AppCtrl', ['$rootScope', '$scope', '$location',
+        function ($rootScope, $scope, $location) {
+            $rootScope.appStatus = "Загрузка..";
+            $rootScope.version = "0.4.0";
 
-        $scope.pages = [
-            {url: 'contracts', name: 'Контракты'},
-            {url: 'mercenaries', name: 'Наемники'},
-            {url: 'implants', name: 'Импланты'},
-            {url: 'corporations', name: 'Корпорации'},
-            {url: 'about', name: 'О проекте'}
-        ];
-    }])
+            this.pages = [
+                {url: 'contracts', name: 'Контракты'},
+                {url: 'mercenaries', name: 'Наемники'},
+                {url: 'implants', name: 'Импланты'},
+                {url: 'corporations', name: 'Корпорации'},
+                {url: 'about', name: 'О проекте'}
+            ];
+
+            this.isCurrentPage = function(url) {
+                return "/" + url === $location.path()
+            }
+        }])
     .controller('StatsCtrl', [
         '$scope', 'CurrentState', 'DataSource',
         function ($scope, CurrentState, DataSource) {

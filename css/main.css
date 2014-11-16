@@ -139,6 +139,12 @@ html, body {
     color: #000;
 }
 
+.top-menu a.active
+{
+    color: #000;
+    text-decoration: underline;
+}
+
 header, footer
 {
     clear: both;
