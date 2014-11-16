@@ -1,5 +1,5 @@
 <div class="perk-info tree-item-content" id="perk-{{id}}"
-     ng-class="{available: ctrl.isPerkAvailable(perk), selected: perk.selected}"
+     ng-class="{available: ctrl.isPerkAvailable(perk), selected: ctrl.isSelected(id)}"
      ng-disabled="!ctrl.isPerkAvailable(perk)"
      ng-click="ctrl.addPerk(id)"
      tooltip-html-unsafe="{{::ctrl.getPerkTooltip(id, perk)}}"

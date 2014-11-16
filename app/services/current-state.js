@@ -49,6 +49,9 @@ angular.module('srms.sof.current-state', [])
                 remove: function (id) {
                     selectedPerks = _.without(selectedPerks, id);
                     perksCost -= DataSource.getPerk(id).price;
+                },
+                isSelected: function (id) {
+                    return _.contains(selectedPerks, id);
                 }
             },
 

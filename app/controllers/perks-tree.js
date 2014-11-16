@@ -8,6 +8,8 @@ angular.module('srms.sof')
             /* Public section */
             this.getAllPerks = DataSource.getPerks;
 
+            this.isSelected = CurrentState.perks.isSelected;
+
             this.isPerkAvailable = function (perk) {
                 var current = CurrentState.clazz.get();
                 var need = perk.for;
@@ -33,9 +35,8 @@ angular.module('srms.sof')
                 if (!perk || !ctrl.isPerkAvailable(perk))
                     return;
 
-                applyPerk(perk);
                 CurrentState.perks.toggle(id);
-                perk.selected = !perk.selected;
+                applyPerk(perk, ctrl.isSelected(id));
             };
 
             this.getPerkTooltip = function (perkId, perk) {
@@ -87,27 +88,25 @@ angular.module('srms.sof')
                 _.each(CurrentState.perks.get(), function (id) {
                     var perk = DataSource.getPerk(id);
                     if (!ctrl.isPerkAvailable(perk)) {
-                        perk.selected = false;
                         CurrentState.perks.remove(id);
                         return;
                     }
-                    applyPerk(perk);
-                    perk.selected = true;
+                    applyPerk(perk, ctrl.isSelected(id));
                 })
             };
 
             // TODO recursive, bitch!
-            function applyPerk(perk) {
+            function applyPerk(perk, selected) {
                 _.each(perk.effects, function (stats, id) {
                     var effect = effectsMap[id];
                     _.each(stats, function (value, id) {
                         if (_.isObject(value)) {
                             _.each(value, function (subValue, subId) {
-                                effect.apply(subId, subValue, perk.selected);
+                                effect.apply(subId, subValue, !selected);
                             });
                         }
                         else
-                            effect.apply(id, value, perk.selected);
+                            effect.apply(id, value, !selected);
                     })
                 })
             }
