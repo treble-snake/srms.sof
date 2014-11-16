@@ -123,9 +123,20 @@ html, body {
     border: 0;
 }
 
-.top-menu .menu-item a {
+.top-menu a
+{
     display: block;
     padding: 5px 15px;
+}
+
+.top-menu a:link,
+.top-menu a:visited {
+    color: #777;
+}
+
+.top-menu a:active,
+.top-menu a:hover {
+    color: #000;
 }
 
 header, footer
