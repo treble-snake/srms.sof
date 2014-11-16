@@ -1,9 +1,33 @@
-angular.module('srms.sof.calculator',
-    ['ui.bootstrap', 'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
-
-    .controller('CalculatorCtrl', ['$rootScope', function ($rootScope) {
+angular.module('srms.sof',
+    ['ui.bootstrap', 'ngRoute', 'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
+    .config(function ($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'app/views/empty.html',
+                controller: function(){
+                }
+            })
+            .when('/about', {
+                templateUrl: 'app/views/about.html'
+            })
+            .when('/implants', {
+                templateUrl: 'app/views/calculator.html'
+            })
+            .otherwise({
+                redirectTo: '/'
+            })
+    })
+    .controller('AppCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
         $rootScope.appStatus = "Загрузка..";
-        this.version = "0.4.0";
+        $rootScope.version = "0.4.0";
+
+        $scope.pages = [
+            {url: 'contracts', name: 'Контракты'},
+            {url: 'mercenaries', name: 'Наемники'},
+            {url: 'implants', name: 'Импланты'},
+            {url: 'corporations', name: 'Корпорации'},
+            {url: 'about', name: 'О проекте'}
+        ];
     }])
     .controller('StatsCtrl', [
         '$scope', 'CurrentState', 'DataSource',

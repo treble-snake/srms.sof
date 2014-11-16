@@ -1,4 +1,4 @@
-angular.module('srms.sof.calculator')
+angular.module('srms.sof')
     .factory('TooltipMaker', [function () {
 
         var maker = this;

@@ -1,4 +1,4 @@
-angular.module('srms.sof.calculator')
+angular.module('srms.sof')
     .filter('statsToArray', ['DataSource', function (DataSource) {
         return function (input) {
             return _.map(input, function (value, key) {

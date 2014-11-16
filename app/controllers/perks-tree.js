@@ -1,4 +1,4 @@
-angular.module('srms.sof.calculator')
+angular.module('srms.sof')
     .controller('PerksCtrl', [
         '$scope', '$rootScope', 'CurrentState', 'DataSource', 'TooltipMaker', 'statsToArrayFilter',
         function ($scope, $rootScope, CurrentState, DataSource, TooltipMaker, statsToArray) {

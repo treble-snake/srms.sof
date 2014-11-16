@@ -1,4 +1,4 @@
-angular.module('srms.sof.calculator')
+angular.module('srms.sof')
     .controller('ClassesCtrl', ['$rootScope', 'CurrentState', 'DataSource', 'TooltipMaker', 'sortStatsFilter', 'statsToArrayFilter',
         function ($rootScope, CurrentState, DataSource, TooltipMaker, sortStats, statsToArray) {
 

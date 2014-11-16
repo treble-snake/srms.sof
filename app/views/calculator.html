@@ -1,0 +1,34 @@
+<h3>Калькулятор имплантов: {{appStatus}}</h3>
+<div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
+    <div ng-if="ctrl.getCurrentClass()">
+        <h4><span>{{ctrl.getCurrentClass().name}}</span></h4>
+
+        <div class="cost"><span class="title">Бюджет:</span> ${{ctrl.getCost()}}</div>
+    </div>
+
+    <div id="stats" ng-if="!_.isEmpty(ctrl.getStatValues())">
+        <div stats-pane
+             stat-values="ctrl.getStatValues()"
+             stat-info="::ctrl.getStatsInfo()"></div>
+    </div>
+</div>
+
+<div class="pane" id="classes-pane" ng-controller="ClassesCtrl as ctrl">
+    <div id="class-tree">
+        <h4>Базовые импланты</h4>
+
+        <div class="class tree-item root-tree-item"
+             ng-repeat="(classId, classData) in ::ctrl.getAllClasses()"
+             ng-include="'app/partials/class-tree.item.html'"></div>
+    </div>
+</div>
+
+<div class="pane" id="perks-pane" ng-controller="PerksCtrl as ctrl">
+    <h4>Аугментации</h4>
+
+    <div id="perks">
+        <div class="perk tree-item root-tree-item"
+             ng-repeat="(id, perk) in ::ctrl.getAllPerks()"
+             ng-include="'app/partials/perk-tree.item.html'"></div>
+    </div>
+</div>

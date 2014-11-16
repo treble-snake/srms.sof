@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" ng-app="srms.sof.calculator">
+<html class="no-js" ng-app="srms.sof">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +11,7 @@
     <!-- jQuery and AngularJS -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-route.js"></script>
     <script src="js/vendor/ui-bootstrap-tpls-0.11.2.min.js"></script>
 
     <!-- Bootstrap -->
@@ -39,7 +40,6 @@
     <script src="app/controllers/perks-tree.js"></script>
     <script src="app/controllers/classes-tree.js"></script>
     <script src="app/filters/stats-filters.js"></script>
-
 </head>
 <body>
 
@@ -48,77 +48,23 @@
         href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div id="wrapper" ng-controller="CalculatorCtrl as calculator">
-    <h3>S.R.M.S. SoF Калькулятор имплантов v{{::calculator.version}}: {{appStatus}}</h3>
-
-    <p>&copy; S.R.M.S. Steel Rats Mercenary Squad</p>
-
-    <p><a href="https://github.com/treble-snake/srms.sof/issues/new" target="_blank">Отзывы,
-        предложения, баг-репорты. Пожалуйста.</a></p>
-
-    <div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
-        <div ng-if="ctrl.getCurrentClass()">
-            <h4><span>{{ctrl.getCurrentClass().name}}</span></h4>
-            <div class="cost"><span class="title">Бюджет:</span> ${{ctrl.getCost()}}</div>
+<div id="wrapper" ng-controller="AppCtrl as app">
+    <nav class="top-menu">
+        <div class="menu-container">
+            <div class="menu-item" ng-repeat="page in pages"><a href="#/{{page.url}}">{{page.name}}</a></div>
         </div>
+    </nav>
 
-        <div id="stats" ng-if="!_.isEmpty(ctrl.getStatValues())">
-            <div stats-pane
-                 stat-values="ctrl.getStatValues()"
-                 stat-info="::ctrl.getStatsInfo()"></div>
-        </div>
-    </div>
+    <header></header>
 
-    <div class="pane" id="classes-pane" ng-controller="ClassesCtrl as ctrl">
-        <div id="class-tree">
-            <h4>Базовые импланты</h4>
+    <section id="content" ng-view></section>
 
-            <div class="class tree-item root-tree-item"
-                 ng-repeat="(classId, classData) in ::ctrl.getAllClasses()"
-                 ng-include="'classTreeItem'"></div>
-        </div>
-    </div>
-
-    <div class="pane" id="perks-pane" ng-controller="PerksCtrl as ctrl">
-        <h4>Аугментации</h4>
-
-        <div id="perks">
-            <div class="perk tree-item root-tree-item"
-                 ng-repeat="(id, perk) in ::ctrl.getAllPerks()"
-                 ng-include="'perkTreeItem'"></div>
-        </div>
-    </div>
+    <footer>
+        <p><a href="https://github.com/treble-snake/srms.sof/issues/new" target="_blank">Отзывы,
+            предложения, баг-репорты. Пожалуйста.</a></p>
+        <p>v{{version}} &copy; S.R.M.S. Steel Rats Mercenary Squad</p>
+    </footer>
 </div>
-
-<script type="text/ng-template" id="perkTreeItem">
-    <div class="perk-info tree-item-content" id="perk-{{id}}"
-         ng-class="{available: ctrl.isPerkAvailable(perk), selected: perk.selected}"
-         ng-disabled="!ctrl.isPerkAvailable(perk)"
-         ng-click="ctrl.addPerk(id)"
-         tooltip-html-unsafe="{{::ctrl.getPerkTooltip(id, perk)}}"
-         tooltip-placement="left"
-         tooltip-animation="false">
-    </div>
-    <div class="tree-wrapper" ng-show="::perk.sub">
-        <div class="perk tree-item" ng-repeat="(id, perk) in ::perk.sub"
-             ng-include="'perkTreeItem'"></div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="classTreeItem">
-    <div class="class-info tree-item-content" id="class-{{classId}}"
-         ng-class="{available: ctrl.isClassAvailable(classId), selected: ctrl.isClassSelected(classId)}"
-         ng-disabled="!ctrl.isClassAvailable(classId)"
-         ng-click="ctrl.setClass(classId, classData)"
-         tooltip-html-unsafe="{{::ctrl.getClassTooltip(classId, classData)}}"
-         tooltip-placement="left"
-         tooltip-animation="false">
-    </div>
-    <div class="tree-wrapper" ng-show="::classData.sub">
-        <div class="class tree-item" ng-repeat="(classId, classData) in ::classData.sub"
-             ng-include="'classTreeItem'"></div>
-    </div>
-</script>
 
 </body>
 </html>
