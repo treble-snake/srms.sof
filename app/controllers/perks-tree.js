@@ -116,7 +116,7 @@ angular.module('srms.sof.calculator')
                 add: {
                     apply: function (id, value, revert) {
                         CurrentState.stats.set(id,
-                                CurrentState.stats.get(id) + (revert ? -1 * value : value)
+                                parseFloat((CurrentState.stats.get(id) + (revert ? -1 * value : value)).toFixed(1))
                         );
                     },
                     getName: function (value) {

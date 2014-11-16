@@ -3,7 +3,7 @@ angular.module('srms.sof.calculator',
 
     .controller('CalculatorCtrl', ['$rootScope', function ($rootScope) {
         $rootScope.appStatus = "Загрузка..";
-        this.version = "0.3.5";
+        this.version = "0.3.6";
     }])
     .controller('StatsCtrl', [
         '$scope', 'CurrentState', 'DataSource',
