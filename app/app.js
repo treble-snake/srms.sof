@@ -3,9 +3,7 @@ angular.module('srms.sof',
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'app/views/empty.html',
-                controller: function(){
-                }
+                redirectTo: '/about'
             })
             .when('/about', {
                 templateUrl: 'app/views/about.html'
@@ -14,7 +12,7 @@ angular.module('srms.sof',
                 templateUrl: 'app/views/calculator.html'
             })
             .otherwise({
-                redirectTo: '/'
+                templateUrl: 'app/views/empty.html'
             })
     })
     .controller('AppCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
