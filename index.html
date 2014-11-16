@@ -57,7 +57,10 @@
         предложения, баг-репорты. Пожалуйста.</a></p>
 
     <div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
-        <h4><span>{{ctrl.getCurrentClass().name}}</span></h4>
+        <div ng-if="ctrl.getCurrentClass()">
+            <h4><span>{{ctrl.getCurrentClass().name}}</span></h4>
+            <div class="cost"><span class="title">Бюджет:</span> ${{ctrl.getCost()}}</div>
+        </div>
 
         <div id="stats" ng-if="!_.isEmpty(ctrl.getStatValues())">
             <div stats-pane

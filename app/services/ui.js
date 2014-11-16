@@ -33,7 +33,7 @@ angular.module('srms.sof.calculator')
              */
             renderTooltip: function (subject, data, composeName, appendCustomData) {
                 var result = $('<section class="tree-tooltip"></section>');
-                result.append('<h1>' + subject.name + '</h1>');
+                result.append('<h1>' + subject.name + ' ($' + subject.price + ')</h1>');
                 result.append('<p class="desc">' + subject.desc + '</p>');
                 result.append('<h2>Характеристики</h2>');
 

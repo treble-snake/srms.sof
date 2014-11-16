@@ -9,7 +9,15 @@ angular.module('srms.sof.current-state', [])
         var statsArray = [];
         var statsCache = {};
 
+        var perksCost = 0;
+
         return {
+
+            cost: {
+                get: function() {
+                    return currentClass.price + perksCost;
+                }
+            },
 
             // class
             clazz: {
@@ -36,9 +44,11 @@ angular.module('srms.sof.current-state', [])
                 },
                 add: function (id) {
                     selectedPerks.push(id);
+                    perksCost += DataSource.getPerk(id).price;
                 },
                 remove: function (id) {
                     selectedPerks = _.without(selectedPerks, id);
+                    perksCost -= DataSource.getPerk(id).price;
                 }
             },
 

@@ -3,7 +3,7 @@ angular.module('srms.sof.calculator',
 
     .controller('CalculatorCtrl', ['$rootScope', function ($rootScope) {
         $rootScope.appStatus = "Загрузка..";
-        this.version = "0.3.6";
+        this.version = "0.4.0";
     }])
     .controller('StatsCtrl', [
         '$scope', 'CurrentState', 'DataSource',
@@ -11,6 +11,7 @@ angular.module('srms.sof.calculator',
             this.getStatsInfo = DataSource.getStatsInfo;
             this.getStatValues = CurrentState.stats.get;
             this.getCurrentClass = CurrentState.clazz.get;
+            this.getCost = CurrentState.cost.get;
         }])
     .directive('statsPane', [
         'RecursionHelper',

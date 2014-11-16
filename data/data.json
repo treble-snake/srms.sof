@@ -168,6 +168,7 @@
             "name": "Наемник",
             "desc": "Обычный лошпед с пушкой",
             "level": 0,
+            "price": 0,
             "stats": {
                 "base": {
                     "hp": 16,
@@ -188,6 +189,7 @@
                     "name": "Штурмовик",
                     "desc": "Он штурмует! ололо! Засыпкин, берегись!",
                     "level": 1,
+                    "price": 100,
                     "stats": {
                         "base": {
                             "hp": 18,
@@ -204,6 +206,7 @@
                             "name": "Дестроер Mk-1",
                             "desc": "Убивает почти всё живое.",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "damage": 5
@@ -218,6 +221,7 @@
                                     "name": "Дестроер Mk-2",
                                     "desc": "Убивает всё живое.",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "damage": 7,
@@ -231,6 +235,7 @@
                                             "name": "Дестроер Mk-3",
                                             "desc": "Убивает всё живое, мертвое оживляет и тоже убивает.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "damage": 10,
@@ -248,6 +253,7 @@
                             "name": "Джаггернаут Mk-1",
                             "desc": "Долго умирает.",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "hp": 25
@@ -262,6 +268,7 @@
                                     "name": "Джаггернаут Mk-2",
                                     "desc": "Очень долго умирает.",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "hp": 28,
@@ -278,6 +285,7 @@
                                             "name": "Джаггернаут Mk-3",
                                             "desc": "Почти не умирает.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "hp": 31,
@@ -300,6 +308,7 @@
                     "name": "Снайпер",
                     "desc": "Он пырит в прицел.",
                     "level": 1,
+                    "price": 100,
                     "stats": {
                         "base": {
                             "damage": 10,
@@ -315,6 +324,7 @@
                             "name": "Марксмен Mk-1",
                             "desc": "Легкий снайпер",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "hp": 18,
@@ -329,6 +339,7 @@
                                     "name": "Марксмен Mk-2",
                                     "desc": "Место для остроумного описания.",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "hp": 21,
@@ -346,6 +357,7 @@
                                             "name": "Марксмен Mk-3",
                                             "desc": "Легкий снайпер, может даже и штурмануть.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "hp": 25,
@@ -365,6 +377,7 @@
                             "name": "Хищник Mk-1",
                             "desc": "Ныкается по кустам и больно оттуда пуляется.",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "damage": 15,
@@ -381,6 +394,7 @@
                                     "name": "Хищник Mk-2",
                                     "desc": "Выслеживает и уничтожает.",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "hp": 18,
@@ -395,6 +409,7 @@
                                             "name": "Хищник Mk-3",
                                             "desc": "Вам пиздец.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "hp": 21,
@@ -419,6 +434,7 @@
                     "name": "Саппорт",
                     "desc": "Он прижимает врагов к земле, стреляя из пулемета!",
                     "level": 1,
+                    "price": 100,
                     "stats": {
                         "base": {
                             "damage": 5,
@@ -436,6 +452,7 @@
                             "name": "Чистильщик Mk-1",
                             "desc": "Быстренько добивает раненных короткими очередями.",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "rounds": 40
@@ -448,6 +465,7 @@
                                     "name": "Чистильщик Mk-2",
                                     "desc": "Швыряется гранатами и добивает выживших.",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "damage": 7,
@@ -464,6 +482,7 @@
                                             "name": "Чистильщик Mk-3",
                                             "desc": "Мистер Пропер.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "rounds": 50,
@@ -481,6 +500,7 @@
                             "name": "Доминатор Mk-1",
                             "desc": "Кто был непослушным мальчиком?!",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "rounds": 60,
@@ -496,6 +516,7 @@
                                     "name": "Доминатор Mk-2",
                                     "desc": "Только попробуй поднять голову!",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "reload": 10,
@@ -511,6 +532,7 @@
                                             "name": "Доминатор Mk-3",
                                             "desc": "Очереди длинною в вечность.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "speed": 650,
@@ -533,6 +555,7 @@
                     "name": "Инженер",
                     "desc": "Делает всякие штуки",
                     "level": 1,
+                    "price": 100,
                     "stats": {
                         "base": {
                             "damage": 4,
@@ -552,6 +575,7 @@
                             "name": "Сапер Mk-1",
                             "desc": "Минирует-разминирует.",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "hp": 18
@@ -568,6 +592,7 @@
                                     "name": "Сапер Mk-2",
                                     "desc": "Взрывать! Взрывать всё!",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "hp": 21
@@ -583,6 +608,7 @@
                                             "name": "Сапер Mk-3",
                                             "desc": "Может устроить локальный экстерминатус.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "damage": 5,
@@ -603,6 +629,7 @@
                             "name": "Снабженец Mk-1",
                             "desc": "У него есть боеприпасы.",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "hp": 18
@@ -617,6 +644,7 @@
                                     "name": "Снабженец Mk-2",
                                     "desc": "У него есть много боеприпасов.",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "hp": 21
@@ -632,6 +660,7 @@
                                             "name": "Снабженец Mk-3",
                                             "desc": "Человек-склад боеприпасов.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "speed": 600,
@@ -654,6 +683,7 @@
                     "name": "Медик",
                     "desc": "Он может лечить. А может и не лечить.",
                     "level": 1,
+                    "price": 100,
                     "stats": {
                         "base": {
                             "damage": 5,
@@ -675,6 +705,7 @@
                             "name": "Фельдшер Mk-1",
                             "desc": "Спец по мелким ранам. Ногу не пришьет.",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "speed": 250,
@@ -695,6 +726,7 @@
                                     "name": "Фельдшер Mk-2",
                                     "desc": "Спец по мелким ранам. Ногу не пришьет.",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "damage": 7,
@@ -716,6 +748,7 @@
                                             "name": "Фельдшер Mk-3",
                                             "desc": "Спец по мелким ранам. Ногу не пришьет.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "speed": 300,
@@ -741,6 +774,7 @@
                             "name": "Хирург Mk-1",
                             "desc": "Отрежет ногу прямо в окопе.",
                             "level": 2,
+                            "price": 300,
                             "stats": {
                                 "base": {
                                     "speed": 250,
@@ -765,6 +799,7 @@
                                     "name": "Хирург Mk-2",
                                     "desc": "Вырежет аппендицит под огнем противника.",
                                     "level": 3,
+                                    "price": 600,
                                     "stats": {
                                         "base": {
                                             "damage": 7,
@@ -786,6 +821,7 @@
                                             "name": "Хирург Mk-3",
                                             "desc": "Вынет пулю и заштопает, не моргнув глазом.",
                                             "level": 4,
+                                            "price": 1400,
                                             "stats": {
                                                 "base": {
                                                     "speed": 300,
@@ -815,6 +851,7 @@
     "perks": {
         "steelSkin": {
             "level": 1,
+            "price": 100,
             "name": "Стальная кожа",
             "desc": "",
             "effects": {
@@ -829,6 +866,7 @@
 
         "bigPockets": {
             "level": 1,
+            "price": 100,
             "name": "Еще подсумок",
             "desc": "",
             "effects": {
@@ -844,6 +882,7 @@
 
         "nopain-1": {
             "level": 1,
+            "price": 100,
             "name": "Невоспр. к боли",
             "desc": "",
             "effects": {
@@ -859,6 +898,7 @@
                 "nopain-2": {
                     "parent": "nopain-1",
                     "level": 2,
+                    "price": 300,
                     "name": "Суперневоспр. к боли",
                     "desc": "",
                     "effects": {
@@ -876,6 +916,7 @@
 
         "moreRounds-1": {
             "level": 1,
+            "price": 100,
             "name": "Расширенные магазины",
             "desc": "",
             "effects": {
@@ -893,6 +934,7 @@
                 "moreRounds-2": {
                     "parent": "moreRounds-1",
                     "level": 2,
+                    "price": 300,
                     "name": "Большие магазины",
                     "desc": "",
                     "effects": {
@@ -909,6 +951,7 @@
                         "moreRounds-3": {
                             "parent": "moreRounds-2",
                             "level": 3,
+                            "price": 600,
                             "name": "Здоровенные магазины",
                             "desc": "",
                             "effects": {
@@ -929,6 +972,7 @@
 
         "sniperMoreRounds-1": {
             "level": 1,
+            "price": 100,
             "name": "Расширенные магазины снайпера",
             "desc": "",
             "effects": {
@@ -944,6 +988,7 @@
                 "sniperMoreRounds-2": {
                     "parent": "sniperMoreRounds-1",
                     "level": 2,
+                    "price": 300,
                     "name": "Большие магазины снайпера",
                     "desc": "",
                     "effects": {
@@ -959,6 +1004,7 @@
                         "sniperMoreRounds-3": {
                             "parent": "sniperMoreRounds-2",
                             "level": 3,
+                            "price": 600,
                             "name": "Здоровенные магазины снайпера",
                             "desc": "",
                             "effects": {
@@ -978,6 +1024,7 @@
 
         "weaponCare-1": {
             "level": 1,
+            "price": 100,
             "name": "Уход за оружием",
             "desc": "",
             "effects": {
@@ -993,6 +1040,7 @@
                 "weaponCare-2": {
                     "parent": "weaponCare-1",
                     "level": 2,
+                    "price": 300,
                     "name": "Крутой уход за оружием",
                     "desc": "",
                     "effects": {
@@ -1010,6 +1058,7 @@
 
         "extraWeapon": {
             "level": 1,
+            "price": 100,
             "name": "Сюрприз из кобуры",
             "desc": "",
             "effects": {
@@ -1024,6 +1073,7 @@
                 "ammoBalance": {
                     "parent": "extraWeapon",
                     "level": 2,
+                    "price": 300,
                     "name": "Македонец",
                     "desc": "",
                     "effects": {
@@ -1047,6 +1097,7 @@
 
         "bomber": {
             "level": 1,
+            "price": 100,
             "name": "Гранатометчик",
             "desc": "",
             "effects": {
@@ -1062,6 +1113,7 @@
 
         "doctor": {
             "level": 1,
+            "price": 100,
             "name": "Доктор наук",
             "desc": "",
             "effects": {
@@ -1081,6 +1133,7 @@
 
         "bigBag-1": {
             "level": 1,
+            "price": 100,
             "name": "Большой рюкзак",
             "desc": "",
             "effects": {
@@ -1096,6 +1149,7 @@
                 "bigBag-2": {
                     "parent": "bigBag-1",
                     "level": 2,
+                    "price": 300,
                     "name": "Огромный рюкзак",
                     "desc": "",
                     "effects": {
@@ -1111,6 +1165,7 @@
                         "bigBag-3": {
                             "parent": "bigBag-2",
                             "level": 3,
+                            "price": 600,
                             "name": "Гиганторский рюкзак",
                             "desc": "",
                             "effects": {
@@ -1130,6 +1185,7 @@
 
         "radioMines": {
             "level": 1,
+            "price": 100,
             "name": "Радиосвязь",
             "desc": "",
             "effects": {
@@ -1148,6 +1204,7 @@
 
         "initiative": {
             "level": 1,
+            "price": 5100,
             "name": "Супер реакция",
             "desc": "",
             "effects": {

@@ -268,6 +268,10 @@ div.pane {
     font-weight: bold;
 }
 
+#stats-pane .cost .title {
+    font-weight: bold;
+}
+
 /** ================= Tooltips ====================*/
 
 .tree-tooltip {
@@ -289,7 +293,6 @@ div.pane {
 
 .tooltip-stat .tooltip-stat {
     margin-left: 10px;
-
 }
 
 /* ==========================================================================
