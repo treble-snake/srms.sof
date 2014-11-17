@@ -1,6 +1,23 @@
 angular.module('srms.sof',
     ['ui.bootstrap', 'ngRoute', 'ngAnimate',
         'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
+
+    .controller('AppCtrl', ['$location', function ($location) {
+        this.version = "0.4.8";
+
+        this.pages = [
+            {url: 'contracts', name: 'Контракты'},
+            {url: 'mercenaries', name: 'Наемники'},
+            {url: 'implants', name: 'Импланты'},
+            {url: 'corporations', name: 'Корпорации'},
+            {url: 'about', name: 'О проекте'}
+        ];
+
+        this.isCurrentPage = function (url) {
+            return  url === $location.path().substring(1)
+        }
+    }])
+
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -22,21 +39,7 @@ angular.module('srms.sof',
                 templateUrl: 'app/views/empty.html'
             })
     })
-    .controller('AppCtrl', ['$location', function ($location) {
-            this.version = "0.4.7";
 
-            this.pages = [
-                {url: 'contracts', name: 'Контракты'},
-                {url: 'mercenaries', name: 'Наемники'},
-                {url: 'implants', name: 'Импланты'},
-                {url: 'corporations', name: 'Корпорации'},
-                {url: 'about', name: 'О проекте'}
-            ];
-
-            this.isCurrentPage = function (url) {
-                return  url === $location.path().substring(1)
-            }
-        }])
     .controller('StatsCtrl', [
         '$scope', 'CurrentState', 'DataSource',
         function ($scope, CurrentState, DataSource) {

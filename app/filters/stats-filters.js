@@ -1,16 +1,10 @@
 angular.module('srms.sof')
     .filter('statsToArray', ['DataSource', function (DataSource) {
-        return function (input) {
+
+        function toArray(input) {
             return _.map(input, function (value, key) {
-                // TODO recursion, bitch!
                 if (_.isObject(value)) {
-                    value = _.map(value, function (subValue, subKey) {
-                        return {
-                            id: subKey,
-                            value: subValue,
-                            order: DataSource.getStat(subKey).order
-                        }
-                    });
+                    value = toArray(value)
                 }
                 return {
                     id: key,
@@ -18,6 +12,10 @@ angular.module('srms.sof')
                     order: DataSource.getStat(key).order
                 }
             })
+        }
+
+        return function (input) {
+            return toArray(input)
         }
     }])
     .filter('sortStats', ['DataSource', function (DataSource) {
@@ -35,7 +33,7 @@ angular.module('srms.sof')
         }
 
         return function filter(input) {
-//            console.log("sort called");
+// TODO check out calls qty: console.log("sort called");
             return input.sort(function (a, b) {
                 var diff = getOrder(b) - getOrder(a);
                 return  diff == 0 ? compareNames(a, b) : diff;

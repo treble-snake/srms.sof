@@ -95,19 +95,18 @@ angular.module('srms.sof')
                 })
             };
 
-            // TODO recursive, bitch!
             function applyPerk(perk, selected) {
                 _.each(perk.effects, function (stats, id) {
-                    var effect = effectsMap[id];
-                    _.each(stats, function (value, id) {
-                        if (_.isObject(value)) {
-                            _.each(value, function (subValue, subId) {
-                                effect.apply(subId, subValue, !selected);
-                            });
-                        }
-                        else
-                            effect.apply(id, value, !selected);
-                    })
+                    applyEffectOnStats(stats, effectsMap[id], !selected)
+                })
+            }
+
+            function applyEffectOnStats(stats, effect, revert) {
+                _.each(stats, function (value, id) {
+                    if (_.isObject(value))
+                        applyEffectOnStats(value, effect, revert);
+                    else
+                        effect.apply(id, value, revert);
                 })
             }
 
