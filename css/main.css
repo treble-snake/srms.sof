@@ -169,7 +169,18 @@ footer {
 }
 
 #content {
+
 }
+
+#content.ng-enter, #content.ng-leave {
+    -webkit-transition:0.3s linear all;
+    transition:0.3s linear all;
+}
+
+#content.ng-enter { opacity: 0.2 }        /* starting animations for enter */
+#content.ng-enter.ng-enter-active { opacity: 1 } /* terminal animations for enter */
+#content.ng-leave { display: none }        /* starting animations for leave */
+#content.ng-leave.ng-leave-active { display: none } /* terminal animations for leave */
 
 p.epigraph {
     text-align: right;
