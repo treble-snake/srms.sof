@@ -33,7 +33,7 @@ angular.module('srms.sof',
             ];
 
             this.isCurrentPage = function (url) {
-                return "/" + url === $location.path()
+                return  url === $location.path().substring(1)
             }
         }])
     .controller('StatsCtrl', [

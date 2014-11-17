@@ -7,7 +7,7 @@ angular.module('srms.sof')
                 plotShadow: false
             },
             title: {
-                text: 'Влияние корпораций на рынке тибериума, ноябрь 2064'
+                text: 'Влияние корпораций на рынке нейтринита, ноябрь 2064'
             },
             tooltip: {
                 pointFormat: '<p>{point.desc}</p>'
@@ -46,7 +46,7 @@ angular.module('srms.sof')
                             desc: "Описание корпорации бла бла бла. Бла бла."
                         },
                         {
-                            name: 'Тибпром',
+                            name: 'Нейпром',
                             y: 20.1,
                             desc: "Мечты сбываются."
                         },
