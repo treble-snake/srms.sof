@@ -44,6 +44,7 @@
     <script src="app/controllers/corporations-page.js"></script>
     <script src="app/filters/stats-filters.js"></script>
     <script src="app/directives/stats-pane.js"></script>
+    <script src="app/directives/other.js"></script>
 </head>
 <body>
 
@@ -61,12 +62,12 @@
         </div>
     </nav>
 
-    <section id="content" ng-view></section>
+    <section id="content" data-ng-view></section>
 
     <footer>
         <p><a href="https://github.com/treble-snake/srms.sof/issues/new" target="_blank">Отзывы,
             предложения, баг-репорты. Пожалуйста.</a></p>
-        <p>v{{version}} &copy; S.R.M.S. Steel Rats Mercenary Squad</p>
+        <p>v{{app.version}} &copy; S.R.M.S. Steel Rats Mercenary Squad</p>
     </footer>
 </div>
 
