@@ -1,12 +1,14 @@
-<div class="class-info tree-item-content" id="class-{{classId}}"
-     ng-class="{available: ctrl.isClassAvailable(classId), selected: ctrl.isClassSelected(classId)}"
-     ng-disabled="!ctrl.isClassAvailable(classId)"
-     ng-click="ctrl.setClass(classId, classData)"
-     tooltip-html-unsafe="{{::ctrl.getClassTooltip(classId, classData)}}"
-     tooltip-placement="left"
-     tooltip-animation="false">
-</div>
-<div class="tree-wrapper" ng-show="::classData.sub">
-    <div class="class tree-item" ng-repeat="(classId, classData) in ::classData.sub"
-         ng-include="'app/partials/class-tree.item.html'"></div>
+<div class="class tree-item" ng-class="{'root-tree-item': root}"
+     ng-repeat="(classId, classData) in itemsList">
+    <div class="class-info tree-item-content" id="class-{{classId}}"
+         ng-class="{available: ctrl.isAvailable(classId), selected: ctrl.isSelected(classId)}"
+         ng-disabled="!ctrl.isAvailable(classId)"
+         ng-click="ctrl.choose(classId, classData)"
+         tooltip-html-unsafe="{{::ctrl.getTooltip(classId, classData)}}"
+         tooltip-placement="left"
+         tooltip-animation="false">
+    </div>
+    <div class="tree-wrapper" ng-if="::classData.sub">
+        <div class-item data-items-list="::classData.sub"></div>
+    </div>
 </div>

@@ -1,0 +1,19 @@
+<div class="{{type}} tree-item" ng-class="{'root-tree-item': root}"
+     ng-repeat="(id, item) in itemsList">
+    <div class="{{type}}-info tree-item-content" id="{{type}}-{{id}}"
+         ng-class="{available: ctrl.isAvailable(id), selected: ctrl.isSelected(id)}"
+         ng-disabled="!ctrl.isAvailable(id)"
+         ng-click="ctrl.choose(id, item)"
+         tooltip-html-unsafe="{{::ctrl.getTooltip(id, item)}}"
+         tooltip-placement="left"
+         tooltip-animation="false">
+    </div>
+    <div class="tree-wrapper" ng-if="::item.sub" ng-switch on="ctName">
+        <div ng-switch-when="ClassesCtrl" tree-item data-items-list="::item.sub"
+             data-type="{{type}}" data-ct-name="ClassesCtrl"
+             data-ctrl-name="ClassesCtrl"></div>
+        <div ng-switch-when="PerksCtrl" tree-item data-items-list="::item.sub"
+             data-type="{{type}}" data-ct-name="PerksCtrl"
+             data-ctrl-name="PerksCtrl"></div>
+    </div>
+</div>

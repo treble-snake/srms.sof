@@ -6,13 +6,15 @@ angular.module('srms.sof')
             var ctrl = this;
 
             /* Public section */
-            this.getAllPerks = DataSource.getPerks;
+            this.getAll = DataSource.getPerks;
 
             this.isSelected = CurrentState.perks.isSelected;
 
-            this.isPerkAvailable = function (perk) {
+            this.isAvailable = function (id, perk1) {
+                var perk = DataSource.getPerk(id);
                 var current = CurrentState.clazz.get();
                 var need = perk.for;
+
                 if (current.level < need.level)
                     return false;
 
@@ -30,16 +32,16 @@ angular.module('srms.sof')
                 return true;
             };
 
-            this.addPerk = function (id) {
-                var perk = DataSource.getPerk(id);
-                if (!perk || !ctrl.isPerkAvailable(perk))
+            this.choose = function (id, perk) {
+//                var perk = DataSource.getPerk(id);
+                if (!perk || !ctrl.isAvailable(id, perk))
                     return;
 
                 CurrentState.perks.toggle(id);
                 applyPerk(perk, ctrl.isSelected(id));
             };
 
-            this.getPerkTooltip = function (perkId, perk) {
+            this.getTooltip = function (perkId, perk) {
                 var statsArray = [];
                 _.each(perk.effects, function (stats, effectId) {
                     statsArray = statsArray.concat(
@@ -87,7 +89,7 @@ angular.module('srms.sof')
             $rootScope.applyPerks = function () {
                 _.each(CurrentState.perks.get(), function (id) {
                     var perk = DataSource.getPerk(id);
-                    if (!ctrl.isPerkAvailable(perk)) {
+                    if (!ctrl.isAvailable(id, perk)) {
                         CurrentState.perks.remove(id);
                         return;
                     }

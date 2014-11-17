@@ -1,34 +1,31 @@
 <h3>Калькулятор имплантов: {{appStatus}}</h3>
 <div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
     <div ng-if="ctrl.getCurrentClass()">
-        <h4><span>{{ctrl.getCurrentClass().name}}</span></h4>
-
+        <h4>{{ctrl.getCurrentClass().name}}</h4>
         <div class="cost"><span class="title">Бюджет:</span> ${{ctrl.getCost()}}</div>
     </div>
 
     <div id="stats" ng-if="!_.isEmpty(ctrl.getStatValues())">
         <div stats-pane
-             stat-values="ctrl.getStatValues()"
-             stat-info="::ctrl.getStatsInfo()"></div>
+             data-stat-values="ctrl.getStatValues()"
+             data-stat-info="::ctrl.getStatsInfo()"></div>
     </div>
 </div>
 
-<div class="pane" id="classes-pane" ng-controller="ClassesCtrl as ctrl">
-    <div id="class-tree">
-        <h4>Базовые импланты</h4>
-
-        <div class="class tree-item root-tree-item"
-             ng-repeat="(classId, classData) in ::ctrl.getAllClasses()"
-             ng-include="'app/partials/class-tree.item.html'"></div>
+<div class="pane" id="classes-pane">
+    <h4>Базовые импланты</h4>
+    <div id="class-tree" ng-controller="ClassesCtrl as ctrl">
+        <div class-item data-root="true" data-items-list="::ctrl.getAll()"></div>
+        <!--<div tree-item data-root="true" data-items-list="::ctrl.getAll()"-->
+             <!--data-type="class" data-ct-name="ClassesCtrl" data-ctrl-name="ClassesCtrl"></div>-->
     </div>
 </div>
 
-<div class="pane" id="perks-pane" ng-controller="PerksCtrl as ctrl">
+<div class="pane" id="perks-pane">
     <h4>Аугментации</h4>
-
-    <div id="perks">
-        <div class="perk tree-item root-tree-item"
-             ng-repeat="(id, perk) in ::ctrl.getAllPerks()"
-             ng-include="'app/partials/perk-tree.item.html'"></div>
+    <div id="perks" ng-controller="PerksCtrl as ctrl">
+        <div perk-item data-root="true" data-items-list="::ctrl.getAll()"></div>
+        <!--<div tree-item data-root="true" data-items-list="::ctrl.getAll()"-->
+             <!--data-type="perk" data-ct-name="PerksCtrl" data-ctrl-name="PerksCtrl"></div>-->
     </div>
 </div>

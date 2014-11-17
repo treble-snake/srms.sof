@@ -8,17 +8,17 @@ angular.module('srms.sof')
             DataSource.initialize()
                 .then(function (promise) {
                     $rootScope.appStatus = "Готов!";
-                    ctrl.setClass(BASE_CLASS_ID, DataSource.getClass(BASE_CLASS_ID));
+                    ctrl.choose(BASE_CLASS_ID, DataSource.getClass(BASE_CLASS_ID));
                 })
                 .catch(function (err) {
                     $rootScope.appStatus = "Обломинго =(";
                 });
 
             /* Public section */
-            this.getAllClasses = DataSource.getClasses;
+            this.getAll = DataSource.getClasses;
 
-            this.setClass = function (classId, classData) {
-                if (!ctrl.isClassAvailable(classId))
+            this.choose = function (classId, classData) {
+                if (!ctrl.isAvailable(classId))
                     return;
 
                 CurrentState.clazz.set(classId, classData);
@@ -26,18 +26,18 @@ angular.module('srms.sof')
                 $rootScope.applyPerks();
             };
 
-            this.isClassSelected = function (id) {
+            this.isSelected = function (id) {
                 return id === CurrentState.clazz.id();
             };
 
-            this.isClassAvailable = function (id) {
+            this.isAvailable = function (id) {
                 return _.isEqual(id, BASE_CLASS_ID) ||
-                    ctrl.isClassSelected(id) ||
+                    ctrl.isSelected(id) ||
                     DataSource.getClass(id).parent == CurrentState.clazz.id() ||
                     isAncestor(id, CurrentState.clazz.get());
             };
 
-            this.getClassTooltip = function (classId, clazz) {
+            this.getTooltip = function (classId, clazz) {
                 return TooltipMaker.renderTooltip(clazz,
                     sortStats(statsToArray(calculateStats(classId))), composeTooltipStatName);
             };

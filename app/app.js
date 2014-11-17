@@ -44,15 +44,17 @@ angular.module('srms.sof',
             this.getCurrentClass = CurrentState.clazz.get;
             this.getCost = CurrentState.cost.get;
         }])
-    .directive('statsPane', [
+    .directive('classItem', [
         'RecursionHelper',
         function (RecursionHelper) {
             return {
-                templateUrl: 'app/partials/stats.pane.html',
+                templateUrl: 'app/partials/class-tree.item.html',
                 restrict: 'A',
+                controller: 'ClassesCtrl',
+                controllerAs: 'ctrl',
                 scope: {
-                    statValues: "=",
-                    stats: '=statInfo'
+                    root: '=',
+                    itemsList: '='
                 },
                 compile: function (element) {
                     // Use the compile function from the RecursionHelper,
@@ -60,4 +62,46 @@ angular.module('srms.sof',
                     return RecursionHelper.compile(element);
                 }
             }
-        }]);
+        }])
+    .directive('perkItem', [
+        'RecursionHelper',
+        function (RecursionHelper) {
+            return {
+                templateUrl: 'app/partials/perk-tree.item.html',
+                restrict: 'A',
+                controller: 'PerksCtrl',
+                controllerAs: 'ctrl',
+                scope: {
+                    root: '=',
+                    itemsList: '='
+                },
+                compile: function (element) {
+                    // Use the compile function from the RecursionHelper,
+                    // And return the linking function(s) which it returns
+                    return RecursionHelper.compile(element);
+                }
+            }
+        }])
+    .directive('treeItem', [
+        'RecursionHelper',
+        function (RecursionHelper) {
+            return {
+                templateUrl: 'app/partials/tree-item.html',
+                restrict: 'A',
+                controller: '@',
+                controllerAs: 'ctrl',
+                name: 'ctrlName',
+                scope: {
+                    root: '=',
+                    itemsList: '=',
+                    type: '@',
+                    ctName: '@'
+                },
+                compile: function (element) {
+                    // Use the compile function from the RecursionHelper,
+                    // And return the linking function(s) which it returns
+                    return RecursionHelper.compile(element);
+                }
+            }
+        }])
+;

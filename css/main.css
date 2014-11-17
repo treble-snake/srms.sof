@@ -214,6 +214,10 @@ div.pane {
     padding: 0 2px;
 }
 
+.perk.tree-item {
+    margin: 0;
+}
+
 /* Block with tree item content (e.g. icon) */
 .tree-item-content {
     width: 40px;
@@ -321,7 +325,7 @@ div.pane {
 }
 
 #perks-pane .tree-item-content {
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 #perks-pane .tree-item:before {
