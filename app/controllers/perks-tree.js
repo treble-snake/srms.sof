@@ -10,8 +10,7 @@ angular.module('srms.sof')
 
             this.isSelected = CurrentState.perks.isSelected;
 
-            this.isAvailable = function (id, perk1) {
-                var perk = DataSource.getPerk(id);
+            this.isAvailable = function (id, perk) {
                 var current = CurrentState.clazz.get();
                 var need = perk.for;
 
@@ -33,7 +32,6 @@ angular.module('srms.sof')
             };
 
             this.choose = function (id, perk) {
-//                var perk = DataSource.getPerk(id);
                 if (!perk || !ctrl.isAvailable(id, perk))
                     return;
 
@@ -85,7 +83,7 @@ angular.module('srms.sof')
             }
 
 
-            // TODO move to a service
+            // TODO move to a service ?
             $rootScope.applyPerks = function () {
                 _.each(CurrentState.perks.get(), function (id) {
                     var perk = DataSource.getPerk(id);

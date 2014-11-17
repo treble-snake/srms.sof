@@ -1,10 +1,10 @@
 <div class="class tree-item" ng-class="{'root-tree-item': root}"
-     ng-repeat="(classId, classData) in itemsList">
-    <div class="class-info tree-item-content" id="class-{{classId}}"
-         ng-class="{available: ctrl.isAvailable(classId), selected: ctrl.isSelected(classId)}"
-         ng-disabled="!ctrl.isAvailable(classId)"
-         ng-click="ctrl.choose(classId, classData)"
-         tooltip-html-unsafe="{{::ctrl.getTooltip(classId, classData)}}"
+     ng-repeat="(id, classData) in itemsList">
+    <div class="class-info tree-item-content" id="class-{{id}}"
+         ng-class="{available: ctrl.isAvailable(id, classData), selected: ctrl.isSelected(id)}"
+         ng-disabled="!ctrl.isAvailable(id, classData)"
+         ng-click="ctrl.choose(id, classData)"
+         tooltip-html-unsafe="{{::ctrl.getTooltip(id, classData)}}"
          tooltip-placement="left"
          tooltip-animation="false">
     </div>

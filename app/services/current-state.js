@@ -25,7 +25,7 @@ angular.module('srms.sof.current-state', [])
                     return currentClass;
                 },
                 id: function () {
-                    return currentClass.id;
+                    return currentClass ? currentClass.id : undefined;
                 },
                 set: function (id, clazz) {
                     currentClass = clazz;

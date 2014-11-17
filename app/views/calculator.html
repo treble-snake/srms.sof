@@ -1,31 +1,39 @@
-<h3>Калькулятор имплантов: {{appStatus}}</h3>
-<div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
-    <div ng-if="ctrl.getCurrentClass()">
-        <h4>{{ctrl.getCurrentClass().name}}</h4>
-        <div class="cost"><span class="title">Бюджет:</span> ${{ctrl.getCost()}}</div>
-    </div>
+<h3>Калькулятор имплантов</h3>
 
-    <div id="stats" ng-if="!_.isEmpty(ctrl.getStatValues())">
-        <div stats-pane
-             data-stat-values="ctrl.getStatValues()"
-             data-stat-info="::ctrl.getStatsInfo()"></div>
-    </div>
+<div class="loading-bar" ng-if="!calculator.isReady">
+    Загрузка...
+    <progressbar class="progress-striped active" value="100" type="info">Загрузка...</progressbar>
 </div>
 
-<div class="pane" id="classes-pane">
-    <h4>Базовые импланты</h4>
-    <div id="class-tree" ng-controller="ClassesCtrl as ctrl">
-        <div class-item data-root="true" data-items-list="::ctrl.getAll()"></div>
-        <!--<div tree-item data-root="true" data-items-list="::ctrl.getAll()"-->
-             <!--data-type="class" data-ct-name="ClassesCtrl" data-ctrl-name="ClassesCtrl"></div>-->
-    </div>
-</div>
+<div ng-if="calculator.isReady">
 
-<div class="pane" id="perks-pane">
-    <h4>Аугментации</h4>
-    <div id="perks" ng-controller="PerksCtrl as ctrl">
-        <div perk-item data-root="true" data-items-list="::ctrl.getAll()"></div>
-        <!--<div tree-item data-root="true" data-items-list="::ctrl.getAll()"-->
-             <!--data-type="perk" data-ct-name="PerksCtrl" data-ctrl-name="PerksCtrl"></div>-->
+    <div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
+        <div ng-if="ctrl.getCurrentClass()">
+            <h4>{{ctrl.getCurrentClass().name}}</h4>
+
+            <div class="cost"><span class="title">Бюджет:</span> ${{ctrl.getCost()}}</div>
+        </div>
+
+        <div id="stats" ng-if="!_.isEmpty(ctrl.getStatValues())">
+            <div stats-pane
+                 data-stat-values="ctrl.getStatValues()"
+                 data-stat-info="::ctrl.getStatsInfo()"></div>
+        </div>
+    </div>
+
+    <div class="pane" id="classes-pane">
+        <h4>Базовые импланты</h4>
+
+        <div id="class-tree" ng-controller="ClassesCtrl as ctrl" ng-init="ctrl.init()">
+            <div class-item data-root="true" data-items-list="::ctrl.getAll()"></div>
+        </div>
+    </div>
+
+    <div class="pane" id="perks-pane">
+        <h4>Аугментации</h4>
+
+        <div id="perks" ng-controller="PerksCtrl as ctrl">
+            <div perk-item data-root="true" data-items-list="::ctrl.getAll()"></div>
+        </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 angular.module('srms.sof',
-    ['ui.bootstrap', 'ngRoute', 'ngAnimate', 'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
+    ['ui.bootstrap', 'ngRoute', 'ngAnimate',
+        'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -10,9 +11,7 @@ angular.module('srms.sof',
             })
             .when('/implants', {
                 templateUrl: 'app/views/calculator.html',
-                controller: function($scope) {
-                    $scope.appStatus = "Загрузка..";
-                },
+                controller: 'CalculatorCtrl',
                 controllerAs: 'calculator'
             })
             .when('/corporations', {
@@ -23,9 +22,8 @@ angular.module('srms.sof',
                 templateUrl: 'app/views/empty.html'
             })
     })
-    .controller('AppCtrl', ['$scope', '$location',
-        function ($scope, $location) {
-            this.version = "0.4.4";
+    .controller('AppCtrl', ['$location', function ($location) {
+            this.version = "0.4.7";
 
             this.pages = [
                 {url: 'contracts', name: 'Контракты'},
@@ -46,5 +44,19 @@ angular.module('srms.sof',
             this.getStatValues = CurrentState.stats.get;
             this.getCurrentClass = CurrentState.clazz.get;
             this.getCost = CurrentState.cost.get;
+        }])
+    .controller('CalculatorCtrl', ['DataSource',
+        function (DataSource) {
+            var ctrl = this;
+            this.isReady = false;
+            this.message = "Загрузка...";
+
+            DataSource.initialize()
+                .then(function (promise) {
+                    ctrl.isReady = true;
+                })
+                .catch(function (err) {
+                    ctrl.message = "Что-то пошло не так. :(";
+                });
         }])
 ;

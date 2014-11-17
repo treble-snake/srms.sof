@@ -5,36 +5,33 @@ angular.module('srms.sof')
             var BASE_CLASS_ID = 'base';
             var ctrl = this;
 
-            DataSource.initialize()
-                .then(function (promise) {
-                    $rootScope.appStatus = "Готов!";
-                    ctrl.choose(BASE_CLASS_ID, DataSource.getClass(BASE_CLASS_ID));
-                })
-                .catch(function (err) {
-                    $rootScope.appStatus = "Обломинго =(";
-                });
+            this.init = function () {
+                ctrl.choose(BASE_CLASS_ID, DataSource.getClass(BASE_CLASS_ID));
+            };
 
             /* Public section */
             this.getAll = DataSource.getClasses;
-
-            this.choose = function (classId, classData) {
-                if (!ctrl.isAvailable(classId))
-                    return;
-
-                CurrentState.clazz.set(classId, classData);
-                CurrentState.stats.reset(calculateStats(classId));
-                $rootScope.applyPerks();
-            };
 
             this.isSelected = function (id) {
                 return id === CurrentState.clazz.id();
             };
 
-            this.isAvailable = function (id) {
+            this.isAvailable = function (id, clazz) {
                 return _.isEqual(id, BASE_CLASS_ID) ||
                     ctrl.isSelected(id) ||
-                    DataSource.getClass(id).parent == CurrentState.clazz.id() ||
+                    clazz.parent == CurrentState.clazz.id() ||
                     isAncestor(id, CurrentState.clazz.get());
+            };
+
+            this.choose = function (classId, classData) {
+                if (!ctrl.isAvailable(classId, classData))
+                    return;
+
+                CurrentState.clazz.set(classId, classData);
+                CurrentState.stats.reset(calculateStats(classId));
+                // TODO that's not right
+                if($rootScope.applyPerks)
+                    $rootScope.applyPerks();
             };
 
             this.getTooltip = function (classId, clazz) {
