@@ -11,10 +11,42 @@ angular.module('srms.sof.current-state', [])
 
         var perksCost = 0;
 
+        function idComparator(id) {
+            return function (item) {
+                return item.id === id;
+            }
+        }
+
+        function findStat(id, stats) {
+            // если стат уже в кэше, вернем его
+            if (statsCache[id])
+                return statsCache[id];
+
+            // поищем по id
+            var result = _.find(stats, idComparator(id));
+            if (result) {
+                // добавим в кэш
+                statsCache[id] = result;
+                return result;
+            }
+
+            // пройдемся по составным статам
+            _.find(stats, function (item) {
+                if (_.isObject(item.value)) {
+                    result = findStat(id, item.value);
+                    return result;
+                }
+                return false;
+            });
+
+            return result;
+        }
+
         return {
 
+            // cost
             cost: {
-                get: function() {
+                get: function () {
                     return currentClass.price + perksCost;
                 }
             },
@@ -25,7 +57,7 @@ angular.module('srms.sof.current-state', [])
                     return currentClass;
                 },
                 id: function () {
-                    return currentClass ? currentClass.id : undefined;
+                    return currentClass && currentClass.id;
                 },
                 set: function (id, clazz) {
                     currentClass = clazz;
@@ -58,76 +90,19 @@ angular.module('srms.sof.current-state', [])
             // stats
             stats: {
                 get: function (id) {
-                    if (id) {
-
-                        if(statsCache[id])
-                            return statsCache[id].value;
-
-                        // TODO make reusable
-                        var compareId = function (item) {
-                            return item.id === id;
-                        };
-
-                        // TODO optimize && make recursive; maybe use cache
-                        var result = _.find(statsArray, compareId);
-                        if (result) {
-                            statsCache[id] = result;
-                            return result.value;
-                        }
-
-                        _.find(statsArray, function (item) {
-                            if(_.isObject(item.value)) {
-                                result = _.find(item.value, compareId);
-                                if(result)
-                                    return true;
-                            }
-                            return false;
-                        });
-
-                        return result.value;
-                    }
-                    else
-                        return statsArray;
+                    return id ? findStat(id, statsArray).value : statsArray
                 },
                 set: function (id, value) {
-
-                    if(statsCache[id]) {
-                        statsCache[id].value = value;
-                        return;
-                    }
-
-                    // TODO make reusable
-                    var compareId = function (item) {
-                        return item.id === id;
-                    };
-
-                    // TODO optimize && make recursive; maybe use cache
-                    // change stat value
-                    var result = _.find(statsArray, compareId);
-                    if (result) {
-                        result.value = value;
-                        return;
-                    }
-
-                    _.find(statsArray, function (item) {
-                        if(_.isObject(item.value)) {
-                            result = _.find(item.value, compareId);
-                            if(result) {
-                                result.value = value;
-                                return true;
-                            }
-                        }
-                        return false;
-                    });
-
+                    var stat = findStat(id, statsArray);
+                    if (stat)
+                        stat.value = value;
                     // add value
-                    if(!result) {
+                    else
                         statsArray.push({
                             id: id,
                             value: value,
                             order: DataSource.getStat(id).order
                         })
-                    }
                 },
                 reset: function (stats) {
                     // reset cache
@@ -136,9 +111,7 @@ angular.module('srms.sof.current-state', [])
                     statsArray = statsToArray(stats);
                 },
                 remove: function (id) {
-                    statsArray = _.reject(statsArray, function (item) {
-                        return item.id === id;
-                    });
+                    statsArray = _.reject(statsArray, idComparator(id));
                     delete statsCache[id];
                 }
             }
