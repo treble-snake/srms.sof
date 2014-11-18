@@ -30,7 +30,7 @@ angular.module('srms.sof')
                 CurrentState.clazz.set(classId, classData);
                 CurrentState.stats.reset(calculateStats(classId));
                 // TODO that's not right
-                if($rootScope.applyPerks)
+                if ($rootScope.applyPerks)
                     $rootScope.applyPerks();
             };
 
@@ -64,38 +64,34 @@ angular.module('srms.sof')
                 return isAncestor(ancestorId, DataSource.getClass(child.parent));
             }
 
-            function calculateStats(classID, result) {
+            function addSpecialStats(stats, result) {
+                _.each(stats, function (value, id) {
+                    if (!_.has(result, id))
+                        result[id] = stats[id];
+                    else if (_.isObject(value))
+                        addSpecialStats(value, result[id]);
+                });
+            }
+
+            function calculateStats(classId, result) {
                 // initialize result at the first call
                 if (_.isUndefined(result))
                     result = {};
 
-                var clazz = DataSource.getClass(classID);
+                var clazz = DataSource.getClass(classId);
                 if (!clazz)
                     return result;
 
                 // base stats can't be complex
-                var stats = clazz.stats.base;
-                _.each(stats, function (value, id) {
+                _.each(clazz.stats.base, function (value, id) {
                     if (!_.has(result, id))
                         result[id] = value;
                 });
 
                 // special stats can be complex
-                stats = clazz.stats.special;
-                for (var key in stats) {
-                    if (!_.has(result, key))
-                        result[key] = stats[key];
-                    else {
-                        // TODO make it recursive
-                        if (_.isObject(stats[key])) {
-                            for (var subKey in stats[key]) {
-                                if (!_.has(result[key], subKey)) {
-                                    result[key][subKey] = stats[key][subKey];
-                                }
-                            }
-                        }
-                    }
-                }
+                addSpecialStats(clazz.stats.special, result);
+
                 return calculateStats(clazz.parent, result);
             }
-        }]);
+        }
+    ]);

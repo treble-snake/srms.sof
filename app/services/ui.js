@@ -1,25 +1,23 @@
 angular.module('srms.sof')
     .factory('TooltipMaker', [function () {
 
-        var maker = this;
-
         /** Current method to compose a stat name */
-        this.composeNameMethod = undefined;
+        var composeNameMethod = undefined;
 
         /**
          * @param stats Array of objects with stat values
          * @param parent DOM element
          */
-        this.renderStats = function (stats, parent) {
+        function renderStats(stats, parent) {
             _.each(stats, function (stat) {
-                parent.append('<div class="tooltip-stat">' + maker.composeNameMethod(stat) + '</div>');
+                parent.append('<div class="tooltip-stat">' + composeNameMethod(stat) + '</div>');
 
                 if (_.isObject(stat.value)) {
-                    maker.renderStats(stat.value,
+                    renderStats(stat.value,
                         parent.children('.tooltip-stat').last())
                 }
             });
-        };
+        }
 
         // TODO use template
         return {
@@ -37,14 +35,13 @@ angular.module('srms.sof')
                 result.append('<p class="desc">' + subject.desc + '</p>');
                 result.append('<h2>Характеристики</h2>');
 
-                maker.composeNameMethod = composeName;
-                maker.renderStats(data, result);
+                composeNameMethod = composeName;
+                renderStats(data, result);
 
                 if(_.isFunction(appendCustomData))
                     appendCustomData(result);
 
                 return result.wrap("<div/>").parent().html();
             }
-
         }
     }]);
