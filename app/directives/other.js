@@ -37,6 +37,18 @@ angular.module('srms.sof')
                 }
             }
         }])
+    .directive('loadinfo', function(){
+        return {
+            restrict: 'E',
+            template: '<div class="loadinfo"><alert ng-if="error" type="danger">{{error}}</alert>' +
+                '<img ng-if="!error" src="img/loadinfo.gif" alt="Загрузка..."/></div>',
+            scope: {
+                error: "="
+            },
+            replace: true
+        }
+    })
+
     .directive('treeItem', [
         'RecursionHelper',
         function (RecursionHelper) {

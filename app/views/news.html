@@ -1,0 +1,9 @@
+<h3>Новости</h3>
+<loadinfo data-error="ctrl.error" ng-if="!ctrl.isReady"></loadinfo>
+<div class="news-wrapper" ng-if="ctrl.isReady">
+    <article class="news-item" ng-repeat="newsItem in ctrl.news">
+        <h1>{{newsItem.title}}</h1>
+        <time pubdate>{{newsItem.date}}</time>
+        <p>{{newsItem.text}}</p>
+    </article>
+</div>

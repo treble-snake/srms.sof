@@ -1,9 +1,6 @@
 <h3>Калькулятор имплантов</h3>
 
-<div class="loading-bar" ng-if="!calculator.isReady">
-    Загрузка...
-    <progressbar class="progress-striped active" value="100" type="info">Загрузка...</progressbar>
-</div>
+<loadinfo data-error="calculator.error" ng-if="!calculator.isReady"></loadinfo>
 
 <div ng-if="calculator.isReady">
 

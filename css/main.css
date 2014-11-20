@@ -377,8 +377,38 @@ div.pane {
 }
 
 /** ============= Misc =================*/
-.loading-bar {
+.loadinfo {
     text-align: center;
+}
+
+/** ================= News **============== */
+article.news-item:nth-child(even) {
+    background-color: #fafafa;
+}
+
+article.news-item {
+    border-left: 3px solid #ccc;
+    padding: 10px 50px 10px;
+    margin-bottom: 40px;
+}
+
+article.news-item h1 {
+    font-size: 1.1em;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+    display: inline-block;
+}
+
+article.news-item time {
+    font-size: .8em;
+    font-family: 'Courier New', sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 10px 5px 5px 10px;
+    background-color: #eee;
+    color: #777;
+    padding: 2px 7px;
+    vertical-align: middle;
+    margin-left: 10px;
 }
 
 /* ==========================================================================

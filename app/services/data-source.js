@@ -60,6 +60,12 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             },
             getPerk: function getPerk(id) {
                 return getDataElement(PERKS_ELEMENT_ID, id);
+            },
+            getNews: function() {
+                return $http.get("data/news.json")
+                    .error(function (data, status) {
+                        console.error("S.R.M.S. Sof: Data source error: " + data + ": " + status);
+                    });
             }
         }
     }]);
