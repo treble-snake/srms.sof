@@ -1,9 +1,22 @@
 <h3>Новости</h3>
 <loadinfo data-error="ctrl.error" ng-if="!ctrl.isReady"></loadinfo>
-<div class="news-wrapper" ng-if="ctrl.isReady">
+<div class="content-wrapper" ng-if="ctrl.isReady">
+
+    <div ng-if="ctrl.tag" class="tag current" href="#news/{{ctrl.tag.code}}"
+         style="border-color: {{ctrl.tag.color}}; color: {{ctrl.tag.color}}">
+        {{ctrl.tag.name}}&nbsp;<a style="color: {{ctrl.tag.color}}" class="no-under" href="#news">x</a>
+    </div>
+
+    <div class="news-wrapper">
     <article class="news-item" ng-repeat="newsItem in ctrl.news">
         <h1>{{newsItem.title}}</h1>
         <time pubdate>{{newsItem.date}}</time>
+        <div class="tags">
+            <a class="tag no-under" ng-repeat="tag in newsItem.tags"
+               href="#news/{{tag}}"
+               style="border-color: {{ctrl.getTag(tag).color}}; color: {{ctrl.getTag(tag).color}}">{{ctrl.getTag(tag).name}}</a>
+        </div>
         <p>{{newsItem.text}}</p>
     </article>
+    </div>
 </div>

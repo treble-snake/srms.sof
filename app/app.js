@@ -3,7 +3,7 @@ angular.module('srms.sof',
         'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
 
     .controller('AppCtrl', ['$location', function ($location) {
-        this.version = "0.5.0";
+        this.version = "0.5.2";
 
         this.pages = [
             {url: 'contracts', name: 'Контракты'},
@@ -15,14 +15,14 @@ angular.module('srms.sof',
         ];
 
         this.isCurrentPage = function (url) {
-            return  url === $location.path().substring(1)
+            return  $location.path().substring(1).indexOf(url) === 0;
         }
     }])
 
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
-                redirectTo: '/about'
+                redirectTo: '/news'
             })
             .when('/about', {
                 templateUrl: 'app/views/about.html'
@@ -37,6 +37,9 @@ angular.module('srms.sof',
                 controller: 'CorporationsCtrl'
             })
             .when('/news', {
+                redirectTo: '/news/all'
+            })
+            .when('/news/:tag', {
                 templateUrl: 'app/views/news.html',
                 controller: 'NewsCtrl',
                 controllerAs: 'ctrl'
@@ -68,16 +71,37 @@ angular.module('srms.sof',
                     ctrl.error = "Что-то пошло не так. :(";
                 });
         }])
-    .controller('NewsCtrl', ['DataSource', function (DataSource) {
+    .controller('NewsCtrl', ['DataSource', '$routeParams', function (DataSource, $routeParams) {
         var ctrl = this;
+        var ALL_TAG = "all";
+
         this.news = [];
+        this.tags = [];
         this.isReady = false;
         this.error = '';
+        this.tag = $routeParams.tag === ALL_TAG ? undefined : $routeParams.tag;
+
+        this.getTag = function (code) {
+            return _.find(ctrl.tags, function (item) {
+                return code === item.code
+            });
+        };
+
+        function initTag() {
+            ctrl.tag = ctrl.getTag(ctrl.tag);
+        }
 
         DataSource.getNews()
             .then(function (promise) {
-                ctrl.news = promise.data.data;
+                ctrl.news = ctrl.tag ?
+                    _.filter(promise.data.data, function (item) {
+                        return _.contains(item.tags, ctrl.tag);
+                    })
+                    : promise.data.data;
+                ctrl.tags = promise.data.tags;
                 ctrl.isReady = true;
+                if (ctrl.tag)
+                    initTag();
             })
             .catch(function (data) {
                 ctrl.error = 'Что-то пошло не так :(';
