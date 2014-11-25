@@ -10,7 +10,7 @@
     <div class="news-wrapper">
     <article class="news-item" ng-repeat="newsItem in ctrl.news">
         <h1>{{newsItem.title}}</h1>
-        <time pubdate>{{newsItem.date}}</time>
+        <time pubdate>{{ctrl.formatDate(newsItem.date)}}</time>
         <div class="tags">
             <a class="tag no-under" ng-repeat="tag in newsItem.tags"
                href="#news/{{tag}}"

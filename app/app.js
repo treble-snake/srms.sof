@@ -71,40 +71,45 @@ angular.module('srms.sof',
                     ctrl.error = "Что-то пошло не так. :(";
                 });
         }])
-    .controller('NewsCtrl', ['DataSource', '$routeParams', function (DataSource, $routeParams) {
-        var ctrl = this;
-        var ALL_TAG = "all";
+    .controller('NewsCtrl', ['DataSource', 'DateHelper', '$routeParams',
+        function (DataSource, DateHelper, $routeParams) {
 
-        this.news = [];
-        this.tags = [];
-        this.isReady = false;
-        this.error = '';
-        this.tag = $routeParams.tag === ALL_TAG ? undefined : $routeParams.tag;
+            var ctrl = this;
+            var ALL_TAG = "all";
 
-        this.getTag = function (code) {
-            return _.find(ctrl.tags, function (item) {
-                return code === item.code
-            });
-        };
+            // public section
+            this.news = [];
+            this.tags = [];
+            this.isReady = false;
+            this.error = '';
+            this.tag = $routeParams.tag === ALL_TAG ? undefined : $routeParams.tag;
 
-        function initTag() {
-            ctrl.tag = ctrl.getTag(ctrl.tag);
-        }
+            this.getTag = function (code) {
+                return _.find(ctrl.tags, function (item) {
+                    return code === item._id
+                });
+            };
 
-        DataSource.getNews()
-            .then(function (promise) {
-                ctrl.news = ctrl.tag ?
-                    _.filter(promise.data.data, function (item) {
-                        return _.contains(item.tags, ctrl.tag);
-                    })
-                    : promise.data.data;
-                ctrl.tags = promise.data.tags;
-                ctrl.isReady = true;
-                if (ctrl.tag)
-                    initTag();
-            })
-            .catch(function (data) {
-                ctrl.error = 'Что-то пошло не так :(';
-            })
-    }])
+            this.formatDate = DateHelper.format;
+
+            // private section
+            function initTag() {
+                ctrl.tag = ctrl.getTag(ctrl.tag);
+            }
+
+            DataSource.getNews()
+                .then(function (responses) {
+                    ctrl.tags = responses[1].data;
+                    ctrl.news = ctrl.tag ?
+                        _.filter(responses[0].data, function (item) {
+                            return _.contains(item.tags, ctrl.tag);
+                        }) : responses[0].data;
+                    ctrl.isReady = true;
+                    if (ctrl.tag)
+                        initTag();
+                })
+                .catch(function () {
+                    ctrl.error = 'Что-то пошло не так :(';
+                })
+        }])
 ;

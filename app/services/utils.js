@@ -11,6 +11,14 @@ angular.module('srms.sof.utils', [])
         }
     })
 
+    .factory('DateHelper', [function(){
+        return {
+            format: function(mongoDate) {
+                return jQuery.format.date(mongoDate.sec * 1000 + mongoDate.usec, "dd.MM.yyyy HH:ss")
+            }
+        }
+    }])
+
     // Helper for rendering recursive templates
     .factory('RecursionHelper', ['$compile', function ($compile) {
         return {

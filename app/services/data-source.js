@@ -1,6 +1,6 @@
 angular.module('srms.sof.data-source', ['srms.sof.utils'])
 
-    .factory('DataSource', ['$http', 'JsonUtils', function ($http, JsonUtils) {
+    .factory('DataSource', ['$q', '$http', 'JsonUtils', function ($q, $http, JsonUtils) {
 
         var DATA_PATH = "data/data.json";
         var CLASSES_ELEMENT_ID = "classes";
@@ -23,11 +23,15 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
                 return cache[container][id];
 
             var element = JsonUtils.getJsonElement(data[container], id);
-            if(element) {
+            if (element) {
                 cache[container][id] = element;
             }
 
             return element;
+        }
+
+        function logError(data, status) {
+            console.error("S.R.M.S. Sof: Data source error: " + data + ": " + status);
         }
 
         return {
@@ -36,10 +40,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
                 return $http.get(DATA_PATH)
                     .success(function (json) {
                         data = json;
-                    })
-                    .error(function (data, status) {
-                        console.error("S.R.M.S. Sof: Data source error: " + data + ": " + status);
-                    });
+                    }).error(logError);
             },
 
             getClasses: function () {
@@ -61,11 +62,11 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             getPerk: function getPerk(id) {
                 return getDataElement(PERKS_ELEMENT_ID, id);
             },
-            getNews: function() {
-                return $http.get("data/news.json")
-                    .error(function (data, status) {
-                        console.error("S.R.M.S. Sof: Data source error: " + data + ": " + status);
-                    });
+            getNews: function () {
+                return $q.all([
+                    $http.get("/api.php?controller=news&action=all").error(logError),
+                    $http.get("/api.php?controller=news&action=tags").error(logError)
+                ]);
             }
         }
     }]);
