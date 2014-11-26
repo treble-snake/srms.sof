@@ -3,7 +3,7 @@ angular.module('srms.sof',
         'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
 
     .controller('AppCtrl', ['$location', function ($location) {
-        this.version = "0.5.2";
+        this.version = "0.5.3";
 
         this.pages = [
             {url: 'contracts', name: 'Контракты'},
@@ -70,46 +70,5 @@ angular.module('srms.sof',
                 .catch(function (err) {
                     ctrl.error = "Что-то пошло не так. :(";
                 });
-        }])
-    .controller('NewsCtrl', ['DataSource', 'DateHelper', '$routeParams',
-        function (DataSource, DateHelper, $routeParams) {
-
-            var ctrl = this;
-            var ALL_TAG = "all";
-
-            // public section
-            this.news = [];
-            this.tags = [];
-            this.isReady = false;
-            this.error = '';
-            this.tag = $routeParams.tag === ALL_TAG ? undefined : $routeParams.tag;
-
-            this.getTag = function (code) {
-                return _.find(ctrl.tags, function (item) {
-                    return code === item._id
-                });
-            };
-
-            this.formatDate = DateHelper.format;
-
-            // private section
-            function initTag() {
-                ctrl.tag = ctrl.getTag(ctrl.tag);
-            }
-
-            DataSource.getNews()
-                .then(function (responses) {
-                    ctrl.tags = responses[1].data;
-                    ctrl.news = ctrl.tag ?
-                        _.filter(responses[0].data, function (item) {
-                            return _.contains(item.tags, ctrl.tag);
-                        }) : responses[0].data;
-                    ctrl.isReady = true;
-                    if (ctrl.tag)
-                        initTag();
-                })
-                .catch(function () {
-                    ctrl.error = 'Что-то пошло не так :(';
-                })
         }])
 ;

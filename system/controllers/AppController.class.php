@@ -15,7 +15,7 @@ final class AppController
 
     public function performAction()
     {
-        list($ctrlName, $action) = $this->getRequestParams();
+        list($ctrlName, $action,$params) = $this->getRequestParams();
         if (!preg_match('/^[a-z]*$/i', $ctrlName) || !preg_match('/^[a-z]*$/i', $action))
             throw new \InvalidArgumentException("Wrong controller or action format.");
 
@@ -23,7 +23,7 @@ final class AppController
         if(!class_exists($ctrlName))
             throw new \InvalidArgumentException("Controller not found.");
 
-        $ctrl = new $ctrlName();
+        $ctrl = new $ctrlName($params);
         $action .= 'Action';
         if(!method_exists($ctrl, $action))
             throw new \InvalidArgumentException("Action not found.");
@@ -33,12 +33,14 @@ final class AppController
 
     private function getRequestParams()
     {
-
         if (empty($_GET['controller']) || empty($_GET['action']))
             throw new \InvalidArgumentException("Controller or action is empty.");
 
-        return [$_GET['controller'], $_GET['action']];
+        $otherParams = $_GET;
+        unset($otherParams['controller']);
+        unset($otherParams['action']);
 
+        return [$_GET['controller'], $_GET['action'], $otherParams];
     }
 
 } 

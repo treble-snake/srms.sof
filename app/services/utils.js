@@ -11,10 +11,15 @@ angular.module('srms.sof.utils', [])
         }
     })
 
-    .factory('DateHelper', [function(){
+    .factory('CommonUtils', [function(){
         return {
-            format: function(mongoDate) {
+            formatMongoDate: function(mongoDate) {
                 return jQuery.format.date(mongoDate.sec * 1000 + mongoDate.usec, "dd.MM.yyyy HH:ss")
+            },
+            idComparator: function(id) {
+                return function(item) {
+                    return id === item._id;
+                }
             }
         }
     }])

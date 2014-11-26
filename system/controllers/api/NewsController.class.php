@@ -9,10 +9,21 @@ use srms\sof\controllers\DBController;
 class NewsController
 {
     const COLLECTION_NAME = 'news';
+    private $requestParams;
 
-    public function allAction()
+    function __construct($requestParams = [])
     {
-        $cursor = DBController::db()->news->find();
+       $this->requestParams = $requestParams;
+    }
+
+
+    public function listAction()
+    {
+        $query = [];
+        if(!empty($this->requestParams['tag']))
+            $query['tags'] = $this->requestParams['tag'];
+
+        $cursor = DBController::db()->news->find($query);
         return json_encode(iterator_to_array($cursor, false));
     }
 

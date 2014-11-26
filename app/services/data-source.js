@@ -34,6 +34,18 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             console.error("S.R.M.S. Sof: Data source error: " + data + ": " + status);
         }
 
+        function checkResponse(response) {
+            if(!_.isArray(response))
+                response = [response];
+
+            _.each(response, function(item){
+                if(item.data['error'])
+                    throw new Error(item.data['error']);
+            });
+
+            return response;
+        }
+
         return {
             // returns a promise to initialize the application asynchronously
             initialize: function () {
@@ -62,11 +74,13 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             getPerk: function getPerk(id) {
                 return getDataElement(PERKS_ELEMENT_ID, id);
             },
-            getNews: function () {
+            getNews: function (tag) {
+                var newsQuery = "/api.php?controller=news&action=list";
+                if (tag) newsQuery += "&tag=" + tag;
                 return $q.all([
-                    $http.get("/api.php?controller=news&action=all").error(logError),
+                    $http.get(newsQuery).error(logError),
                     $http.get("/api.php?controller=news&action=tags").error(logError)
-                ]);
+                ]).then(checkResponse);
             }
         }
     }]);
