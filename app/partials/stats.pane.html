@@ -1,6 +1,5 @@
 <div class="stat-item" ng-repeat="stat in statValues | sortStats">
-
-    <div class="sub-stats" ng-if="stats[stat.id].sub !== undefined">
+    <div class="sub-stats" ng-if="stats[stat.id].children !== undefined">
         <div id="stat-{{stat.id}}" class="stat-value title"
              popover-title="{{::stats[stat.id].name}}"
              popover="{{::stats[stat.id].desc}}"
@@ -8,10 +7,10 @@
              popover-trigger="mouseenter">
             {{stats[stat.id].name}}:
         </div>
-        <div stats-pane stat-values="stat.value" stat-info="::stats[stat.id].sub"></div>
+        <div stats-pane stat-values="stat.value" stat-info="::stats"></div>
     </div>
 
-    <div ng-if="stats[stat.id].sub === undefined" id="stat-{{stat.id}}" class="stat-value"
+    <div ng-if="stats[stat.id].children === undefined" id="stat-{{stat.id}}" class="stat-value"
          popover-title="{{::stats[stat.id].name}}"
          popover="{{::stats[stat.id].desc}}"
          popover-placement="right"

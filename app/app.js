@@ -3,7 +3,7 @@ angular.module('srms.sof',
         'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
 
     .controller('AppCtrl', ['$location', function ($location) {
-        this.version = "0.5.3";
+        this.version = "0.5.4";
 
         this.pages = [
             {url: 'contracts', name: 'Контракты'},
@@ -56,19 +56,5 @@ angular.module('srms.sof',
             this.getStatValues = CurrentState.stats.get;
             this.getCurrentClass = CurrentState.clazz.get;
             this.getCost = CurrentState.cost.get;
-        }])
-    .controller('CalculatorCtrl', ['DataSource',
-        function (DataSource) {
-            var ctrl = this;
-            this.isReady = false;
-            this.error = '';
-
-            DataSource.initialize()
-                .then(function (promise) {
-                    ctrl.isReady = true;
-                })
-                .catch(function (err) {
-                    ctrl.error = "Что-то пошло не так. :(";
-                });
         }])
 ;
