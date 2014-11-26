@@ -4,7 +4,6 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
 
         //@Deprecated
         var DATA_PATH = "data/data.json";
-        var CLASSES_ELEMENT_ID = "classes";
         var PERKS_ELEMENT_ID = "perks";
 
         //@Deprecated
@@ -12,7 +11,6 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
 
         var cache = {};
         // init cache
-        cache[CLASSES_ELEMENT_ID] = {};
         cache[PERKS_ELEMENT_ID] = {};
 
         // new
@@ -55,7 +53,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
 
             _.each(response, function (item) {
                 if (item.data['error'])
-                    throw new Error(item.data['error']);
+                    throw new Error("S.R.M.S. Sof: " + item.data['error']);
             });
 
             return response;
@@ -84,7 +82,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             },
 
             getClasses: function () {
-                return data[CLASSES_ELEMENT_ID];
+                return classes;
             },
             getPerks: function () {
                 return data[PERKS_ELEMENT_ID];
@@ -94,7 +92,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             },
 
             getClass: function (id) {
-                return getDataElement(CLASSES_ELEMENT_ID, id);
+                return classes[id];
             },
             getStat: function (id) {
                 return stats[id];

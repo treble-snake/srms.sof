@@ -57,11 +57,10 @@ angular.module('srms.sof.current-state', [])
                     return currentClass;
                 },
                 id: function () {
-                    return currentClass && currentClass.id;
+                    return currentClass && currentClass._id;
                 },
-                set: function (id, clazz) {
-                    currentClass = clazz;
-                    currentClass.id = id;
+                set: function (id) {
+                    currentClass = DataSource.getClass(id);
                 }
             },
 

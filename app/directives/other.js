@@ -9,7 +9,7 @@ angular.module('srms.sof')
                 controllerAs: 'ctrl',
                 scope: {
                     root: '=',
-                    itemsList: '='
+                    currentItems: '='
                 },
                 compile: function (element) {
                     // Use the compile function from the RecursionHelper,

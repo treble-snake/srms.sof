@@ -10,32 +10,33 @@ angular.module('srms.sof')
             };
 
             /* Public section */
-            this.getAll = DataSource.getClasses;
+            this.getClass = DataSource.getClass;
+            this.getBaseClassId = [BASE_CLASS_ID];
 
             this.isSelected = function (id) {
                 return id === CurrentState.clazz.id();
             };
 
-            this.isAvailable = function (id, clazz) {
+            this.isAvailable = function (id) {
                 return _.isEqual(id, BASE_CLASS_ID) ||
                     ctrl.isSelected(id) ||
-                    clazz.parent == CurrentState.clazz.id() ||
+                    DataSource.getClass(id).parent == CurrentState.clazz.id() ||
                     isAncestor(id, CurrentState.clazz.get());
             };
 
-            this.choose = function (classId, classData) {
-                if (!ctrl.isAvailable(classId, classData))
+            this.choose = function (classId) {
+                if (!ctrl.isAvailable(classId))
                     return;
 
-                CurrentState.clazz.set(classId, classData);
+                CurrentState.clazz.set(classId);
                 CurrentState.stats.reset(calculateStats(classId));
                 // TODO that's not right
                 if ($rootScope.applyPerks)
                     $rootScope.applyPerks();
             };
 
-            this.getTooltip = function (classId, clazz) {
-                return TooltipMaker.renderTooltip(clazz,
+            this.getTooltip = function (classId) {
+                return TooltipMaker.renderTooltip(DataSource.getClass(classId),
                     sortStats(statsToArray(calculateStats(classId))), composeTooltipStatName);
             };
 
