@@ -7,12 +7,13 @@ angular.module('srms.sof')
             user = undefined;
         }
 
-        function authCallback(response) {
-            if (response.session)
-                DataSource.getUser(response.session)
-                    .then(function (responses) {
-                        user = responses[0].data;
+        function authCallback(vkResponse) {
+            if (vkResponse.session) {
+                DataSource.getUser(vkResponse.session)
+                    .then(function (response) {
+                        user = response.data;
                     });
+            }
             else
                 unsetUser();
         }

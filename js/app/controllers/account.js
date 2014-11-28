@@ -12,7 +12,7 @@ angular.module('srms.sof')
 
             this.addMoney = function(){
                 DataSource.addMoney().then(function(response){
-                    CurrentUser.updateMoney(response[0].data.added);
+                    CurrentUser.updateMoney(response.data.added);
                 });
 
             }

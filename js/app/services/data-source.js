@@ -10,11 +10,17 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             return "/api.php?controller=" + controller + "&action=" + action;
         }
 
-        function makeRequests(urls, usePost) {
+        function getHttpRequest(url, usePost) {
+            return (usePost ? $http.post(url) : $http.get(url)).error(logError);
+        }
+
+        function sendRequests(urls, usePost) {
+            if(!_.isArray(urls)) {
+                return $q.when(getHttpRequest(urls, usePost)).then(checkResponse);
+            }
+
             return $q.all(_.map(urls, function (url) {
-                return usePost ?
-                    $http.post(url).error(logError) :
-                    $http.get(url).error(logError);
+                return getHttpRequest(url, usePost);
             })).then(checkResponse);
         }
 
@@ -23,10 +29,8 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
         }
 
         function checkResponse(response) {
-            if (!_.isArray(response))
-                response = [response];
-
-            _.each(response, function (item) {
+            var responsesToCheck = _.isArray(response) ? response : [response];
+            _.each(responsesToCheck, function (item) {
                 if (item.data['error'])
                     throw new Error("S.R.M.S. Sof: " + item.data['error']);
             });
@@ -37,7 +41,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             // returns a promise to initialize the application asynchronously
             initialize: function () {
 
-                return makeRequests([
+                return sendRequests([
                     getRequestUrl("stats", "list"),
                     getRequestUrl("classes", "list"),
                     getRequestUrl("perks", "list")
@@ -69,16 +73,15 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             getNews: function (tag) {
                 var newsQuery = getRequestUrl("news", "list");
                 if (tag) newsQuery += "&tag=" + tag;
-                return makeRequests([newsQuery, getRequestUrl("news", "tags")])
+                return sendRequests([newsQuery, getRequestUrl("news", "tags")])
             },
 
             getUser: function(data) {
-                return makeRequests(
-                    [getRequestUrl("users", "auth") + "&data=" + angular.toJson(data)], true)
+                return sendRequests(
+                    getRequestUrl("users", "auth") + "&data=" + angular.toJson(data), true)
             },
             addMoney: function() {
-                return makeRequests(
-                    [getRequestUrl("users", "addMoney")], true)
+                return sendRequests(getRequestUrl("users", "addMoney"), true)
             }
         }
     }]);
