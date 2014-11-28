@@ -1,0 +1,7 @@
+<loadinfo data-error="ctrl.error" ng-if="!ctrl.getUser()"></loadinfo>
+
+<div class="accountWrapper" ng-if="ctrl.getUser()">
+    <h3>{{ctrl.getUser().name}}</h3>
+    <b>Состояние счета:</b> ${{ctrl.getUser().money}}
+    <br/><button ng-click="ctrl.addMoney()">Продать почку</button>
+</div>

@@ -33,14 +33,14 @@ final class AppController
 
     private function getRequestParams()
     {
-        if (empty($_GET['controller']) || empty($_GET['action']))
+        if (empty($_REQUEST['controller']) || empty($_REQUEST['action']))
             throw new \InvalidArgumentException("Controller or action is empty.");
 
-        $otherParams = $_GET;
+        $otherParams = $_REQUEST;
         unset($otherParams['controller']);
         unset($otherParams['action']);
 
-        return [$_GET['controller'], $_GET['action'], $otherParams];
+        return [$_REQUEST['controller'], $_REQUEST['action'], $otherParams];
     }
 
 } 

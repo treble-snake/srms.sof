@@ -29,25 +29,29 @@
     <script src="js/vendor/underscore-min.js"></script>
     <script src="js/vendor/highcharts-custom.js"></script>
 
+
     <!-- Custom includes -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/icons.css">
     <script src="js/plugins.js"></script>
 
     <!-- Angular App -->
-    <script src="app/app.js"></script>
-    <script src="app/services/utils.js"></script>
-    <script src="app/services/current-state.js"></script>
-    <script src="app/services/data-source.js"></script>
-    <script src="app/services/ui.js"></script>
-    <script src="app/controllers/perks-tree.js"></script>
-    <script src="app/controllers/classes-tree.js"></script>
-    <script src="app/controllers/corporations.js"></script>
-    <script src="app/controllers/news.js"></script>
-    <script src="app/controllers/calculator.js"></script>
-    <script src="app/filters/stats-filters.js"></script>
-    <script src="app/directives/stats-pane.js"></script>
-    <script src="app/directives/other.js"></script>
+    <script src="js/app/app.js"></script>
+    <script src="js/app/services/utils.js"></script>
+    <script src="js/app/services/current-state.js"></script>
+    <script src="js/app/services/data-source.js"></script>
+    <script src="js/app/services/ui.js"></script>
+    <script src="js/app/services/current-user.js"></script>
+    <script src="js/app/controllers/perks-tree.js"></script>
+    <script src="js/app/controllers/classes-tree.js"></script>
+    <script src="js/app/controllers/corporations.js"></script>
+    <script src="js/app/controllers/news.js"></script>
+    <script src="js/app/controllers/calculator.js"></script>
+    <script src="js/app/controllers/account.js"></script>
+    <script src="js/app/filters/stats-filters.js"></script>
+    <script src="js/app/directives/stats-pane.js"></script>
+    <script src="js/app/directives/other.js"></script>
+    <script src="js/app/directives/auth-pane.js"></script>
 </head>
 <body>
 
@@ -60,7 +64,10 @@
     <nav class="top-menu">
         <div class="menu-container">
             <div class="menu-item" ng-repeat="page in app.pages">
-                <a ng-class="{active: app.isCurrentPage(page.url)}" href="#/{{page.url}}">{{page.name}}</a>
+                <a ng-if="!page.auth || app.isAuth()" ng-class="{active: app.isCurrentPage(page.url)}" href="#/{{page.url}}">{{page.name}}</a>
+            </div>
+            <div class="menu-item">
+                <div auth-pane></div>
             </div>
         </div>
     </nav>
@@ -70,9 +77,16 @@
     <footer>
         <p><a href="https://github.com/treble-snake/srms.sof/issues/new" target="_blank">Отзывы,
             предложения, баг-репорты. Пожалуйста.</a></p>
+
         <p>v{{app.version}} &copy; S.R.M.S. Steel Rats Mercenary Squad</p>
     </footer>
 </div>
+
+<!-- VK -->
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?115"></script>
+<script type="text/javascript">
+    VK.init({apiId: 4654127});
+</script>
 
 </body>
 </html>

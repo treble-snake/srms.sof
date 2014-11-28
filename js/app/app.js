@@ -2,11 +2,14 @@ angular.module('srms.sof',
     ['ui.bootstrap', 'ngRoute', 'ngAnimate',
         'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
 
-    .controller('AppCtrl', ['$location', function ($location) {
+    .controller('AppCtrl', ['$location', 'CurrentUser', function ($location, CurrentUser) {
         this.version = "0.6.1";
+
+        CurrentUser.init();
 
         this.pages = [
             {url: 'contracts', name: 'Контракты'},
+            {url: 'account', name: 'Досье', auth: true},
             {url: 'mercenaries', name: 'Наемники'},
             {url: 'implants', name: 'Импланты'},
             {url: 'corporations', name: 'Корпорации'},
@@ -16,7 +19,9 @@ angular.module('srms.sof',
 
         this.isCurrentPage = function (url) {
             return  $location.path().substring(1).indexOf(url) === 0;
-        }
+        };
+
+        this.isAuth = CurrentUser.getUser;
     }])
 
     .config(function ($routeProvider) {
@@ -25,34 +30,39 @@ angular.module('srms.sof',
                 redirectTo: '/news'
             })
             .when('/about', {
-                templateUrl: 'app/views/about.html'
+                templateUrl: 'js/app/views/about.html'
             })
             .when('/implants', {
-                templateUrl: 'app/views/calculator.html',
+                templateUrl: 'js/app/views/calculator.html',
                 controller: 'CalculatorCtrl',
                 controllerAs: 'calculator'
             })
             .when('/corporations', {
-                templateUrl: 'app/views/corporations.html',
+                templateUrl: 'js/app/views/corporations.html',
                 controller: 'CorporationsCtrl'
             })
             .when('/news', {
                 redirectTo: '/news/all'
             })
             .when('/news/:tag', {
-                templateUrl: 'app/views/news.html',
+                templateUrl: 'js/app/views/news.html',
                 controller: 'NewsCtrl',
                 controllerAs: 'ctrl'
             })
+            .when('/account', {
+                templateUrl: 'js/app/views/account.html',
+                controller: 'AccountCtrl',
+                controllerAs: 'ctrl'
+            })
             .otherwise({
-                templateUrl: 'app/views/empty.html'
+                templateUrl: 'js/app/views/empty.html'
             })
     })
 
     .controller('StatsCtrl', [
         '$scope', 'CurrentState', 'DataSource',
         function ($scope, CurrentState, DataSource) {
-            this.getStatsInfo = DataSource.getStatsInfo;
+            this.statsInfo = DataSource.getStatsInfo();
             this.getStatValues = CurrentState.stats.get;
             this.getCurrentClass = CurrentState.clazz.get;
             this.getCost = CurrentState.cost.get;

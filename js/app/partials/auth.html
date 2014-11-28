@@ -1,0 +1,2 @@
+<a ng-if="!ctrl.getUser()" href="" ng-click="ctrl.login()"><img src="/img/icons/vk-24.png" alt="В"/>ход</a>
+<a ng-if="ctrl.getUser()" href="" ng-click="ctrl.logout()"><span title="{{ctrl.getUser().name}}">Выход</span></a>

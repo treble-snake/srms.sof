@@ -3,7 +3,7 @@ angular.module('srms.sof')
         'RecursionHelper',
         function (RecursionHelper) {
             return {
-                templateUrl: 'app/partials/class-tree.item.html',
+                templateUrl: 'js/app/partials/class-tree.item.html',
                 restrict: 'A',
                 controller: 'ClassesCtrl',
                 controllerAs: 'ctrl',
@@ -22,7 +22,7 @@ angular.module('srms.sof')
         'RecursionHelper',
         function (RecursionHelper) {
             return {
-                templateUrl: 'app/partials/perk-tree.item.html',
+                templateUrl: 'js/app/partials/perk-tree.item.html',
                 restrict: 'A',
                 controller: 'PerksCtrl',
                 controllerAs: 'ctrl',
@@ -47,27 +47,4 @@ angular.module('srms.sof')
             },
             replace: true
         }
-    })
-
-    .directive('treeItem', [
-        'RecursionHelper',
-        function (RecursionHelper) {
-            return {
-                templateUrl: 'app/partials/tree-item.html',
-                restrict: 'A',
-                controller: '@',
-                controllerAs: 'ctrl',
-                name: 'ctrlName',
-                scope: {
-                    root: '=',
-                    itemsList: '=',
-                    type: '@',
-                    ctName: '@'
-                },
-                compile: function (element) {
-                    // Use the compile function from the RecursionHelper,
-                    // And return the linking function(s) which it returns
-                    return RecursionHelper.compile(element);
-                }
-            }
-        }]);
+    });

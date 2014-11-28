@@ -3,7 +3,7 @@ angular.module('srms.sof')
         'RecursionHelper',
         function (RecursionHelper) {
             return {
-                templateUrl: 'app/partials/stats.pane.html',
+                templateUrl: 'js/app/partials/stats.pane.html',
                 restrict: 'A',
                 scope: {
                     statValues: "=",

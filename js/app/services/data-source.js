@@ -10,9 +10,11 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             return "/api.php?controller=" + controller + "&action=" + action;
         }
 
-        function makeRequests(urls) {
+        function makeRequests(urls, usePost) {
             return $q.all(_.map(urls, function (url) {
-                return $http.get(url).error(logError);
+                return usePost ?
+                    $http.post(url).error(logError) :
+                    $http.get(url).error(logError);
             })).then(checkResponse);
         }
 
@@ -64,11 +66,19 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             getPerk: function getPerk(id) {
                 return perksCache[id];
             },
-
             getNews: function (tag) {
                 var newsQuery = getRequestUrl("news", "list");
                 if (tag) newsQuery += "&tag=" + tag;
                 return makeRequests([newsQuery, getRequestUrl("news", "tags")])
+            },
+
+            getUser: function(data) {
+                return makeRequests(
+                    [getRequestUrl("users", "auth") + "&data=" + angular.toJson(data)], true)
+            },
+            addMoney: function() {
+                return makeRequests(
+                    [getRequestUrl("users", "addMoney")], true)
             }
         }
     }]);
