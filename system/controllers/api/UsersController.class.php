@@ -1,15 +1,12 @@
 <?php
 namespace srms\sof\controllers\api;
 
+use srms\sof\controllers\AppController;
 use srms\sof\controllers\DBController;
 use srms\sof\models\UserModel;
 
 class UsersController extends ApiController
 {
-    // TODO вынести в конфиги! обязательно! до коммита!
-    const APP_ID = "4654127";
-    const APP_SHARED_SECRET = "7OeTAIyGGTTwWdnGAiqw";
-
     const COLLECTION_NAME = "users";
 
     public function authAction()
@@ -60,15 +57,25 @@ class UsersController extends ApiController
         return json_encode(['added' => $money]);
     }
 
+    private function getVkAppId()
+    {
+        return AppController::get()->getConfig()['vk_app_id'];
+    }
+
+    private function getVkAppSecret()
+    {
+        return AppController::get()->getConfig()['vk_app_secret'];
+    }
+
     private function getAuthOpenAPIMember()
     {
-        if (empty($_COOKIE['vk_app_' . self::APP_ID]))
+        if (empty($_COOKIE['vk_app_' . $this->getVkAppId()]))
             throw new \Exception("No auth data.");
 
         $member = null;
         $session = array();
         $validKeys = array('expire', 'mid', 'secret', 'sid', 'sig');
-        $appCookie = $_COOKIE['vk_app_' . self::APP_ID];
+        $appCookie = $_COOKIE['vk_app_' . $this->getVkAppId()];
 
         $sessionData = explode('&', $appCookie, 10);
         foreach ($sessionData as $pair)
@@ -93,7 +100,7 @@ class UsersController extends ApiController
                 $sign .= ($key . '=' . $value);
         }
 
-        $sign .= self::APP_SHARED_SECRET;
+        $sign .= $this->getVkAppSecret();
         $sign = md5($sign);
 
         if ($session['sig'] == $sign && $session['expire'] > time())

@@ -1,9 +1,9 @@
 <?php
 require "system/config.php";
 
-$app = new \srms\sof\controllers\AppController();
 
 try {
+    $app = \srms\sof\controllers\AppController::get();
 
     $result = $app->performAction();
     echo $result;

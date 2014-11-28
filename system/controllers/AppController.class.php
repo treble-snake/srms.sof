@@ -5,6 +5,40 @@ namespace srms\sof\controllers;
 
 final class AppController
 {
+    const INI_FILE_NAME = "config.ini";
+
+    /** @var AppController */
+    private static $instance = null;
+
+    private $config = null;
+
+    /**
+     * @return AppController
+     */
+    public static function get()
+    {
+        if(self::$instance == null)
+            self::$instance = new AppController();
+
+        return self::$instance;
+    }
+
+    private function __construct()
+    {
+        $this->config =
+            parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/../' . self::INI_FILE_NAME);
+        if($this->config === false)
+            throw new \Exception("ini file not found.");
+    }
+
+    private function __clone() {
+        // do nothing
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
+    }
 
     static function printVariable($var)
     {
