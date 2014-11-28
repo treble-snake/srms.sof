@@ -14,7 +14,7 @@ class NewsController extends ApiController
         if(!empty($this->requestParams['tag']))
             $query['tags'] = $this->requestParams['tag'];
 
-        return $this->listItems(self::NEWS_COLLECTION_NAME, false, $query);
+        return $this->listItems(self::NEWS_COLLECTION_NAME, false, $query, ['date' => -1]);
     }
 
     public function tagsAction()
