@@ -6,11 +6,35 @@ angular.module('srms.sof')
             var ctrl = this;
 
             /* Public section */
-            this.getAll = DataSource.getPerks;
+            // TODO find better solution
+            var order1 = 0;
+            var order2 = 0;
+            this.topLevelIds = _.map(
+                _.sortBy(
+                    _.filter(DataSource.getPerks(), function (item) {
+                        return !item.parent;
+                    }),
+                    function (item) {
+                        if (item.children && DataSource.getPerk(item.children[0]).children)
+                            return 9999;
+
+                        if (item.children) {
+                            order2 += 11;
+                            return order2;
+                        }
+
+                        order1 += 13;
+                        return order1;
+                    }),
+                function (item) {
+                    return item._id;
+                });
 
             this.isSelected = CurrentState.perks.isSelected;
+            this.getPerk = DataSource.getPerk;
 
-            this.isAvailable = function (id, perk) {
+            this.isAvailable = function (id) {
+                var perk = DataSource.getPerk(id);
                 var current = CurrentState.clazz.get();
                 var need = perk.for;
 
@@ -31,7 +55,8 @@ angular.module('srms.sof')
                 return true;
             };
 
-            this.choose = function (id, perk) {
+            this.choose = function (id) {
+                var perk = DataSource.getPerk(id);
                 if (!perk || !ctrl.isAvailable(id, perk))
                     return;
 
@@ -39,7 +64,8 @@ angular.module('srms.sof')
                 applyPerk(perk, ctrl.isSelected(id));
             };
 
-            this.getTooltip = function (perkId, perk) {
+            this.getTooltip = function (id) {
+                var perk = DataSource.getPerk(id);
                 var statsArray = [];
                 _.each(perk.effects, function (stats, effectId) {
                     statsArray = statsArray.concat(
@@ -114,7 +140,7 @@ angular.module('srms.sof')
                 add: {
                     apply: function (id, value, revert) {
                         CurrentState.stats.set(id,
-                                parseFloat((CurrentState.stats.get(id) + (revert ? -1 * value : value)).toFixed(1))
+                            parseFloat((CurrentState.stats.get(id) + (revert ? -1 * value : value)).toFixed(1))
                         );
                     },
                     getName: function (value) {

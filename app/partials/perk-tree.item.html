@@ -1,14 +1,14 @@
 <div class="perk tree-item" ng-class="{'root-tree-item': root}"
-     ng-repeat="(id, perk) in itemsList">
+     ng-repeat="id in itemsList">
     <div class="perk-info tree-item-content" id="perk-{{id}}"
-         ng-class="{available: ctrl.isAvailable(id, perk), selected: ctrl.isSelected(id)}"
-         ng-disabled="!ctrl.isAvailable(id, perk)"
-         ng-click="ctrl.choose(id, perk)"
-         tooltip-html-unsafe="{{::ctrl.getTooltip(id, perk)}}"
+         ng-class="{available: ctrl.isAvailable(id), selected: ctrl.isSelected(id)}"
+         ng-disabled="!ctrl.isAvailable(id)"
+         ng-click="ctrl.choose(id)"
+         tooltip-html-unsafe="{{::ctrl.getTooltip(id)}}"
          tooltip-placement="left"
          tooltip-animation="false">
     </div>
-    <div class="tree-wrapper" ng-if="::perk.sub">
-        <div perk-item data-items-list="::perk.sub"></div>
+    <div class="tree-wrapper" ng-if="::ctrl.getPerk(id).children">
+        <div perk-item data-items-list="::ctrl.getPerk(id).children"></div>
     </div>
 </div>

@@ -22,7 +22,7 @@
         <h4>Базовые импланты</h4>
 
         <div id="class-tree" ng-controller="ClassesCtrl as ctrl" ng-init="ctrl.init()">
-            <div class-item data-root="true" data-current-items="::ctrl.getBaseClassId"></div>
+            <div class-item data-root="true" data-current-items="::ctrl.baseClassId"></div>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
         <h4>Аугментации</h4>
 
         <div id="perks" ng-controller="PerksCtrl as ctrl">
-            <div perk-item data-root="true" data-items-list="::ctrl.getAll()"></div>
+            <div perk-item data-root="true" data-items-list="::ctrl.topLevelIds"></div>
         </div>
     </div>
 </div>

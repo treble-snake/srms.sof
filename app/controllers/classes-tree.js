@@ -11,7 +11,7 @@ angular.module('srms.sof')
 
             /* Public section */
             this.getClass = DataSource.getClass;
-            this.getBaseClassId = [BASE_CLASS_ID];
+            this.baseClassId = [BASE_CLASS_ID];
 
             this.isSelected = function (id) {
                 return id === CurrentState.clazz.id();
