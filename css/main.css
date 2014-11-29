@@ -436,7 +436,28 @@ div.tag.current {
     margin-bottom: 10px;
 }
 
+/* ========= Builds ============= */
+.builds-wrapper {
+    margin-top: 20px;
+}
 
+.nav-tabs a {
+    cursor: pointer;
+}
+
+.nav-tabs li.add a {
+    color: #00aa0c;
+}
+
+.nav-tabs li.add a i {
+    vertical-align: text-top;
+}
+
+input.ng-invalid-required {
+    -webkit-box-shadow: 0px 0px 4px 0px rgba(255, 0, 0, 0.96);
+    -moz-box-shadow:    0px 0px 4px 0px rgba(255, 0, 0, 0.96);
+    box-shadow:         0px 0px 4px 0px rgba(255, 0, 0, 0.96);
+}
 
 /* ==========================================================================
    Helper classes

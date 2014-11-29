@@ -6,7 +6,7 @@ angular.module('srms.sof')
             var ctrl = this;
 
             this.init = function () {
-                ctrl.choose(BASE_CLASS_ID, DataSource.getClass(BASE_CLASS_ID));
+                ctrl.choose(BASE_CLASS_ID);
             };
 
             /* Public section */
@@ -29,7 +29,6 @@ angular.module('srms.sof')
                     return;
 
                 CurrentState.clazz.set(classId);
-                CurrentState.stats.reset(calculateStats(classId));
                 // TODO that's not right
                 if ($rootScope.applyPerks)
                     $rootScope.applyPerks();
@@ -37,7 +36,7 @@ angular.module('srms.sof')
 
             this.getTooltip = function (classId) {
                 return TooltipMaker.renderTooltip(DataSource.getClass(classId),
-                    sortStats(statsToArray(calculateStats(classId))), composeTooltipStatName);
+                    sortStats(statsToArray(CurrentState.clazz.stats(classId))), composeTooltipStatName);
             };
 
             /* Private section */
@@ -63,36 +62,6 @@ angular.module('srms.sof')
                     return true;
 
                 return isAncestor(ancestorId, DataSource.getClass(child.parent));
-            }
-
-            function addSpecialStats(stats, result) {
-                _.each(stats, function (value, id) {
-                    if (!_.has(result, id))
-                        result[id] = stats[id];
-                    else if (_.isObject(value))
-                        addSpecialStats(value, result[id]);
-                });
-            }
-
-            function calculateStats(classId, result) {
-                // initialize result at the first call
-                if (_.isUndefined(result))
-                    result = {};
-
-                var clazz = DataSource.getClass(classId);
-                if (!clazz)
-                    return result;
-
-                // base stats can't be complex
-                _.each(clazz.stats.base, function (value, id) {
-                    if (!_.has(result, id))
-                        result[id] = value;
-                });
-
-                // special stats can be complex
-                addSpecialStats(clazz.stats.special, result);
-
-                return calculateStats(clazz.parent, result);
             }
         }
     ]);

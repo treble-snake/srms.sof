@@ -3,5 +3,58 @@
 <div class="accountWrapper" ng-if="ctrl.getUser()">
     <h3>{{ctrl.getUser().name}}</h3>
     <b>Состояние счета:</b> ${{ctrl.getUser().money}}
-    <br/><button ng-click="ctrl.addMoney()">Продать почку</button>
+    <br/>
+    <button class="btn btn-info" ng-click="ctrl.addMoney()">Продать почку</button>
+
+    <h4>Комплекты</h4>
+
+    <div ng-controller="CalculatorCtrl as calculator">
+        <loadinfo data-error="calculator.error" ng-if="!calculator.isReady"></loadinfo>
+        <div ng-if="calculator.isReady">
+
+            <div class="builds-wrapper">
+                <tabset>
+                    <tab ng-repeat="tab in ctrl.getBuilds" heading="{{tab.name}}" select="ctrl.initTree(tab, calculator)"
+                         active="tab.active">
+                        {{tab.text}}
+                    </tab>
+                    <tab class="add" select="ctrl.addBuild()">
+                        <tab-heading><i class="glyphicon glyphicon-plus-sign"></i> Добавить</tab-heading>
+                    </tab>
+                </tabset>
+
+
+                <div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
+                    <div ng-if="ctrl.getCurrentClass()">
+                        <h4>{{ctrl.getCurrentClass().name}}</h4>
+
+                        <div class="cost"><span class="title">Бюджет:</span> ${{ctrl.getCost()}}</div>
+                    </div>
+
+                    <div id="stats" ng-if="!_.isEmpty(ctrl.getStatValues())">
+                        <div stats-pane
+                             data-stat-values="ctrl.getStatValues()"
+                             data-stat-info="::ctrl.statsInfo"></div>
+                    </div>
+                </div>
+
+                <div class="pane" id="classes-pane">
+                    <h4>Базовые импланты</h4>
+
+                    <div id="class-tree" ng-controller="ClassesCtrl as ctrl" ng-init="ctrl.init()">
+                        <div class-item data-root="true" data-current-items="::ctrl.baseClassId"></div>
+                    </div>
+                </div>
+
+                <div class="pane" id="perks-pane">
+                    <h4>Аугментации</h4>
+
+                    <div id="perks" ng-controller="PerksCtrl as ctrl">
+                        <div perk-item data-root="true" data-items-list="::ctrl.topLevelIds"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

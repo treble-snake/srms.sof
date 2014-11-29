@@ -42,6 +42,46 @@ angular.module('srms.sof.current-state', [])
             return result;
         }
 
+        // class section
+        function addSpecialStats(stats, result) {
+            _.each(stats, function (value, id) {
+                if (!_.has(result, id))
+                    result[id] = stats[id];
+                else if (_.isObject(value))
+                    addSpecialStats(value, result[id]);
+            });
+        }
+
+        function calculateStats(classId, result) {
+            // initialize result at the first call
+            if (_.isUndefined(result))
+                result = {};
+
+            var clazz = DataSource.getClass(classId);
+            if (!clazz)
+                return result;
+
+            // base stats can't be complex
+            _.each(clazz.stats.base, function (value, id) {
+                if (!_.has(result, id))
+                    result[id] = value;
+            });
+
+            // special stats can be complex
+            addSpecialStats(clazz.stats.special, result);
+
+            return calculateStats(clazz.parent, result);
+        }
+
+        function resetStats(stats) {
+            // reset cache
+            statsCache = {};
+            // convert object of stats into array of stats with sorting order
+            statsArray = statsToArray(stats);
+        }
+
+        // public section
+
         return {
 
             // cost
@@ -61,6 +101,10 @@ angular.module('srms.sof.current-state', [])
                 },
                 set: function (id) {
                     currentClass = DataSource.getClass(id);
+                    resetStats(calculateStats(id));
+                },
+                stats: function (id) {
+                    return calculateStats(id);
                 }
             },
 
@@ -104,10 +148,7 @@ angular.module('srms.sof.current-state', [])
                         })
                 },
                 reset: function (stats) {
-                    // reset cache
-                    statsCache = {};
-                    // convert object of stats into array of stats with sorting order
-                    statsArray = statsToArray(stats);
+                    resetStats(stats)
                 },
                 remove: function (id) {
                     statsArray = _.reject(statsArray, idComparator(id));
