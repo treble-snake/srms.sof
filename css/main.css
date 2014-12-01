@@ -445,7 +445,9 @@ div.tag.current {
     cursor: pointer;
 }
 
-.nav-tabs li.add a {
+.nav-tabs li.add a,
+button.add
+{
     color: #00aa0c;
 }
 

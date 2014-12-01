@@ -67,7 +67,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             getStat: function (id) {
                 return statsCache[id];
             },
-            getPerk: function getPerk(id) {
+            getPerk: function (id) {
                 return perksCache[id];
             },
             getNews: function (tag) {

@@ -1,6 +1,6 @@
 angular.module('srms.sof')
-    .controller('ClassesCtrl', ['$rootScope', 'CurrentState', 'DataSource', 'TooltipMaker', 'sortStatsFilter', 'statsToArrayFilter',
-        function ($rootScope, CurrentState, DataSource, TooltipMaker, sortStats, statsToArray) {
+    .controller('ClassesCtrl', ['$rootScope', 'CurrentState', 'DataSource', 'TooltipMaker', 'PerksHelper', 'sortStatsFilter', 'statsToArrayFilter',
+        function ($rootScope, CurrentState, DataSource, TooltipMaker, PerksHelper, sortStats, statsToArray) {
 
             var BASE_CLASS_ID = 'base';
             var ctrl = this;
@@ -29,9 +29,7 @@ angular.module('srms.sof')
                     return;
 
                 CurrentState.clazz.set(classId);
-                // TODO that's not right
-                if ($rootScope.applyPerks)
-                    $rootScope.applyPerks();
+                PerksHelper.applyCurrentPerks();
             };
 
             this.getTooltip = function (classId) {

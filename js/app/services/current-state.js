@@ -84,6 +84,12 @@ angular.module('srms.sof.current-state', [])
 
         return {
 
+            reset: function() {
+                currentClass = null;
+                selectedPerks = [];
+                perksCost = 0;
+            },
+
             // cost
             cost: {
                 get: function () {

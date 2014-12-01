@@ -3,6 +3,8 @@
 </div>
 <form  novalidate name="AddBuildForm" ng-submit="$close(buildName)">
     <div class="modal-body">
+        <alert type="info" ng-if="itemsQty == 0">Введите название для вашего первого билда. Его можно будет
+        изменить позже.</alert>
         <label for="buildName">Название:</label>
         <input id="buildName" type="text" required ng-model="buildName" name="buildName"/>
     </div>
