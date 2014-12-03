@@ -14,11 +14,17 @@ class ApiController {
         $this->requestParams = $requestParams;
     }
 
-    function listItems($collection, $extractId = false, $query = [], $sort = [])
+    protected function listItems($collection, $extractId = false, $query = [], $sort = [], $fields = [])
     {
-        $cursor = DBController::db()->$collection->find($query);
+        $cursor = DBController::db()->$collection->find($query, $fields);
         if(!empty($sort))
             $cursor = $cursor->sort($sort);
+
+        return $this->cursorToJson($cursor, $extractId);
+    }
+
+    protected function cursorToJson($cursor, $extractId)
+    {
         return json_encode(iterator_to_array($cursor, $extractId));
     }
 } 

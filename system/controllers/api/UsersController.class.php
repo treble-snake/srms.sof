@@ -15,25 +15,24 @@ class UsersController extends ApiController
             throw new \Exception("Auth data expected.");
 
         $authData = json_decode($this->requestParams['data']);
-        if(empty($authData->mid))
+        if (empty($authData->mid))
             throw new \Exception("No mid in auth data.");
 
         $cookieData = $this->getAuthOpenAPIMember();
         $userId = $cookieData['id'];
-        if($userId != $authData->mid)
+        if ($userId != $authData->mid)
             throw new \Exception("Incorrect auth data.");
 
         $users = DBController::db()->{self::COLLECTION_NAME};
         $cursor = $users->find(["vkId" => $userId]);
 
-        if(!$cursor->hasNext())
-        {
-            if(!isset($authData->user))
+        if (!$cursor->hasNext()) {
+            if (!isset($authData->user))
                 throw new \Exception("User not found.");
 
             $user = new UserModel();
-            $user->vkId = $userId;
             $user->_id = $userId;
+            $user->vkId = $userId;
             $user->vkLogin = $authData->user->domain;
             $user->name = $authData->user->first_name . " " . $authData->user->last_name;
             $user->money = 0;
@@ -57,6 +56,33 @@ class UsersController extends ApiController
         return json_encode(['added' => $money]);
     }
 
+    public function getVkIdAction()
+    {
+        return json_encode(["id" => $this->getVkAppId()]);
+    }
+
+    /**
+     * @param bool $throwIfFailed
+     * @return null|UserModel
+     * @throws \Exception
+     */
+    public function getLoggedPerson($throwIfFailed = false)
+    {
+        $cookieData = $this->getAuthOpenAPIMember();
+        $cursor = DBController::db()->{self::COLLECTION_NAME}
+            ->find(["vkId" => $cookieData['id']]);
+
+        if (!$cursor->hasNext())
+        {
+            if($throwIfFailed)
+                throw new \Exception("User should be logged in.");
+
+            return null;
+        }
+
+        return new UserModel($cursor->getNext());
+    }
+
     private function getVkAppId()
     {
         return AppController::get()->getConfig()['vk_app_id'];
@@ -78,8 +104,7 @@ class UsersController extends ApiController
         $appCookie = $_COOKIE['vk_app_' . $this->getVkAppId()];
 
         $sessionData = explode('&', $appCookie, 10);
-        foreach ($sessionData as $pair)
-        {
+        foreach ($sessionData as $pair) {
             list($key, $value) = explode('=', $pair, 2);
             if (empty($key) || empty($value) || !in_array($key, $validKeys)) {
                 continue;
@@ -94,8 +119,7 @@ class UsersController extends ApiController
         ksort($session);
 
         $sign = '';
-        foreach ($session as $key => $value)
-        {
+        foreach ($session as $key => $value) {
             if ($key != 'sig')
                 $sign .= ($key . '=' . $value);
         }
@@ -103,8 +127,7 @@ class UsersController extends ApiController
         $sign .= $this->getVkAppSecret();
         $sign = md5($sign);
 
-        if ($session['sig'] == $sign && $session['expire'] > time())
-        {
+        if ($session['sig'] == $sign && $session['expire'] > time()) {
             $member = array(
                 'id' => intval($session['mid']),
                 'secret' => $session['secret'],

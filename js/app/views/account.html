@@ -12,17 +12,18 @@
         <loadinfo data-error="calculator.error" ng-if="!calculator.isReady"></loadinfo>
         <div ng-if="calculator.isReady">
 
-            <button ng-if="ctrl.getBuilds.length == 0" class="add" ng-click="ctrl.addBuild()">
+            <button ng-if="ctrl.builds.length == 0" class="btn btn-success" ng-click="ctrl.addBuild()">
                 <i class="glyphicon glyphicon-plus-sign"></i> Добавить</button>
 
-            <div class="builds-wrapper" ng-if="ctrl.getBuilds.length > 0">
+            <div class="builds-wrapper" ng-if="ctrl.builds.length > 0">
                 <tabset>
-                    <tab ng-repeat="tab in ctrl.getBuilds" heading="{{tab.name}}"
+                    <tab ng-repeat="tab in ctrl.builds" heading="{{tab.name}}"
                          select="ctrl.initTree(tab)"
                          active="tab.active">
                         {{tab.text}}
                     </tab>
-                    <tab class="add" ng-click="ctrl.addBuild()">
+                    <tab class="add" select="ctrl.addBuild()"
+                         disabled="ctrl.builds.length > 9">
                         <tab-heading><i class="glyphicon glyphicon-plus-sign"></i> Добавить
                         </tab-heading>
                     </tab>

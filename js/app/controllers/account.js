@@ -1,13 +1,9 @@
 angular.module('srms.sof')
-    .controller('AccountCtrl', ['DataSource', 'CurrentUser', 'CurrentState', 'PerksHelper', '$routeParams', '$location', '$modal',
-        function (DataSource, CurrentUser, CurrentState, PerksHelper, $routeParams, $location, $modal) {
+    .controller('AccountCtrl', ['DataSource', 'CurrentUser', 'CurrentState', 'PerksHelper', '$routeParams', '$modal',
+        function (DataSource, CurrentUser, CurrentState, PerksHelper, $routeParams, $modal) {
 
             var ctrl = this;
             var currentTab;
-
-            // TODO move redirect to logout method
-            if (!CurrentUser.getUser())
-                $location.url('/about');
 
             this.error = "Вас тут быть не должно. За вами выехали.";
             this.getUser = CurrentUser.getUser;
@@ -30,47 +26,56 @@ angular.module('srms.sof')
                 PerksHelper.applyCurrentPerks();
             };
 
-            this.getBuilds = [
-//                {
-//                    "name": "Петр",
-//                    "class": "sniper",
-//                    "perks": ["steelSkin"],
-//                    "active": true
-//                },
-//                {
-//                    "name": "Семен",
-//                    "class": "destroyer-3",
-//                    "perks": ["steelSkin", "extraWeapon"]
-//                },
-//                {
-//                    "name": "Авгут",
-//                    "class": "medic",
-//                    "perks": []
-//                }
-            ];
+            this.builds = [];
 
             this.addBuild = function () {
 
                 var modalInstance = $modal.open({
                     templateUrl: 'js/app/partials/forms/add.build.html',
-                    controller: function (itemsQty, $scope) {
-                        $scope.itemsQty = itemsQty;
+                    controller: function (builds, $scope) {
+                        $scope.itemsQty = builds.length;
+
+                        this.submitForm = function() {
+                            var newName = $scope.buildName;
+                            if(_.findWhere(builds, {name: newName}))
+                                alert("Уже есть");
+                            else
+                                $scope.$close(newName)
+                        }
                     },
+                    controllerAs: "ctrl",
                     resolve: {
-                        itemsQty: function () {
-                            return ctrl.getBuilds.length
+                        builds: function () {
+                            return ctrl.builds
                         }
                     }
-
-//                    size: size,
-//                    template: 'Олол привет!'
                 });
 
                 modalInstance.result.then(function (result) {
-                    ctrl.getBuilds.push({"name": result, "active": true, "class": "base", "perks": []})
+                    DataSource.addBuild(result)
+                        .then(function () {
+                            ctrl.builds
+                                .push({"name": result, "active": true, "class": "base", "perks": []})
+                        })
+                        .catch(function (e) {
+                            alert(e.message);
+                            if (currentTab)
+                                currentTab.active = true;
+                        });
                 }, function () {
-                    if(currentTab)
+                    if (currentTab)
                         currentTab.active = true;
                 });
+            };
+
+            // private section
+            function initBuilds() {
+                DataSource.getBuilds().then(function (response) {
+                    ctrl.builds = response || [];
+                    if(ctrl.builds.length > 0)
+                        ctrl.builds[0].active = true;
+                });
             }
+
+            initBuilds();
         }]);

@@ -3,9 +3,7 @@ angular.module('srms.sof',
         'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
 
     .controller('AppCtrl', ['$location', 'CurrentUser', function ($location, CurrentUser) {
-        this.version = "0.6.1";
-
-        CurrentUser.init();
+        this.version = "0.6.3";
 
         this.pages = [
             {url: 'contracts', name: 'Контракты'},
@@ -57,6 +55,13 @@ angular.module('srms.sof',
             .otherwise({
                 templateUrl: 'js/app/views/empty.html'
             })
+    })
+
+    .run(function(DataSource, CurrentUser) {
+        DataSource.getVkId().then(function(response){
+            VK.init({apiId: response.data.id});
+            CurrentUser.init();
+        });
     })
 
     .controller('StatsCtrl', [

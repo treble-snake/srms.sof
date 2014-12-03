@@ -15,7 +15,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
         }
 
         function sendRequests(urls, usePost) {
-            if(!_.isArray(urls)) {
+            if (!_.isArray(urls)) {
                 return $q.when(getHttpRequest(urls, usePost)).then(checkResponse);
             }
 
@@ -76,12 +76,24 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
                 return sendRequests([newsQuery, getRequestUrl("news", "tags")])
             },
 
-            getUser: function(data) {
+            getUser: function (data) {
                 return sendRequests(
-                    getRequestUrl("users", "auth") + "&data=" + angular.toJson(data), true)
+                        getRequestUrl("users", "auth") + "&data=" + angular.toJson(data), true)
             },
-            addMoney: function() {
+            getBuilds: function () {
+                return sendRequests(getRequestUrl("builds", "list"), true).then(function (r) {
+                    return r.data[0].builds;
+                })
+            },
+            addBuild: function(name) {
+                return sendRequests(
+                        getRequestUrl("builds", "add") + "&name=" + name, true);
+            },
+            addMoney: function () {
                 return sendRequests(getRequestUrl("users", "addMoney"), true)
+            },
+            getVkId: function () {
+                return sendRequests(getRequestUrl('users', 'getVkId'), true);
             }
         }
     }]);
