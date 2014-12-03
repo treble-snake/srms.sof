@@ -34,6 +34,16 @@
                     <div ng-if="ctrl.getCurrentClass()">
                         <h4>{{ctrl.getCurrentClass().name}}</h4>
 
+                        <button class="btn btn-sm btn-info" popover="Редактировать"
+                                popover-placement="top" popover-trigger="mouseenter">
+                            <i class="glyphicon glyphicon-cog"></i></button>
+                        <button class="btn btn-sm btn-warning" popover="Продать"
+                                popover-placement="top" popover-trigger="mouseenter">
+                            <i class="glyphicon glyphicon-usd"></i></button>
+                        <button class="btn btn-sm btn-danger" popover="Удалить"
+                                popover-placement="top" popover-trigger="mouseenter">
+                            <i class="glyphicon glyphicon-remove"></i></button>
+
                         <div class="cost"><span class="title">Бюджет:</span> ${{ctrl.getCost()}}
                         </div>
                     </div>

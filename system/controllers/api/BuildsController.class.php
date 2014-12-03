@@ -54,4 +54,7 @@ class BuildsController extends ApiController {
         return $result !== null;
     }
 
+    protected function lastId() {
+
+    }
 } 
