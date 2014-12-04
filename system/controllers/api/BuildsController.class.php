@@ -7,7 +7,8 @@ use srms\sof\controllers\DBController;
 use srms\sof\models\UserBuildModel;
 use srms\sof\models\UserModel;
 
-class BuildsController extends ApiController {
+class BuildsController extends ApiController
+{
 
     // TODO send this value to the front-end
     const MAX_BUILD_QTY = 10;
@@ -21,10 +22,10 @@ class BuildsController extends ApiController {
         $userCtrl = new UsersController();
         $user = $userCtrl->getLoggedPerson(true);
 
-        if(count($user->builds) >= self::MAX_BUILD_QTY)
+        if (count($user->builds) >= self::MAX_BUILD_QTY)
             throw new \Exception("Too many builds.");
 
-        if($this->exists($user, $name))
+        if ($this->exists($user, $name))
             throw new \Exception("Build with a same name already exists.");
 
         $build = new UserBuildModel();
@@ -45,13 +46,13 @@ class BuildsController extends ApiController {
             throw new \Exception("Data expected.");
 
         $params = json_decode($this->requestParams['data'], true);
-        if(empty($params['id']) || empty($params['name']))
+        if (empty($params['id']) || empty($params['name']))
             throw new \Exception("Not enough data.");
 
         $userCtrl = new UsersController();
         $user = $userCtrl->getLoggedPerson(true);
 
-        if($this->exists($user, $params['name']))
+        if ($this->exists($user, $params['name']))
             throw new \Exception("Build with a same name already exists.");
 
         DBController::db()->{UsersController::COLLECTION_NAME}->update(
@@ -66,7 +67,7 @@ class BuildsController extends ApiController {
             throw new \Exception("Data expected.");
 
         $params = json_decode($this->requestParams['data'], true);
-        if(empty($params['id']))
+        if (empty($params['id']))
             throw new \Exception("Not enough data.");
 
         $userCtrl = new UsersController();
@@ -75,6 +76,26 @@ class BuildsController extends ApiController {
         DBController::db()->{UsersController::COLLECTION_NAME}->update(
             ['_id' => $user->_id],
             ['$pull' => ['builds' => ['_id' => new \MongoId($params['id']['$id'])]]]
+        );
+    }
+
+    public function setClassAction()
+    {
+        list($classId, $buildId) = $this->getParams(['classId', 'buildId']);
+        $userCtrl = new UsersController();
+        $user = $userCtrl->getLoggedPerson(true);
+
+        // TODO checks
+        $class = DBController::db()->classes->findOne(['_id' => $classId]);
+        if (empty($class))
+            throw new \Exception("Class not found: " . $classId);
+
+        DBController::db()->{UsersController::COLLECTION_NAME}->update(
+            ['_id' => $user->_id, 'builds._id' => new \MongoId($buildId['$id'])],
+            [
+                '$set' => ['builds.$.class' => $classId],
+                '$inc' => ['money' => -1 * $class['price']]
+            ]
         );
     }
 
@@ -93,7 +114,7 @@ class BuildsController extends ApiController {
     protected function exists($user, $name)
     {
         $result = DBController::db()->{UsersController::COLLECTION_NAME}->findOne([
-                '_id' => $user->_id, 'builds.name' => $name]);
+            '_id' => $user->_id, 'builds.name' => $name]);
         return $result !== null;
     }
 } 

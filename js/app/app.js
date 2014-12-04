@@ -50,7 +50,7 @@ angular.module('srms.sof',
             .when('/account', {
                 templateUrl: 'js/app/views/account.html',
                 controller: 'AccountCtrl',
-                controllerAs: 'ctrl'
+                controllerAs: 'account'
             })
             .otherwise({
                 templateUrl: 'js/app/views/empty.html'

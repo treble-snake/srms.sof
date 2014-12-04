@@ -1,12 +1,12 @@
 angular.module('srms.sof')
-    .controller('ClassesCtrl', ['$rootScope', 'CurrentState', 'DataSource', 'TooltipMaker', 'PerksHelper', 'sortStatsFilter', 'statsToArrayFilter',
-        function ($rootScope, CurrentState, DataSource, TooltipMaker, PerksHelper, sortStats, statsToArray) {
+    .controller('ClassesCtrl', ['$scope', 'CurrentState', 'DataSource', 'TooltipMaker', 'PerksHelper', 'CurrentUser', 'Confirmation', 'sortStatsFilter', 'statsToArrayFilter',
+        function ($scope, CurrentState, DataSource, TooltipMaker, PerksHelper, CurrentUser, Confirmation, sortStats, statsToArray) {
 
             var BASE_CLASS_ID = 'base';
             var ctrl = this;
 
             this.init = function () {
-                ctrl.choose(BASE_CLASS_ID);
+                chooseClass(BASE_CLASS_ID);
             };
 
             /* Public section */
@@ -17,19 +17,39 @@ angular.module('srms.sof')
                 return id === CurrentState.clazz.id();
             };
 
+            this.isAffordable = function (id) {
+                return !$scope.restrictedMode ||
+                    DataSource.getClass(id).price <= CurrentUser.getUser().money
+            };
+
             this.isAvailable = function (id) {
+
+                if ($scope.restrictedMode && DataSource.getClass(id).parent != CurrentState.clazz.id())
+                    return false;
+
                 return _.isEqual(id, BASE_CLASS_ID) ||
                     ctrl.isSelected(id) ||
                     DataSource.getClass(id).parent == CurrentState.clazz.id() ||
                     isAncestor(id, CurrentState.clazz.get());
             };
 
-            this.choose = function (classId) {
-                if (!ctrl.isAvailable(classId))
+            this.choose = function (id) {
+                if (!ctrl.isAvailable(id) || !ctrl.isAffordable(id))
                     return;
 
-                CurrentState.clazz.set(classId);
-                PerksHelper.applyCurrentPerks();
+                if ($scope.restrictedMode) {
+                    var clazz = DataSource.getClass(id);
+                    Confirmation.open('Купить имплант "' + clazz.name + '"?',
+                            'Это обойдется вам в $' + clazz.price).then(function () {
+                            DataSource.setClass({buildId: $scope.buildId, classId: id})
+                                .then(function () {
+                                    chooseClass(id);
+                                    CurrentUser.updateMoney(-1 * clazz.price);
+                                })
+                        })
+                } else {
+                    chooseClass(id);
+                }
             };
 
             this.getTooltip = function (classId) {
@@ -38,6 +58,10 @@ angular.module('srms.sof')
             };
 
             /* Private section */
+            function chooseClass(id) {
+                CurrentState.clazz.set(id);
+                PerksHelper.applyCurrentPerks();
+            }
 
             function composeTooltipStatName(stat) {
                 var statInfo = DataSource.getStat(stat.id);

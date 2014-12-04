@@ -8,6 +8,9 @@ angular.module('srms.sof')
 
             this.error = "Вас тут быть не должно. За вами выехали.";
             this.getUser = CurrentUser.getUser;
+            this.getCurrentTab = function () {
+                return currentTab
+            };
 
             this.addMoney = function () {
                 DataSource.addMoney().then(function (response) {

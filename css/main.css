@@ -231,16 +231,21 @@ div.pane {
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
 
-    /* Not available by default */
-    cursor: default;
-    border: 2px solid red;
+    cursor: pointer;
+    border: 2px solid #fff;
     border-radius: 22px;
     box-sizing: content-box;
 }
 
-.tree-item-content.available {
-    border-color: #fff;
-    cursor: pointer;
+.tree-item-content.notAvailable,
+.tree-item-content.notAvailable.notAffordable {
+    cursor: default;
+    border-color: red;
+}
+
+.tree-item-content.notAffordable {
+    border-color: #ffa742;
+    cursor: default;
 }
 
 .tree-item-content.selected {

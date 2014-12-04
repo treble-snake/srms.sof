@@ -9,7 +9,9 @@ angular.module('srms.sof')
                 controllerAs: 'ctrl',
                 scope: {
                     root: '=',
-                    currentItems: '='
+                    currentItems: '=',
+                    restrictedMode: '=',
+                    buildId: '='
                 },
                 compile: function (element) {
                     // Use the compile function from the RecursionHelper,

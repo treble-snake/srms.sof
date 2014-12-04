@@ -99,6 +99,10 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
                 return sendRequests(
                     getRequestUrl("builds", "delete", {id: id}), true);
             },
+            setClass: function(data) {
+                return sendRequests(
+                    getRequestUrl("builds", "setClass", data), true);
+            },
             addMoney: function () {
                 return sendRequests(getRequestUrl("users", "addMoney"), true)
             },

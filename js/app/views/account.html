@@ -1,10 +1,10 @@
-<loadinfo data-error="ctrl.error" ng-if="!ctrl.getUser()"></loadinfo>
+<loadinfo data-error="account.error" ng-if="!account.getUser()"></loadinfo>
 
-<div class="accountWrapper" ng-if="ctrl.getUser()">
-    <h3>{{ctrl.getUser().name}}</h3>
-    <b>Состояние счета:</b> ${{ctrl.getUser().money}}
+<div class="accountWrapper" ng-if="account.getUser()">
+    <h3>{{account.getUser().name}}</h3>
+    <b>Состояние счета:</b> ${{account.getUser().money}}
     <br/>
-    <button class="btn btn-info" ng-click="ctrl.addMoney()">Продать почку</button>
+    <button class="btn btn-info" ng-click="account.addMoney()">Продать почку</button>
 
     <h4>Комплекты</h4>
 
@@ -12,18 +12,18 @@
         <loadinfo data-error="calculator.error" ng-if="!calculator.isReady"></loadinfo>
         <div ng-if="calculator.isReady">
 
-            <button ng-if="ctrl.builds.length == 0" class="btn btn-success" ng-click="ctrl.addBuild()">
+            <button ng-if="account.builds.length == 0" class="btn btn-success" ng-click="account.addBuild()">
                 <i class="glyphicon glyphicon-plus-sign"></i> Добавить</button>
 
-            <div class="builds-wrapper" ng-if="ctrl.builds.length > 0">
+            <div class="builds-wrapper" ng-if="account.builds.length > 0">
                 <tabset>
-                    <tab ng-repeat="tab in ctrl.builds" heading="{{tab.name}}"
-                         select="ctrl.initTree(tab)"
+                    <tab ng-repeat="tab in account.builds" heading="{{tab.name}}"
+                         select="account.initTree(tab)"
                          active="tab.active">
                         {{tab.text}}
                     </tab>
-                    <tab class="add" select="ctrl.addBuild()"
-                         disabled="ctrl.builds.length > 9">
+                    <tab class="add" select="account.addBuild()"
+                         disabled="account.builds.length > 9">
                         <tab-heading><i class="glyphicon glyphicon-plus-sign"></i> Добавить
                         </tab-heading>
                     </tab>
@@ -41,14 +41,14 @@
                         <div class="build-controls">
                             <button class="btn btn-sm btn-info" popover="Редактировать"
                                     popover-placement="top" popover-trigger="mouseenter"
-                                    ng-click="ctrl.editBuild()">
+                                    ng-click="account.editBuild()">
                                 <i class="glyphicon glyphicon-cog"></i></button>
                             <button class="btn btn-sm btn-warning" popover="Продать"
                                     popover-placement="top" popover-trigger="mouseenter">
                                 <i class="glyphicon glyphicon-usd"></i></button>
                             <button class="btn btn-sm btn-danger" popover="Удалить"
                                     popover-placement="top" popover-trigger="mouseenter"
-                                    ng-click="ctrl.deleteBuild()">
+                                    ng-click="account.deleteBuild()">
                                 <i class="glyphicon glyphicon-remove"></i></button>
                         </div>
                     </div>
@@ -66,6 +66,8 @@
                     <div id="class-tree" ng-controller="ClassesCtrl as ctrl"
                          ng-init="ctrl.init()">
                         <div class-item data-root="true"
+                             data-restricted-mode="true"
+                             data-build-id="account.getCurrentTab() && account.getCurrentTab()._id"
                              data-current-items="::ctrl.baseClassId"></div>
                     </div>
                 </div>
