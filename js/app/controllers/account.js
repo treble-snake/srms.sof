@@ -1,6 +1,7 @@
 angular.module('srms.sof')
-    .controller('AccountCtrl', ['DataSource', 'CurrentUser', 'CurrentState', 'PerksHelper', '$routeParams', '$modal',
-        function (DataSource, CurrentUser, CurrentState, PerksHelper, $routeParams, $modal) {
+    .controller('AccountCtrl',
+    ['DataSource', 'CurrentUser', 'CurrentState', 'PerksHelper', 'Confirmation', '$routeParams', '$modal',
+        function (DataSource, CurrentUser, CurrentState, PerksHelper, Confirmation, $routeParams, $modal) {
 
             var ctrl = this;
             var currentTab;
@@ -28,16 +29,31 @@ angular.module('srms.sof')
 
             this.builds = [];
 
-            this.addBuild = function () {
+            this.deleteBuild = function () {
+                Confirmation.open('Вы уверены, что хотите удалить "' + currentTab.name + '"?',
+                    'С продажи вы получите $0.').then(function () {
+                        DataSource.deleteBuild(currentTab._id);
+                        ctrl.builds = _.without(ctrl.builds, currentTab);
+                    });
+            };
+
+            this.editBuild = function () {
+                ctrl.addBuild(currentTab.name);
+            };
+
+            this.addBuild = function (currentName) {
 
                 var modalInstance = $modal.open({
                     templateUrl: 'js/app/partials/forms/add.build.html',
-                    controller: function (builds, $scope) {
+                    controller: function (builds, currentName, $scope) {
                         $scope.itemsQty = builds.length;
+                        $scope.editMode = (currentName !== undefined);
+                        if (currentName)
+                            $scope.buildName = currentName;
 
-                        this.submitForm = function() {
+                        this.submitForm = function () {
                             var newName = $scope.buildName;
-                            if(_.findWhere(builds, {name: newName}))
+                            if (_.findWhere(builds, {name: newName}))
                                 alert("Уже есть");
                             else
                                 $scope.$close(newName)
@@ -47,17 +63,25 @@ angular.module('srms.sof')
                     resolve: {
                         builds: function () {
                             return ctrl.builds
+                        },
+                        currentName: function () {
+                            return currentName;
                         }
                     }
                 });
 
                 modalInstance.result.then(function (result) {
-                    DataSource.addBuild(result)
-                        .then(function () {
+                    (currentName ?
+                        DataSource.editBuild({id: currentTab._id, name: result}).then(function () {
+                            currentTab.name = result;
+                        }) :
+                        DataSource.addBuild(result).then(function (response) {
+                            console.warn(response);
                             ctrl.builds
-                                .push({"name": result, "active": true, "class": "base", "perks": []})
+                                .push({_id: response.data._id, "name": result, "active": true,
+                                    "class": response.data.class, "perks": []})
                         })
-                        .catch(function (e) {
+                        ).catch(function (e) {
                             alert(e.message);
                             if (currentTab)
                                 currentTab.active = true;
@@ -72,7 +96,7 @@ angular.module('srms.sof')
             function initBuilds() {
                 DataSource.getBuilds().then(function (response) {
                     ctrl.builds = response || [];
-                    if(ctrl.builds.length > 0)
+                    if (ctrl.builds.length > 0)
                         ctrl.builds[0].active = true;
                 });
             }

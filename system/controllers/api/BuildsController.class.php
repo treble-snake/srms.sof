@@ -2,6 +2,7 @@
 namespace srms\sof\controllers\api;
 
 
+use srms\sof\controllers\AppController;
 use srms\sof\controllers\DBController;
 use srms\sof\models\UserBuildModel;
 use srms\sof\models\UserModel;
@@ -28,10 +29,52 @@ class BuildsController extends ApiController {
 
         $build = new UserBuildModel();
         $build->name = $name;
+        $build->_id = new \MongoId();
 
         DBController::db()->{UsersController::COLLECTION_NAME}->update(
             ['_id' => $user->_id],
             ['$push' => ['builds' => $build->toArray()]]
+        );
+
+        return json_encode(['_id' => $build->_id, 'class' => $build->class]);
+    }
+
+    public function editAction()
+    {
+        if (empty($this->requestParams['data']))
+            throw new \Exception("Data expected.");
+
+        $params = json_decode($this->requestParams['data'], true);
+        if(empty($params['id']) || empty($params['name']))
+            throw new \Exception("Not enough data.");
+
+        $userCtrl = new UsersController();
+        $user = $userCtrl->getLoggedPerson(true);
+
+        if($this->exists($user, $params['name']))
+            throw new \Exception("Build with a same name already exists.");
+
+        DBController::db()->{UsersController::COLLECTION_NAME}->update(
+            ['_id' => $user->_id, 'builds._id' => new \MongoId($params['id']['$id'])],
+            ['$set' => ['builds.$.name' => $params['name']]]
+        );
+    }
+
+    public function deleteAction()
+    {
+        if (empty($this->requestParams['data']))
+            throw new \Exception("Data expected.");
+
+        $params = json_decode($this->requestParams['data'], true);
+        if(empty($params['id']))
+            throw new \Exception("Not enough data.");
+
+        $userCtrl = new UsersController();
+        $user = $userCtrl->getLoggedPerson(true);
+
+        DBController::db()->{UsersController::COLLECTION_NAME}->update(
+            ['_id' => $user->_id],
+            ['$pull' => ['builds' => ['_id' => new \MongoId($params['id']['$id'])]]]
         );
     }
 
@@ -52,9 +95,5 @@ class BuildsController extends ApiController {
         $result = DBController::db()->{UsersController::COLLECTION_NAME}->findOne([
                 '_id' => $user->_id, 'builds.name' => $name]);
         return $result !== null;
-    }
-
-    protected function lastId() {
-
     }
 } 

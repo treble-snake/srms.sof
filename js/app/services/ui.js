@@ -38,10 +38,33 @@ angular.module('srms.sof')
                 composeNameMethod = composeName;
                 renderStats(data, result);
 
-                if(_.isFunction(appendCustomData))
+                if (_.isFunction(appendCustomData))
                     appendCustomData(result);
 
                 return result.wrap("<div/>").parent().html();
+            }
+        }
+    }])
+    .factory('Confirmation', ['$modal', function ($modal) {
+        return {
+            open: function(title, message) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'js/app/partials/confirm.dialog.html',
+                    controller: function (data, $scope) {
+                        $scope.data = data;
+                    },
+                    controllerAs: "ctrl",
+                    resolve: {
+                        data: function () {
+                            return {
+                                title: title,
+                                message: message
+                            }
+                        }
+                    }
+                });
+
+                return modalInstance.result;
             }
         }
     }]);

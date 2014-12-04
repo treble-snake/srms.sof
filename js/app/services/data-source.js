@@ -6,8 +6,10 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
         var classesCache = {};
         var perksCache = {};
 
-        function getRequestUrl(controller, action) {
-            return "/api.php?controller=" + controller + "&action=" + action;
+        function getRequestUrl(controller, action, data) {
+            var url = "/api.php?controller=" + controller + "&action=" + action;
+            if(data) url += "&data=" + angular.toJson(data);
+            return  url;
         }
 
         function getHttpRequest(url, usePost) {
@@ -78,7 +80,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
 
             getUser: function (data) {
                 return sendRequests(
-                        getRequestUrl("users", "auth") + "&data=" + angular.toJson(data), true)
+                        getRequestUrl("users", "auth", data), true)
             },
             getBuilds: function () {
                 return sendRequests(getRequestUrl("builds", "list"), true).then(function (r) {
@@ -88,6 +90,14 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             addBuild: function(name) {
                 return sendRequests(
                         getRequestUrl("builds", "add") + "&name=" + name, true);
+            },
+            editBuild: function(data) {
+                return sendRequests(
+                        getRequestUrl("builds", "edit", data), true);
+            },
+            deleteBuild: function(id) {
+                return sendRequests(
+                    getRequestUrl("builds", "delete", {id: id}), true);
             },
             addMoney: function () {
                 return sendRequests(getRequestUrl("users", "addMoney"), true)

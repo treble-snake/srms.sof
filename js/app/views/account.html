@@ -30,28 +30,33 @@
                 </tabset>
 
 
-                <div class="pane" id="stats-pane" ng-controller="StatsCtrl as ctrl">
-                    <div ng-if="ctrl.getCurrentClass()">
-                        <h4>{{ctrl.getCurrentClass().name}}</h4>
+                <div class="pane" id="stats-pane" ng-controller="StatsCtrl as sCtrl">
+                    <div ng-if="sCtrl.getCurrentClass()">
+                        <h4>{{sCtrl.getCurrentClass().name}}</h4>
 
-                        <button class="btn btn-sm btn-info" popover="Редактировать"
-                                popover-placement="top" popover-trigger="mouseenter">
-                            <i class="glyphicon glyphicon-cog"></i></button>
-                        <button class="btn btn-sm btn-warning" popover="Продать"
-                                popover-placement="top" popover-trigger="mouseenter">
-                            <i class="glyphicon glyphicon-usd"></i></button>
-                        <button class="btn btn-sm btn-danger" popover="Удалить"
-                                popover-placement="top" popover-trigger="mouseenter">
-                            <i class="glyphicon glyphicon-remove"></i></button>
+                        <div class="cost">
+                            <span class="title">Бюджет:</span> ${{sCtrl.getCost()}}
+                        </div>
 
-                        <div class="cost"><span class="title">Бюджет:</span> ${{ctrl.getCost()}}
+                        <div class="build-controls">
+                            <button class="btn btn-sm btn-info" popover="Редактировать"
+                                    popover-placement="top" popover-trigger="mouseenter"
+                                    ng-click="ctrl.editBuild()">
+                                <i class="glyphicon glyphicon-cog"></i></button>
+                            <button class="btn btn-sm btn-warning" popover="Продать"
+                                    popover-placement="top" popover-trigger="mouseenter">
+                                <i class="glyphicon glyphicon-usd"></i></button>
+                            <button class="btn btn-sm btn-danger" popover="Удалить"
+                                    popover-placement="top" popover-trigger="mouseenter"
+                                    ng-click="ctrl.deleteBuild()">
+                                <i class="glyphicon glyphicon-remove"></i></button>
                         </div>
                     </div>
 
-                    <div id="stats" ng-if="!_.isEmpty(ctrl.getStatValues())">
+                    <div id="stats" ng-if="!_.isEmpty(sCtrl.getStatValues())">
                         <div stats-pane
-                             data-stat-values="ctrl.getStatValues()"
-                             data-stat-info="::ctrl.statsInfo"></div>
+                             data-stat-values="sCtrl.getStatValues()"
+                             data-stat-info="::sCtrl.statsInfo"></div>
                     </div>
                 </div>
 

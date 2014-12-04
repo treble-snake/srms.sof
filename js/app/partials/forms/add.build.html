@@ -1,5 +1,8 @@
 <div class="modal-header">
-    <h3 class="modal-title">Добавление билда</h3>
+    <h3 class="modal-title">
+        <span ng-if="!editMode">Добавление</span>
+        <span ng-if="editMode">Редактирование</span>
+        билда</h3>
 </div>
 <form  novalidate name="AddBuildForm">
     <div class="modal-body">
@@ -9,7 +12,8 @@
         <input id="buildName" type="text" required ng-model="buildName" name="buildName"/>
     </div>
     <div class="modal-footer">
-        <input type="submit" ng-click="ctrl.submitForm()" class="btn btn-primary" value="Добавить"
+        <input type="submit" ng-click="ctrl.submitForm()" class="btn btn-primary"
+               value="{{editMode ? 'Сохранить' : 'Добавить'}}"
                ng-disabled="AddBuildForm.$invalid">
         <button class="btn btn-warning" ng-click="$dismiss()">Отмена</button>
     </div>
