@@ -248,7 +248,9 @@ div.pane {
     cursor: default;
 }
 
-.tree-item-content.selected {
+.tree-item-content.selected,
+.tree-item-content.notAvailable.selected
+{
     cursor: pointer;
     border-color: rgb(0, 172, 23);
 }
