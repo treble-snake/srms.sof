@@ -15,12 +15,10 @@ class BuildsController extends ApiController
 
     public function addAction()
     {
-        if (empty($this->requestParams['name']))
-            throw new \Exception("Build name expected.");
-
-        $name = $this->requestParams['name'];
-        $userCtrl = new UsersController();
-        $user = $userCtrl->getLoggedPerson(true);
+        list($name) = $this->getParams(['name']);
+        $name = trim($name);
+        $this->validateName($name);
+        $user = UsersController::getCurrent();
 
         if (count($user->builds) >= self::MAX_BUILD_QTY)
             throw new \Exception("Too many builds.");
@@ -42,43 +40,30 @@ class BuildsController extends ApiController
 
     public function editAction()
     {
-        if (empty($this->requestParams['data']))
-            throw new \Exception("Data expected.");
+        list($id, $name) = $this->getParams(['id', 'name']);
+        $name = trim($name);
+        $this->validateName($name);
+        $user = UsersController::getCurrent();
 
-        $params = json_decode($this->requestParams['data'], true);
-        if (empty($params['id']) || empty($params['name']))
-            throw new \Exception("Not enough data.");
-
-        $userCtrl = new UsersController();
-        $user = $userCtrl->getLoggedPerson(true);
-
-        if ($this->exists($user, $params['name']))
+        if ($this->exists($user, $name))
             throw new \Exception("Build with a same name already exists.");
 
         DBController::db()->{UsersController::COLLECTION_NAME}->update(
-            ['_id' => $user->_id, 'builds._id' => new \MongoId($params['id']['$id'])],
-            ['$set' => ['builds.$.name' => $params['name']]]
+            ['_id' => $user->_id, 'builds._id' => $this->createMongoId($id)],
+            ['$set' => ['builds.$.name' => $name]]
         );
     }
 
     public function deleteAction()
     {
-        if (empty($this->requestParams['data']))
-            throw new \Exception("Data expected.");
+        list($id) = $this->getParams(['id']);
+        $user = UsersController::getCurrent();
 
-        $params = json_decode($this->requestParams['data'], true);
-        if (empty($params['id']))
-            throw new \Exception("Not enough data.");
-
-        $userCtrl = new UsersController();
-        $user = $userCtrl->getLoggedPerson(true);
-
-        $buildId = $params['id']['$id'];
+        $mongoId = $this->createMongoId($id);
         DBController::db()->{UsersController::COLLECTION_NAME}->update(
-            ['_id' => $user->_id],
-            [
-                '$pull' => ['builds' => ['_id' => new \MongoId($buildId)]],
-                '$inc' => ['money' => round($this->calculatePrice($user, $buildId) / 2)]
+            ['_id' => $user->_id], [
+                '$pull' => ['builds' => ['_id' => $mongoId]],
+                '$inc' => ['money' => round($this->calculatePrice($user, $mongoId) / 2)]
             ]
         );
     }
@@ -86,16 +71,15 @@ class BuildsController extends ApiController
     public function setClassAction()
     {
         list($classId, $buildId) = $this->getParams(['classId', 'buildId']);
-        $userCtrl = new UsersController();
-        $user = $userCtrl->getLoggedPerson(true);
+        $buildMongoId = $this->createMongoId($buildId);
 
-        // TODO checks
-        $class = DBController::db()->classes->findOne(['_id' => $classId]);
-        if (empty($class))
-            throw new \Exception("Class not found: " . $classId);
+        $user = UsersController::getCurrent();
+        $class = $this->getClass($classId);
+        $this->validateClassAvailability($user, $buildMongoId, $class);
+        $this->validateAffordability($user, $class['price']);
 
         DBController::db()->{UsersController::COLLECTION_NAME}->update(
-            ['_id' => $user->_id, 'builds._id' => new \MongoId($buildId['$id'])],
+            ['_id' => $user->_id, 'builds._id' => $buildMongoId],
             [
                 '$set' => ['builds.$.class' => $classId],
                 '$inc' => ['money' => -1 * $class['price']]
@@ -106,16 +90,15 @@ class BuildsController extends ApiController
     public function addPerkAction()
     {
         list($perkId, $buildId) = $this->getParams(['perkId', 'buildId']);
-        $userCtrl = new UsersController();
-        $user = $userCtrl->getLoggedPerson(true);
+        $buildMongoId = $this->createMongoId($buildId);
 
-        // TODO checks
-        $perk = DBController::db()->perks->findOne(['_id' => $perkId]);
-        if (empty($perk))
-            throw new \Exception("Perk not found: " . $perkId);
+        $user = UsersController::getCurrent();
+        $perk = $this->getPerk($perkId);
+        $this->validatePerkAvailability($user, $buildMongoId, $perk);
+        $this->validateAffordability($user, $perk['price']);
 
         DBController::db()->{UsersController::COLLECTION_NAME}->update(
-            ['_id' => $user->_id, 'builds._id' => new \MongoId($buildId['$id'])],
+            ['_id' => $user->_id, 'builds._id' => $buildMongoId],
             [
                 '$push' => ['builds.$.perks' => $perkId],
                 '$inc' => ['money' => -1 * $perk['price']]
@@ -126,27 +109,60 @@ class BuildsController extends ApiController
     public function sellAction()
     {
         list($buildId) = $this->getParams(['buildId']);
-        $userCtrl = new UsersController();
-        $user = $userCtrl->getLoggedPerson(true);
+        $user = UsersController::getCurrent();
 
-        // TODO checks
+        $mongoId = $this->createMongoId($buildId);
         DBController::db()->{UsersController::COLLECTION_NAME}->update(
-            ['_id' => $user->_id, 'builds._id' => new \MongoId($buildId['$id'])],
+            ['_id' => $user->_id, 'builds._id' => $mongoId],
             [
                 '$set' => [
                     'builds.$.perks' => [],
                     'builds.$.class' => UserBuildModel::BASE_CLASS
                 ],
-                '$inc' => ['money' => round($this->calculatePrice($user, $buildId['$id']) / 2)]
+                '$inc' => ['money' => round($this->calculatePrice($user, $mongoId) / 2)]
             ]
         );
     }
 
     public function listAction()
     {
-        $user = (new UsersController())->getLoggedPerson(true);
+        $user = UsersController::getCurrent();
         return $this->listItems(UsersController::COLLECTION_NAME, false, ["_id" => $user->_id],
             [], ["builds" => 1]);
+    }
+
+    public function checkNameAction()
+    {
+        $name = trim($this->requestParams['name']);
+        AppController::printVariable($name);
+        $this->validateName($name);
+        echo 'ok';
+    }
+
+    protected function validateName($name)
+    {
+        if(!preg_match("/^[А-Яа-я\w\-\(\)\s]{1,30}$/ui", $name))
+            throw new \Exception("Неверный формат названия.");
+    }
+
+    protected function validateAffordability(UserModel $user, $price)
+    {
+        if($user->money < $price)
+            throw new \Exception("Not affordable.");
+    }
+
+    protected function validateClassAvailability(UserModel $user, \MongoId $buildId, array $class)
+    {
+        $build = $this->getBuild($user, $buildId);
+        if($class['parent'] != $build['class'])
+            throw new \Exception('Class is not available.');
+    }
+
+    protected function validatePerkAvailability(UserModel $user, \MongoId $buildId, array $perk)
+    {
+        $build = $this->getBuild($user, $buildId);
+        if(in_array($perk['_id'], $build['perks']) || !in_array($perk['parent'], $build['perks']))
+            throw new \Exception('Perk is not available.');
     }
 
     /**
@@ -161,23 +177,44 @@ class BuildsController extends ApiController
         return $result !== null;
     }
 
-    public function calculatePrice($user, $buildId)
+    protected function getBuild($user, \MongoId $id)
     {
-        $price = 0;
-
         $buildQuery = DBController::db()->{UsersController::COLLECTION_NAME}->findOne(
-            ['_id' => $user->_id, 'builds._id' => new \MongoId($buildId)], ['builds.$' => 1]);
-        if($buildQuery == null)
+            ['_id' => $user->_id, 'builds._id' => $id], ['builds.$' => 1]);
+        if ($buildQuery == null)
             throw new \Exception("Build not found");
 
-        $build = $buildQuery['builds'][0];
+        return $buildQuery['builds'][0];
+    }
 
-        $class = DBController::db()->classes->findOne(['_id' => $build['class']]);
-        if($class != null)
-            $price += $class['price'];
+    protected function getClass($id)
+    {
+        $class = DBController::db()->classes->findOne(['_id' => $id]);
+        if($class == null)
+            throw new \Exception("Class not found");
+
+        return $class;
+    }
+
+    protected function getPerk($id)
+    {
+        $perk = DBController::db()->perks->findOne(['_id' => $id]);
+        if($perk == null)
+            throw new \Exception("Perk not found");
+
+        return $perk;
+    }
+
+    protected function calculatePrice($user, \MongoId $buildId)
+    {
+        $price = 0;
+        $build = $this->getBuild($user, $buildId);
+
+        $class = $this->getClass($build['class']);
+        $price += $class['price'];
 
         $perks = DBController::db()->perks->find(['_id' => ['$in' => $build['perks']]]);
-        foreach($perks as $perk) {
+        foreach ($perks as $perk) {
             $price += $perk['price'];
         }
 

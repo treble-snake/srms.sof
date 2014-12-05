@@ -80,7 +80,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
 
             getUser: function (data) {
                 return sendRequests(
-                    getRequestUrl("users", "auth", data), true)
+                    getRequestUrl("users", "auth", data))
             },
             getBuilds: function () {
                 return sendRequests(getRequestUrl("builds", "list"), true).then(function (r) {
@@ -89,7 +89,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
             },
             addBuild: function (name) {
                 return sendRequests(
-                        getRequestUrl("builds", "add") + "&name=" + name, true);
+                    getRequestUrl("builds", "add", {name: name}), true);
             },
             editBuild: function (data) {
                 return sendRequests(

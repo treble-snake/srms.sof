@@ -5,9 +5,27 @@ use srms\sof\controllers\AppController;
 use srms\sof\controllers\DBController;
 use srms\sof\models\UserModel;
 
+/**
+ * Class UsersController
+ * @package srms\sof\controllers\api
+ */
 class UsersController extends ApiController
 {
     const COLLECTION_NAME = "users";
+    /** @var UserModel|null */
+    private static $currentUser = null;
+
+    /**
+     * @return null|UserModel
+     */
+    public static function getCurrent()
+    {
+        if (self::$currentUser == null) {
+            $ctrl = new UsersController();
+            self::$currentUser = $ctrl->getLoggedPerson(true);
+        }
+        return self::$currentUser;
+    }
 
     public function authAction()
     {
@@ -72,9 +90,8 @@ class UsersController extends ApiController
         $cursor = DBController::db()->{self::COLLECTION_NAME}
             ->find(["vkId" => $cookieData['id']]);
 
-        if (!$cursor->hasNext())
-        {
-            if($throwIfFailed)
+        if (!$cursor->hasNext()) {
+            if ($throwIfFailed)
                 throw new \Exception("User should be logged in.");
 
             return null;

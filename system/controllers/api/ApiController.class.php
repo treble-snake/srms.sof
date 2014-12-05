@@ -24,6 +24,16 @@ class ApiController
         return $this->cursorToJson($cursor, $extractId);
     }
 
+    protected function extractMongoId($id)
+    {
+        return $id['$id'];
+    }
+
+    protected function createMongoId($id)
+    {
+        return new \MongoId($id['$id']);
+    }
+
     protected function cursorToJson($cursor, $extractId)
     {
         return json_encode(iterator_to_array($cursor, $extractId));
@@ -37,7 +47,7 @@ class ApiController
             throw new \Exception("Data expected.");
 
         $params = json_decode($this->requestParams['data'], true);
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
             if (empty($params[$key]))
                 throw new \Exception("Not enough data.");
 

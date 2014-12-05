@@ -4,12 +4,14 @@
         <span ng-if="editMode">Редактирование</span>
         билда</h3>
 </div>
-<form  novalidate name="AddBuildForm">
+<form novalidate name="AddBuildForm">
     <div class="modal-body">
         <alert type="info" ng-if="itemsQty == 0">Введите название для вашего первого билда. Его можно будет
         изменить позже.</alert>
         <label for="buildName">Название:</label>
-        <input id="buildName" type="text" required ng-model="buildName" name="buildName"/>
+        <input id="buildName" type="text" maxlength="30" ng-pattern="/^[А-Яа-я\w\-\(\)\s]{1,30}$/i" required ng-model="buildName" name="buildName"/>
+        <p class="help-block">Допустимые символы: буквы (русские и латинские), цифры, пробел, тире, круглые скобки.</p>
+        <alert type="danger" ng-show="AddBuildForm.buildName.$error.pattern">Неверный фомат названия.</alert>
     </div>
     <div class="modal-footer">
         <input type="submit" ng-click="ctrl.submitForm()" class="btn btn-primary"
