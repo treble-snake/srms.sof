@@ -118,11 +118,11 @@ angular.module('srms.sof')
                     return false;
 
                 if (!_.isEmpty(need.classOnly)
-                    && !_.contains(need.classOnly, current.id))
+                    && !_.contains(need.classOnly, current._id))
                     return false;
 
                 if (!_.isEmpty(need.classExcept)
-                    && _.contains(need.classExcept, current.id))
+                    && _.contains(need.classExcept, current._id))
                     return false;
 
                 if (!_.isUndefined(perk.parent) && !_.contains(CurrentState.perks.get(), perk.parent))
