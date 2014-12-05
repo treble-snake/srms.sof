@@ -3,7 +3,7 @@ angular.module('srms.sof',
         'srms.sof.utils', 'srms.sof.current-state', 'srms.sof.data-source'])
 
     .controller('AppCtrl', ['$location', 'CurrentUser', function ($location, CurrentUser) {
-        this.version = "0.6.3";
+        this.version = "0.7.0";
 
         this.pages = [
             {url: 'contracts', name: 'Контракты'},

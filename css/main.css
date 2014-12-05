@@ -255,9 +255,15 @@ div.pane {
     border-color: rgb(0, 172, 23);
 }
 
+.tree-item-content.notAvailable.purchased,
+.tree-item-content.purchased {
+    border-color: #fff;
+}
+
 /* Some effects */
-.tree-item-content.available:not(.selected):hover,
-.tree-item-content.available:hover ~ .tree-wrapper > .tree-item > .tree-item-content {
+.tree-item-content:not(.selected):not(.notAffordable):hover,
+.tree-item-content.purchased:hover,
+.tree-item-content:hover ~ .tree-wrapper > .tree-item > .tree-item-content {
     border-color: #4a67f8;
 }
 
@@ -274,6 +280,10 @@ div.pane {
 #perks-pane .tree-item-content {
     margin-top: 0;
     margin-left: 20px;
+}
+
+.perk-info.tree-item-content.selected.restricted {
+    cursor: default;
 }
 
 .perk.root-tree-item {

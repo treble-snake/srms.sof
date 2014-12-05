@@ -33,11 +33,18 @@ angular.module('srms.sof')
             this.builds = [];
 
             this.deleteBuild = function () {
-                Confirmation.open('Вы уверены, что хотите удалить "' + currentTab.name + '"?',
-                    'С продажи вы получите $0.').then(function () {
-                        DataSource.deleteBuild(currentTab._id);
-                        ctrl.builds = _.without(ctrl.builds, currentTab);
-                    });
+                sellDeleteBuild('удалить', function () {
+                    DataSource.deleteBuild(currentTab._id);
+                    ctrl.builds = _.without(ctrl.builds, currentTab);
+                })
+            };
+
+            this.sellBuild = function () {
+                sellDeleteBuild('продать', function () {
+                    DataSource.sellBuild(currentTab._id);
+                    CurrentState.reset();
+                    CurrentState.clazz.set('base');
+                })
             };
 
             this.editBuild = function () {
@@ -96,6 +103,15 @@ angular.module('srms.sof')
             };
 
             // private section
+            function sellDeleteBuild(actionName, callback) {
+                var price = Math.round(CurrentState.cost.get() / 2);
+                Confirmation.open('Вы уверены, что хотите ' + actionName + ' "' + currentTab.name + '"?',
+                        'С продажи имплатнов и аугментаций вы получите $' + price + '.').then(function () {
+                        callback();
+                        CurrentUser.updateMoney(price);
+                    });
+            }
+
             function initBuilds() {
                 DataSource.getBuilds().then(function (response) {
                     ctrl.builds = response || [];

@@ -1,6 +1,11 @@
 <div class="class tree-item" ng-class="{'root-tree-item': root}" ng-repeat="id in currentItems">
     <div class="class-info tree-item-content" id="class-{{id}}"
-         ng-class="{notAvailable: !ctrl.isAvailable(id), selected: ctrl.isSelected(id), notAffordable: !ctrl.isAffordable(id)}"
+         ng-class="{
+            notAvailable: !ctrl.isAvailable(id),
+            selected: ctrl.isSelected(id),
+            notAffordable: !ctrl.isAffordable(id),
+            purchased: ctrl.isPurchased(id)
+         }"
          ng-disabled="!ctrl.isAvailable(id)"
          ng-click="ctrl.choose(id)"
          tooltip-html-unsafe="{{::ctrl.getTooltip(id)}}"

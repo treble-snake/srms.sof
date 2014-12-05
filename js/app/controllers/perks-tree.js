@@ -1,7 +1,7 @@
 angular.module('srms.sof')
     .controller('PerksCtrl', [
-        '$scope', '$rootScope', 'CurrentState', 'DataSource', 'TooltipMaker', 'PerksHelper', 'statsToArrayFilter',
-        function ($scope, $rootScope, CurrentState, DataSource, TooltipMaker, PerksHelper, statsToArray) {
+        '$scope', 'CurrentState', 'DataSource', 'TooltipMaker', 'PerksHelper', 'CurrentUser', 'Confirmation', 'statsToArrayFilter',
+        function ($scope, CurrentState, DataSource, TooltipMaker, PerksHelper, CurrentUser, Confirmation, statsToArray) {
 
             var ctrl = this;
 
@@ -32,16 +32,29 @@ angular.module('srms.sof')
 
             this.isSelected = CurrentState.perks.isSelected;
             this.getPerk = DataSource.getPerk;
-
             this.isAvailable = PerksHelper.isPerkAvailable;
+            this.isAffordable = function (id) {
+                return !$scope.restrictedMode || PerksHelper.isAffordable(id)
+            };
 
             this.choose = function (id) {
                 var perk = DataSource.getPerk(id);
-                if (!perk || !ctrl.isAvailable(id, perk))
+                if (!perk || !ctrl.isAvailable(id) || !ctrl.isAffordable(id) ||
+                    ($scope.restrictedMode && ctrl.isSelected(id)))
                     return;
 
-                CurrentState.perks.toggle(id);
-                PerksHelper.applyPerk(perk, ctrl.isSelected(id));
+                if ($scope.restrictedMode) {
+                    Confirmation.open('Купить аугментацию "' + perk.name + '"?',
+                            'Это обойдется вам в $' + perk.price).then(function () {
+                            DataSource.addPerk({buildId: $scope.buildId, perkId: id})
+                                .then(function () {
+                                    choosePerk(id);
+                                    CurrentUser.updateMoney(-1 * perk.price);
+                                })
+                        })
+                } else {
+                    choosePerk(id);
+                }
             };
 
             this.getTooltip = function (id) {
@@ -65,6 +78,11 @@ angular.module('srms.sof')
             };
 
             /* Private section */
+
+            function choosePerk(id) {
+                CurrentState.perks.toggle(id);
+                PerksHelper.applyPerk(DataSource.getPerk(id), ctrl.isSelected(id));
+            }
 
             /**
              * Injects effect object to each stat item

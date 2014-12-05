@@ -44,7 +44,8 @@
                                     ng-click="account.editBuild()">
                                 <i class="glyphicon glyphicon-cog"></i></button>
                             <button class="btn btn-sm btn-warning" popover="Продать"
-                                    popover-placement="top" popover-trigger="mouseenter">
+                                    popover-placement="top" popover-trigger="mouseenter"
+                                    ng-click="account.sellBuild()">
                                 <i class="glyphicon glyphicon-usd"></i></button>
                             <button class="btn btn-sm btn-danger" popover="Удалить"
                                     popover-placement="top" popover-trigger="mouseenter"
@@ -77,6 +78,8 @@
 
                     <div id="perks" ng-controller="PerksCtrl as ctrl">
                         <div perk-item data-root="true"
+                             data-restricted-mode="true"
+                             data-build-id="account.getCurrentTab() && account.getCurrentTab()._id"
                              data-items-list="::ctrl.topLevelIds"></div>
                     </div>
                 </div>

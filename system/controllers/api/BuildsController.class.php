@@ -73,9 +73,13 @@ class BuildsController extends ApiController
         $userCtrl = new UsersController();
         $user = $userCtrl->getLoggedPerson(true);
 
+        $buildId = $params['id']['$id'];
         DBController::db()->{UsersController::COLLECTION_NAME}->update(
             ['_id' => $user->_id],
-            ['$pull' => ['builds' => ['_id' => new \MongoId($params['id']['$id'])]]]
+            [
+                '$pull' => ['builds' => ['_id' => new \MongoId($buildId)]],
+                '$inc' => ['money' => round($this->calculatePrice($user, $buildId) / 2)]
+            ]
         );
     }
 
@@ -99,6 +103,45 @@ class BuildsController extends ApiController
         );
     }
 
+    public function addPerkAction()
+    {
+        list($perkId, $buildId) = $this->getParams(['perkId', 'buildId']);
+        $userCtrl = new UsersController();
+        $user = $userCtrl->getLoggedPerson(true);
+
+        // TODO checks
+        $perk = DBController::db()->perks->findOne(['_id' => $perkId]);
+        if (empty($perk))
+            throw new \Exception("Perk not found: " . $perkId);
+
+        DBController::db()->{UsersController::COLLECTION_NAME}->update(
+            ['_id' => $user->_id, 'builds._id' => new \MongoId($buildId['$id'])],
+            [
+                '$push' => ['builds.$.perks' => $perkId],
+                '$inc' => ['money' => -1 * $perk['price']]
+            ]
+        );
+    }
+
+    public function sellAction()
+    {
+        list($buildId) = $this->getParams(['buildId']);
+        $userCtrl = new UsersController();
+        $user = $userCtrl->getLoggedPerson(true);
+
+        // TODO checks
+        DBController::db()->{UsersController::COLLECTION_NAME}->update(
+            ['_id' => $user->_id, 'builds._id' => new \MongoId($buildId['$id'])],
+            [
+                '$set' => [
+                    'builds.$.perks' => [],
+                    'builds.$.class' => UserBuildModel::BASE_CLASS
+                ],
+                '$inc' => ['money' => round($this->calculatePrice($user, $buildId['$id']) / 2)]
+            ]
+        );
+    }
+
     public function listAction()
     {
         $user = (new UsersController())->getLoggedPerson(true);
@@ -116,5 +159,28 @@ class BuildsController extends ApiController
         $result = DBController::db()->{UsersController::COLLECTION_NAME}->findOne([
             '_id' => $user->_id, 'builds.name' => $name]);
         return $result !== null;
+    }
+
+    public function calculatePrice($user, $buildId)
+    {
+        $price = 0;
+
+        $buildQuery = DBController::db()->{UsersController::COLLECTION_NAME}->findOne(
+            ['_id' => $user->_id, 'builds._id' => new \MongoId($buildId)], ['builds.$' => 1]);
+        if($buildQuery == null)
+            throw new \Exception("Build not found");
+
+        $build = $buildQuery['builds'][0];
+
+        $class = DBController::db()->classes->findOne(['_id' => $build['class']]);
+        if($class != null)
+            $price += $class['price'];
+
+        $perks = DBController::db()->perks->find(['_id' => ['$in' => $build['perks']]]);
+        foreach($perks as $perk) {
+            $price += $perk['price'];
+        }
+
+        return $price;
     }
 } 

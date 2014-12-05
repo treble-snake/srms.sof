@@ -8,7 +8,7 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
 
         function getRequestUrl(controller, action, data) {
             var url = "/api.php?controller=" + controller + "&action=" + action;
-            if(data) url += "&data=" + angular.toJson(data);
+            if (data) url += "&data=" + angular.toJson(data);
             return  url;
         }
 
@@ -80,28 +80,36 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
 
             getUser: function (data) {
                 return sendRequests(
-                        getRequestUrl("users", "auth", data), true)
+                    getRequestUrl("users", "auth", data), true)
             },
             getBuilds: function () {
                 return sendRequests(getRequestUrl("builds", "list"), true).then(function (r) {
                     return r.data[0].builds;
                 })
             },
-            addBuild: function(name) {
+            addBuild: function (name) {
                 return sendRequests(
                         getRequestUrl("builds", "add") + "&name=" + name, true);
             },
-            editBuild: function(data) {
+            editBuild: function (data) {
                 return sendRequests(
-                        getRequestUrl("builds", "edit", data), true);
+                    getRequestUrl("builds", "edit", data), true);
             },
-            deleteBuild: function(id) {
+            deleteBuild: function (id) {
                 return sendRequests(
                     getRequestUrl("builds", "delete", {id: id}), true);
             },
-            setClass: function(data) {
+            sellBuild: function (id) {
+                return sendRequests(
+                    getRequestUrl("builds", "sell", {buildId: id}), true);
+            },
+            setClass: function (data) {
                 return sendRequests(
                     getRequestUrl("builds", "setClass", data), true);
+            },
+            addPerk: function (data) {
+                return sendRequests(
+                    getRequestUrl("builds", "addPerk", data), true);
             },
             addMoney: function () {
                 return sendRequests(getRequestUrl("users", "addMoney"), true)

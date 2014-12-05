@@ -1,5 +1,6 @@
 angular.module('srms.sof')
-    .factory('PerksHelper', ['CurrentState', 'DataSource', function (CurrentState, DataSource) {
+    .factory('PerksHelper', ['CurrentState', 'DataSource', 'CurrentUser',
+        function (CurrentState, DataSource, CurrentUser) {
 
         var effectsMap = {
             add: {
@@ -128,6 +129,10 @@ angular.module('srms.sof')
                     return false;
 
                 return true;
+            },
+
+            isAffordable: function(id) {
+                return DataSource.getPerk(id).price <= CurrentUser.getUser().money
             }
     }
 }])

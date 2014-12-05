@@ -30,7 +30,11 @@ angular.module('srms.sof')
                 return _.isEqual(id, BASE_CLASS_ID) ||
                     ctrl.isSelected(id) ||
                     DataSource.getClass(id).parent == CurrentState.clazz.id() ||
-                    isAncestor(id, CurrentState.clazz.get());
+                    ctrl.isPurchased(id);
+            };
+
+            this.isPurchased = function (id) {
+                return isAncestor(id, CurrentState.clazz.get())
             };
 
             this.choose = function (id) {
