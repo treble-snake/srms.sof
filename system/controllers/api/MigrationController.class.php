@@ -8,7 +8,7 @@ use srms\sof\controllers\DBController;
 
 class MigrationController extends ApiController
 {
-    const ACTIVE = true;
+    const ACTIVE = false;
 
     public function addCorpsAction()
     {
