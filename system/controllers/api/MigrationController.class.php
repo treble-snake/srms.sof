@@ -8,7 +8,30 @@ use srms\sof\controllers\DBController;
 
 class MigrationController extends ApiController
 {
-    const ACTIVE = false;
+    const ACTIVE = true;
+
+    public function addCorpsAction()
+    {
+        if (!self::ACTIVE)
+            return;
+
+        $obj = json_decode($this->getCorpsJson(), false);
+        $i = 0;
+        $collectoin = DBController::db()->{CorporationsController::COLLECTION_NAME};
+        AppController::printVariable($obj);
+        foreach ($obj->data as $corp) {
+            $data = [];
+            $data['_id'] = ++$i;
+            $data['name'] = $corp->name;
+            $data['desc'] = $corp->desc;
+            $data['color'] = $corp->color;
+            $data['value'] = $corp->y;
+
+            $collectoin->insert($data);
+        }
+
+        echo 'done';
+    }
 
     public function addStatsAction()
     {
@@ -57,36 +80,41 @@ class MigrationController extends ApiController
         AppController::printVariable(DBController::db()->$collection->insert($class));
     }
 
-    private function addStatsOld()
+
+    private function getCorpsJson()
     {
-        if(!self::ACTIVE)
-            return;
-
-        $json = $this->getStatsJson();
-        $obj = json_decode($json, false);
-
-        foreach ($obj->stats as $id => $item) {
-            $item->_id = $id;
-
-            if (!empty($item->sub)) {
-                $sub = $item->sub;
-                unset($item->sub);
-                $item->children = [];
-                foreach ($sub as $k => $v) {
-                    array_push($item->children, $k);
-
-                    $child = $v;
-                    $child->_id = $k;
-                    $child->parent = $id;
-                    AppController::printVariable(DBController::db()->stats->insert($child));
-                    echo '<hr/>';
-                }
-            }
-
-            AppController::printVariable(DBController::db()->stats->insert($item));
-
-            echo '<hr/><hr/>';
-        }
+        return '{"data":[
+        {
+                            "name": "Cnoc Glas, Inc",
+                            "y": 21.8,
+                            "desc": "Корпорация \"Зеленый Холм\" основана ирландской диаспорой в США.<br/>Обоснованно подозревается в связях с ирландской мафией, однако,<br/>пресс-служба органиации категорически отрицает все обвинения.<br/>Выделяется очень развитой агентурной сетью промышленного шпионажа,<br/>хотя это, естетсвенно, тоже отрицает.",
+                            "color": "#008000"
+                        },
+{
+"name": "Дзайбацу Асано",
+"y": 19.4,
+"desc": "Крупная многопрофильная японо-корейская компания, основанная <br/>семьей Асано, вышедшая на рынок добычи нейтринита. Имеет ресурсы <br/>для обеспечения полного цикла добычи нейтринита, его обработки и<br/>последующего использования.",
+"color": "#FFCF48"
+},
+    {
+        "name": "Mineiros militar",
+                            "y": 24.4,
+                            "desc": "Синдикат по добыче нейтринита, сформированный на базе колумбийских<br/>картелей. Не скрывают свое происхождение, не гнушаются \"грязными\"<br/>методами в борье за ресурс. Опыт ведения боевых действий позволяет им<br/>уверенно занимать лидирующие позиции на рынке нейтринита.",
+                            "color": "#472A3F"
+                        },
+    {
+        "name": "Нейпром-Юань",
+                            "y": 20.1,
+                            "desc": "Корпорация-гигант, основанная и поддерживаемая государствами<br/>Евро-Азиатского Союза, хотя де-юре является самостоятельной организацией.<br/>В силу госориентированности старается держаться в рамках законов,<br/>но при этом обладает огромными ресурсами для достижения своих целей.",
+                            "color": "#FF2400"
+                        },
+    {
+        "name": "Elite mining, Ltd",
+                            "y": 14.3,
+                            "desc": "Организация появилась относительно недавно благодаря экономическому<br/>союзу богатых компаний Южной Африки и военизированных формирований,<br/>промышлявших по большей части незаконной деятельностью. Ресурсы<br/>компаний вкупе с военным опытом боевиков позволили фирме быстро<br/>выйти на один уровень с четвёркой гигантов, оккупировавших рынок.",
+                            "color": "#5D76CB"
+                        }
+        ]}';
     }
 
     public function getPerksJson()

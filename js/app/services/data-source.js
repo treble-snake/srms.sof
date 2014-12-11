@@ -78,6 +78,10 @@ angular.module('srms.sof.data-source', ['srms.sof.utils'])
                 return sendRequests([newsQuery, getRequestUrl("news", "tags")])
             },
 
+            getCorporations: function() {
+                return sendRequests(getRequestUrl("corporations", "list"));
+            },
+
             getUser: function (data) {
                 return sendRequests(
                     getRequestUrl("users", "auth", data))

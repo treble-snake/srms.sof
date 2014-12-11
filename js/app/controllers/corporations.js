@@ -1,85 +1,47 @@
 angular.module('srms.sof')
-    .controller('CorporationsCtrl', [function () {
-        $('#corps-pie').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            title: {
-                text: 'Влияние корпораций на рынке нейтринита, ноябрь 2064'
-            },
-            tooltip: {
-                pointFormat: '<p>{point.desc}</p>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+    .controller('CorporationsCtrl', ['DataSource', function (DataSource) {
+
+        function initChart(data) {
+            $('#corps-pie').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Влияние корпораций на рынке нейтринита, ноябрь 2064'
+                },
+                tooltip: {
+                    pointFormat: '<p>{point.desc}</p>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
                         }
                     }
-                }
-            },
-            series: [
-                {
-                    type: 'pie',
-                    name: 'Доля корпораций',
-                    data: [
-                        {
-                            name: 'Cnoc Glas, Inc',
-                            y: 21.8,
-                            desc: "Корпорация \"Зеленый Холм\" основана ирландской диаспорой в США.<br/>" +
-                                "Обоснованно подозревается в связях с ирландской мафией, однако,<br/>" +
-                                "пресс-служба органиации категорически отрицает все обвинения.<br/>" +
-                                "Выделяется очень развитой агентурной сетью промышленного шпионажа,<br/>" +
-                                "хотя это, естетсвенно, тоже отрицает.",
-                            color: '#008000'
-                        },
-                        {
-                            name: 'Дзайбацу Асано',
-                            y: 19.4,
-                            desc: "Крупная многопрофильная японо-корейская компания, основанная <br/>" +
-                                "семьей Асано, вышедшая на рынок добычи нейтринита. Имеет ресурсы <br/>" +
-                                "для обеспечения полного цикла добычи нейтринита, его обработки и<br/>" +
-                                "последующего использования.",
-                            color: '#FFCF48'
-                        },
-                        {
-                            name: 'Mineiros militar',
-                            y: 24.4,
-                            desc: "Синдикат по добыче нейтринита, сформированный на базе колумбийских<br/>" +
-                                "картелей. Не скрывают свое происхождение, не гнушаются \"грязными\"<br/>" +
-                                "методами в борье за ресурс. Опыт ведения боевых действий позволяет им<br/>" +
-                                "уверенно занимать лидирующие позиции на рынке нейтринита.",
-                            color: '#472A3F'
-                        },
-                        {
-                            name: 'Нейпром-Юань',
-                            y: 20.1,
-                            desc: "Корпорация-гигант, основанная и поддерживаемая государствами<br/>" +
-                                "Евро-Азиатского Союза, хотя де-юре является самостоятельной организацией.<br/>" +
-                                "В силу госориентированности старается держаться в рамках законов,<br/>" +
-                                "но при этом обладает огромными ресурсами для достижения своих целей.",
-                            color: '#FF2400'
-                        },
-                        {
-                            name: 'Elite mining, Ltd',
-                            y: 14.3,
-                            desc: "Организация появилась относительно недавно благодаря экономическому<br/>" +
-                                "союзу богатых компаний Южной Африки и военизированных формирований,<br/>" +
-                                "промышлявших по большей части незаконной деятельностью. Ресурсы<br/>" +
-                                "компаний вкупе с военным опытом боевиков позволили фирме быстро<br/>" +
-                                "выйти на один уровень с четвёркой гигантов, оккупировавших рынок.",
-                            color: '#5D76CB'
-                        }
-                    ]
-                }
-            ]
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        name: 'Доля корпораций',
+                        data: data
+                    }
+                ]
+            });
+        }
+
+        DataSource.getCorporations().then(function (result) {
+            initChart(_.map(result.data, function (item) {
+                item['y'] = item['value'];
+                return item;
+            }));
         });
 
     }]);
