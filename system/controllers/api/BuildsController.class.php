@@ -162,8 +162,9 @@ class BuildsController extends ApiController
     {
         $build = $this->getBuild($user, $buildId);
         $restrictions = $perk['for'];
+        $class = $this->getClass($build['class']);
 
-        if(!empty($restrictions['level']) && $build['level'] < $restrictions['level'])
+        if(!empty($restrictions['level']) && $class['level'] < $restrictions['level'])
             throw new \Exception('Perk is not available (level).');
 
         if(!empty($restrictions['classOnly']) && !in_array($build['class'], $restrictions['classOnly']))
