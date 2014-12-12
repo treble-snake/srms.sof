@@ -161,7 +161,21 @@ class BuildsController extends ApiController
     protected function validatePerkAvailability(UserModel $user, \MongoId $buildId, array $perk)
     {
         $build = $this->getBuild($user, $buildId);
-        if(in_array($perk['_id'], $build['perks']) || !in_array($perk['parent'], $build['perks']))
+        $restrictions = $perk['for'];
+
+        if(!empty($restrictions['level']) && $build['level'] < $restrictions['level'])
+            throw new \Exception('Perk is not available (level).');
+
+        if(!empty($restrictions['classOnly']) && !in_array($build['class'], $restrictions['classOnly']))
+            throw new \Exception('Perk is not available (wrong class only).');
+
+        if(!empty($restrictions['classExcept']) && in_array($build['class'], $restrictions['classExcept']))
+            throw new \Exception('Perk is not available (wrong class except).');
+
+        if(in_array($perk['_id'], $build['perks']))
+            throw new \Exception('Perk is already bought.');
+
+        if(!empty($perk['parent']) && !in_array($perk['parent'], $build['perks']))
             throw new \Exception('Perk is not available.');
     }
 
@@ -220,4 +234,4 @@ class BuildsController extends ApiController
 
         return $price;
     }
-} 
+}
